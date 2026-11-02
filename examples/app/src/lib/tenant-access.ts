@@ -23,6 +23,8 @@ export type TenantPermission =
   | "checklist.read"
   | "checklist.apply"
   | "checklist.manage"
+  | "deviation.report"
+  | "deviation.manage"
   | "workers.read"
   | "workers.manage"
   | "medical.review"
@@ -54,14 +56,14 @@ export const DEMO_MEMBERSHIPS: readonly TenantMembership[] = Object.freeze([
 ]);
 
 const permissionsByRole: Readonly<Record<TenantRole, readonly TenantPermission[]>> = Object.freeze({
-  consultoria_admin: ["operations.read", "operations.manage", "epi.read", "epi.manage", "thirdparty.read", "thirdparty.manage", "aso.status.read", "pcmso.status.read", "pcmso.assign", "tenant.dashboard.read", "tenant.members.manage", "tenant.clients.read", "tenant.clients.manage", "tenant.audit.read", "documents.read", "documents.review", "documents.submit", "documents.manage", "pgr.manage", "workers.read", "workers.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage"],
-  sst_tst: ["operations.read", "epi.read", "thirdparty.read", "aso.status.read", "pcmso.status.read", "tenant.dashboard.read", "tenant.clients.read", "documents.read", "documents.review", "pgr.manage", "workers.read", "safety.risk_analysis.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage", "esocial.table24.manage"],
-  cliente: ["tenant.dashboard.read", "documents.read", "dds.read", "checklist.read"],
-  terceiro: ["documents.submit"],
-  profissional_habilitado: ["tenant.dashboard.read", "documents.read", "medical.review"],
-  medico_coordenador: ["aso.manage", "tenant.dashboard.read", "pcmso.manage", "esocial.table27.manage"],
+  consultoria_admin: ["operations.read", "operations.manage", "epi.read", "epi.manage", "thirdparty.read", "thirdparty.manage", "aso.status.read", "pcmso.status.read", "pcmso.assign", "tenant.dashboard.read", "tenant.members.manage", "tenant.clients.read", "tenant.clients.manage", "tenant.audit.read", "documents.read", "documents.review", "documents.submit", "documents.manage", "pgr.manage", "workers.read", "workers.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage", "deviation.report", "deviation.manage"],
+  sst_tst: ["operations.read", "epi.read", "thirdparty.read", "aso.status.read", "pcmso.status.read", "tenant.dashboard.read", "tenant.clients.read", "documents.read", "documents.review", "pgr.manage", "workers.read", "safety.risk_analysis.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage", "deviation.report", "deviation.manage", "esocial.table24.manage"],
+  cliente: ["tenant.dashboard.read", "documents.read", "dds.read", "checklist.read", "deviation.report"],
+  terceiro: ["documents.submit", "deviation.report"],
+  profissional_habilitado: ["tenant.dashboard.read", "documents.read", "medical.review", "deviation.report"],
+  medico_coordenador: ["aso.manage", "tenant.dashboard.read", "pcmso.manage", "esocial.table27.manage", "deviation.report"],
   saas_master: ["saas.tenants.manage"],
-  campo: ["dds.read", "dds.manage", "checklist.read", "checklist.apply"],
+  campo: ["dds.read", "dds.manage", "checklist.read", "checklist.apply", "deviation.report"],
 });
 
 export const SECTION_PERMISSIONS = Object.freeze({
@@ -80,6 +82,7 @@ export const SECTION_PERMISSIONS = Object.freeze({
   "analise-risco": ["safety.risk_analysis.manage"],
   dds: ["dds.read"],
   checklists: ["checklist.read"],
+  desvios: ["deviation.report"],
 } satisfies Record<string, readonly TenantPermission[]>);
 
 export function getVisibleSections(role: TenantRole): string[] {
