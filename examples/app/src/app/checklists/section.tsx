@@ -4,7 +4,7 @@ import type { ClientCompany } from "@/lib/client-store";
 import type { ChecklistTemplate } from "@/lib/checklist-store";
 import { archiveTemplateAction, completeInspectionAction, createTemplateAction, type ChecklistFormState } from "./actions";
 
-type InspectionView = { id: string; templateName: string; kind: "area" | "equipment"; companyId: string; subject: string; performedOn: string; inspector: string; signedAt: string; results: { itemId: string; text: string; answer: "ok" | "nok" | "na"; note: string }[] };
+type InspectionView = { id: string; templateName: string; kind: "area" | "equipment"; companyId: string; unitId: string; subject: string; performedOn: string; inspector: string; signedAt: string; results: { itemId: string; text: string; answer: "ok" | "nok" | "na"; note: string }[] };
 const kindLabel = { area: "Área", equipment: "Equipamento" } as const;
 const answerLabel = { ok: "Conforme", nok: "Não conforme", na: "Não se aplica" } as const;
 
@@ -59,6 +59,17 @@ function Apply({ template, companies }: { template: ChecklistTemplate; companies
   </form>;
 }
 
+function ncHref(inspection: InspectionView, result: InspectionView["results"][number]) {
+  const query = new URLSearchParams({
+    scope: `${inspection.companyId}|${inspection.unitId}`,
+    title: `${result.text} (checklist)`.slice(0, 140),
+    location: inspection.subject.slice(0, 500),
+    description: `Item não conforme no checklist "${inspection.templateName}" (${inspection.performedOn}): ${result.text}.${result.note ? ` Observação: ${result.note}` : ""}`.slice(0, 2000),
+    evidence: `Checklist "${inspection.templateName}" aplicado em ${inspection.performedOn} por ${inspection.inspector}, assinado pelo inspetor (inspeção ${inspection.id}).`.slice(0, 2000),
+  });
+  return `/nao-conformidades?${query.toString()}`;
+}
+
 export default function ChecklistSection({ companies, templates, inspections, canApply, canManage }: { companies: ClientCompany[]; templates: ChecklistTemplate[]; inspections: InspectionView[]; canApply: boolean; canManage: boolean }) {
   const [state, action, pending] = useActionState(createTemplateAction, {});
   const active = templates.filter((item) => item.status === "active");
@@ -76,7 +87,7 @@ export default function ChecklistSection({ companies, templates, inspections, ca
     <h2>Inspeções registradas</h2>
     {inspections.length ? inspections.map((inspection) => <article className="pgr-card" key={inspection.id}><header><div><h3>{inspection.templateName} · {inspection.subject}</h3><p>{kindLabel[inspection.kind]} · {inspection.performedOn.split("-").reverse().join("/")} · {inspection.inspector}</p></div>
       <span className="period-label">{inspection.results.filter((r) => r.answer === "nok").length} não conforme(s)</span></header>
-      <details><summary>Ver respostas</summary><ul>{inspection.results.map((r) => <li key={r.itemId}><strong>{r.text}</strong>: {answerLabel[r.answer]}{r.note ? ` · ${r.note}` : ""}</li>)}</ul></details>
+      <details><summary>Ver respostas</summary><ul>{inspection.results.map((r) => <li key={r.itemId}><strong>{r.text}</strong>: {answerLabel[r.answer]}{r.note ? ` · ${r.note}` : ""}{canManage && r.answer === "nok" && <> · <a href={ncHref(inspection, r)}>Abrir não conformidade</a></>}</li>)}</ul></details>
       <p><small>Assinado em {new Date(inspection.signedAt).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })} (Brasília). Assinatura simples.</small></p><SharePdf id={inspection.id} performedOn={inspection.performedOn}/></article>) : <p>Nenhuma inspeção registrada.</p>}
   </section>;
 }

@@ -4,6 +4,8 @@
 
 2026-11-02 — Perfil "Campo" (líder): permissões só `dds.read`/`dds.manage`; a página inicial redireciona esse perfil para `/dds`. Conta de demonstração opcional via `SST_DEMO_CAMPO_EMAIL`/`SST_DEMO_CAMPO_PASSWORD`. Testadores usam o perfil da consultoria (menu completo). Checklist para o Campo e PWA (manifest/ícone) pendentes: falta fonte técnica aprovada para o checklist. tsc, ESLint e 13 testes limpos; não testado em navegador/celular nem enviado ao servidor.
 
+2026-11-02 — Checklist → Não conformidades: cada item "não conforme" (visível a quem gerencia) tem o link "Abrir não conformidade", que abre `/nao-conformidades` com empresa/unidade, título, local, descrição e evidência pré-preenchidos a partir da inspeção. Nada é gravado automaticamente: o TST revisa e informa responsável, plano de correção e prazo. tsc ok; não testado em navegador.
+
 2026-11-02 — Checklists com PDF: rota `GET /api/checklists/[id]/pdf` (permissão `checklist.read`, escopo do tenant) com objeto inspecionado, respostas, itens não conformes destacados e assinatura simples; botões "Baixar PDF" e "Enviar" (compartilhamento do celular, sem integração externa). tsc ok; não testado em navegador/celular.
 
 2026-11-02 — DDS com foto do grupo e PDF: a foto do local com as pessoas agrupadas (JPEG validado, imutável) é o primeiro passo e libera o tema e as assinaturas; tema só após a foto; assinaturas e encerramento exigem foto e tema. Auditoria `dds.photo_attached|theme_set`. Rota `GET /api/dds/[id]/pdf` (permissão `dds.read`, escopo do tenant, `pdf-lib`) e botões "Baixar PDF" e "Enviar" (compartilhamento nativo do celular; sem integração externa). Pendente de decisão humana: retenção e base legal da foto (LGPD). tsc e testes do dds-store ok; não testado em navegador/celular.
