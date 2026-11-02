@@ -109,7 +109,7 @@ function ShareButtons({ record }: { record: DdsRecord }) {
     if (!response.ok) { window.alert("Não foi possível gerar o PDF."); return; }
     const file = new File([await response.blob()], `dds-${record.heldOn}.pdf`, { type: "application/pdf" });
     if (navigator.canShare?.({ files: [file] })) { try { await navigator.share({ files: [file], title: "DDS" }); } catch { /* cancelado */ } return; }
-    window.location.href = url;
+    window.location.assign(url);
   }
   return <p><a className="secondary-button" href={url}>Baixar PDF</a> <button type="button" className="secondary-button" onClick={share}>Enviar (WhatsApp/e-mail)</button></p>;
 }

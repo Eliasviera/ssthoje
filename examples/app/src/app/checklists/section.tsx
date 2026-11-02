@@ -12,6 +12,18 @@ function Feedback({ state }: { state: ChecklistFormState }) {
   return <>{state.error && <p className="client-form-message client-form-error" role="alert">{state.error}</p>}{state.success && <p className="client-form-message client-form-success" role="status">{state.success}</p>}</>;
 }
 
+function SharePdf({ id, performedOn }: { id: string; performedOn: string }) {
+  const url = `/api/checklists/${id}/pdf`;
+  async function share() {
+    const response = await fetch(url);
+    if (!response.ok) { window.alert("Não foi possível gerar o PDF."); return; }
+    const file = new File([await response.blob()], `checklist-${performedOn}.pdf`, { type: "application/pdf" });
+    if (navigator.canShare?.({ files: [file] })) { try { await navigator.share({ files: [file], title: "Checklist" }); } catch { /* cancelado */ } return; }
+    window.location.assign(url);
+  }
+  return <p><a className="secondary-button" href={url}>Baixar PDF</a> <button type="button" className="secondary-button" onClick={share}>Enviar (WhatsApp/e-mail)</button></p>;
+}
+
 function Archive({ id }: { id: string }) {
   const [state, action, pending] = useActionState(archiveTemplateAction, {});
   return <form action={action}><input type="hidden" name="id" value={id}/><Feedback state={state}/><button className="text-action" disabled={pending}>Arquivar modelo</button></form>;
@@ -65,6 +77,6 @@ export default function ChecklistSection({ companies, templates, inspections, ca
     {inspections.length ? inspections.map((inspection) => <article className="pgr-card" key={inspection.id}><header><div><h3>{inspection.templateName} · {inspection.subject}</h3><p>{kindLabel[inspection.kind]} · {inspection.performedOn.split("-").reverse().join("/")} · {inspection.inspector}</p></div>
       <span className="period-label">{inspection.results.filter((r) => r.answer === "nok").length} não conforme(s)</span></header>
       <details><summary>Ver respostas</summary><ul>{inspection.results.map((r) => <li key={r.itemId}><strong>{r.text}</strong>: {answerLabel[r.answer]}{r.note ? ` · ${r.note}` : ""}</li>)}</ul></details>
-      <p><small>Assinado em {new Date(inspection.signedAt).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })} (Brasília). Assinatura simples.</small></p></article>) : <p>Nenhuma inspeção registrada.</p>}
+      <p><small>Assinado em {new Date(inspection.signedAt).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })} (Brasília). Assinatura simples.</small></p><SharePdf id={inspection.id} performedOn={inspection.performedOn}/></article>) : <p>Nenhuma inspeção registrada.</p>}
   </section>;
 }
