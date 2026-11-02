@@ -38,7 +38,7 @@ function PhotoStep({ record }: { record: DdsRecord }) {
   return <form action={action} className="pgr-form"><input type="hidden" name="id" value={record.id}/><input type="hidden" name="revision" value={record.revision}/><input type="hidden" name="image" ref={image}/>
     <label className="form-field pgr-wide">Etapa 1: foto do local com as pessoas agrupadas<input type="file" accept="image/*" capture="environment" onChange={choose} required/></label>
     {localError && <p className="client-form-message client-form-error" role="alert">{localError}</p>}<Feedback state={state}/>
-    <div className="pgr-form-footer"><p>A foto libera o tema e as assinaturas e não pode ser trocada depois.</p><button className="secondary-button" disabled={pending || !ready}>{pending ? "Enviando…" : "Registrar foto"}</button></div></form>;
+    <div className="pgr-form-footer"><p>A foto libera o tema e as assinaturas e não pode ser trocada depois. <strong>Ambiente de teste: use uma foto sem pessoas, apenas para validar o funcionamento.</strong></p><button className="secondary-button" disabled={pending || !ready}>{pending ? "Enviando…" : "Registrar foto"}</button></div></form>;
 }
 
 function ThemeStep({ record }: { record: DdsRecord }) {
