@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { getCurrentTenantAccess } from "@/lib/tenant-context";
 import { listClientCompanies } from "@/lib/client-service";
 import { listDeviations } from "@/lib/deviation-store";
 import DeviationSection from "./section";
+import TopbarActions from "../field-nav";
 
 export default function Page() {
   return <Suspense fallback={<main className="auth-loading">Abrindo desvios…</main>}><Content/></Suspense>;
@@ -27,7 +27,7 @@ async function Content() {
   };
   const items = records.map((item) => ({ ...item, scopeLabel: nameOf(item.companyId, item.unitId) }));
   return <main className="main-area" style={{marginLeft:0}}>
-    <header className="topbar"><div className="breadcrumbs">{tenant.name} / Desvios de SST</div>{membership.role === "campo" ? null : <Link className="secondary-button" href="/">Voltar ao painel</Link>}</header>
+    <header className="topbar"><div className="breadcrumbs">{tenant.name} / Desvios de SST</div><TopbarActions role={membership.role} current="/desvios"/></header>
     <div className="content-wrap"><section className="welcome-row"><div><p className="eyebrow">AMBIENTE DE DEMONSTRAÇÃO</p><h1>Desvios de SST</h1><p className="page-description">Qualquer pessoa pode relatar um desvio ou um quase incidente.</p></div></section>
       <DeviationSection companies={companies} items={items} canManage={canManage}/>
     </div>

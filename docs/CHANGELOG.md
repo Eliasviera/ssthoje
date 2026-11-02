@@ -1,5 +1,7 @@
 # Changelog
 
+2026-11-02 — Perfil Campo: barra de navegação entre DDS, Checklists e Desvios (`field-nav.tsx`), pois ele não tem painel. Outros perfis mantêm "Voltar ao painel". tsc e ESLint limpos; não testado em navegador/celular.
+
 2026-11-02 — Desvios de SST (rota `/desvios`, store `deviation-store.ts`, `data/deviations.json`): todos os papéis de consultoria (admin, TST, Campo, cliente, terceiro, médico, profissional habilitado) podem relatar desvio ou quase incidente (permissão `deviation.report`). Quem só relata vê apenas os próprios relatos; admin e TST (`deviation.manage`) veem todos, tratam (aberto → em tratamento → encerrado, tratativa obrigatória para encerrar; encerrado é imutável, com histórico) e podem abrir Não conformidades pré-preenchida. Empresa/unidade opcional, escolhida só por perfis com acesso a clientes. Sem classificação de gravidade (critério ainda não definido). Auditoria `deviation.reported|status_changed`. tsc, ESLint e testes limpos; não testado em navegador/celular. Pendentes: foto no relato, relato anônimo, gravidade/prazos (dependem de definição do usuário).
 
 2026-11-02 — Checklists: quem aplica. Por orientação do usuário, checklist de equipamento é aplicado por operadores (perfil Campo ou TST) e checklist de área só pelo TST. Regra aplicada no servidor (`completeInspectionAction` exige `checklist.manage` para modelo de área) e a tela esconde "Aplicar" de área para o Campo. tsc limpo; não testado em navegador/celular.
