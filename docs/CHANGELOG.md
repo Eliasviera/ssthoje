@@ -1,5 +1,7 @@
 # Changelog
 
+2026-11-02 — Checklists: quem aplica. Por orientação do usuário, checklist de equipamento é aplicado por operadores (perfil Campo ou TST) e checklist de área só pelo TST. Regra aplicada no servidor (`completeInspectionAction` exige `checklist.manage` para modelo de área) e a tela esconde "Aplicar" de área para o Campo. tsc limpo; não testado em navegador/celular.
+
 2026-11-02 — Checklists de áreas e equipamentos (rota `/checklists`, store `checklist-store.ts`, `data/checklists.json`): modelos criados pelo próprio TST, sem critérios pré-prontos nem fonte normativa; aplicação com resposta por item (conforme/não conforme/não se aplica), observação obrigatória em não conforme e assinatura simples desenhada na tela. Modelo arquivado preserva as inspeções. Permissões `checklist.read|apply|manage` (admin e SST: todas; Campo: ler e aplicar; cliente: ler). Auditoria `checklist.template_created|template_archived|completed`. tsc, ESLint e 15 testes limpos. Pendentes: link no menu, ligação com Não conformidades, modelos padrão (dependem de fonte e responsável técnico).
 
 2026-11-02 — Perfil "Campo" (líder): permissões só `dds.read`/`dds.manage`; a página inicial redireciona esse perfil para `/dds`. Conta de demonstração opcional via `SST_DEMO_CAMPO_EMAIL`/`SST_DEMO_CAMPO_PASSWORD`. Testadores usam o perfil da consultoria (menu completo). Checklist para o Campo e PWA (manifest/ícone) pendentes: falta fonte técnica aprovada para o checklist. tsc, ESLint e 13 testes limpos; não testado em navegador/celular nem enviado ao servidor.

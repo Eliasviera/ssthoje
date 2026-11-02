@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { getCurrentTenantAccess } from "@/lib/tenant-context";
 import { listClientCompanies } from "@/lib/client-service";
 import { appendAuditEvent } from "@/lib/audit-log";
-import { archiveTemplate, completeInspection, createTemplate, ChecklistError, type ChecklistKind } from "@/lib/checklist-store";
+import { archiveTemplate, completeInspection, createTemplate, listTemplates, ChecklistError, type ChecklistKind } from "@/lib/checklist-store";
 
 export type ChecklistFormState = { error?: string; success?: string };
 
@@ -48,6 +48,11 @@ export async function completeInspectionAction(_previous: ChecklistFormState, da
   if (!access.context) return { error: "Seu perfil não pode aplicar checklists." };
   try {
     const tenantId = access.context.tenant.id;
+    const templateId = field(data, "templateId", 36);
+    const template = listTemplates(tenantId).find((item) => item.id === templateId);
+    if (template?.kind === "area" && !(await getCurrentTenantAccess("checklist.manage")).context) {
+      throw new ChecklistError("Checklists de área são aplicados pelo TST. Operadores aplicam checklists de equipamento.");
+    }
     const scope = field(data, "scope", 281).split("|");
     if (scope.length !== 2 || !scope[0] || !scope[1]) throw new ChecklistError("Selecione empresa e unidade.");
     const [companyId, unitId] = scope;
@@ -57,7 +62,7 @@ export async function completeInspectionAction(_previous: ChecklistFormState, da
     for (const [key, value] of data.entries()) {
       if (key.startsWith("answer:") && typeof value === "string") answers[key.slice(7)] = { answer: value, note: field(data, `note:${key.slice(7)}`, 500) };
     }
-    completeInspection({ tenantId, actorUserId: access.session.userId, templateId: field(data, "templateId", 36), companyId, unitId,
+    completeInspection({ tenantId, actorUserId: access.session.userId, templateId, companyId, unitId,
       subject: field(data, "subject", 160), performedOn: field(data, "performedOn", 10), inspector: field(data, "inspector", 120),
       answers, image: field(data, "image", 120000) });
     audit(access.context, access.session.userId, "checklist.completed");

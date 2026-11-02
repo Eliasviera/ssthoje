@@ -82,7 +82,8 @@ export default function ChecklistSection({ companies, templates, inspections, ca
       <div className="pgr-form-footer"><p>Os itens são definidos por você. O sistema não sugere critérios normativos.</p><button className="secondary-button" disabled={pending}>{pending ? "Salvando…" : "Criar modelo"}</button></div></form></details>}
     <h2>Modelos ativos</h2>
     {active.length ? active.map((template) => <article className="pgr-card" key={template.id}><header><div><h3>{template.name}</h3><p>{kindLabel[template.kind]} · {template.items.length} itens</p></div></header>
-      {canApply && <details><summary>Aplicar checklist</summary><Apply template={template} companies={companies}/></details>}
+      {canApply && (template.kind === "equipment" || canManage) && <details><summary>Aplicar checklist</summary><Apply template={template} companies={companies}/></details>}
+      {canApply && template.kind === "area" && !canManage && <p>Checklist de área: aplicado pelo TST.</p>}
       {canManage && <Archive id={template.id}/>}</article>) : <p>Nenhum modelo ativo.{canManage ? " Crie o primeiro acima." : ""}</p>}
     <h2>Inspeções registradas</h2>
     {inspections.length ? inspections.map((inspection) => <article className="pgr-card" key={inspection.id}><header><div><h3>{inspection.templateName} · {inspection.subject}</h3><p>{kindLabel[inspection.kind]} · {inspection.performedOn.split("-").reverse().join("/")} · {inspection.inspector}</p></div>
