@@ -13,13 +13,15 @@ export type DdsSignature = {
   method: "drawn_on_screen_simple";
 };
 export type DdsAttendee = { id: string; workerId?: string; workerName: string; registered: boolean; signature?: DdsSignature };
-export type DdsHistoryEntry = { action: "created" | "signed" | "responsible_signed" | "closed"; actorUserId: string; occurredAt: string; attendeeId?: string };
+export type DdsHistoryEntry = { action: "created" | "photo_attached" | "theme_set" | "signed" | "responsible_signed" | "closed"; actorUserId: string; occurredAt: string; attendeeId?: string };
+export type DdsPhoto = { image: string; capturedAt: string; capturedByUserId: string };
 export type DdsRecord = {
   id: string;
   tenantId: string;
   companyId: string;
   unitId: string;
   theme: string;
+  groupPhoto?: DdsPhoto;
   heldOn: string;
   location: string;
   responsible: string;
@@ -36,7 +38,6 @@ export type NewDds = {
   tenantId: string;
   companyId: string;
   unitId: string;
-  theme: string;
   heldOn: string;
   location: string;
   responsible: string;
@@ -46,7 +47,9 @@ export type NewDds = {
 };
 
 const MAX_SIGNATURE_BYTES = 80 * 1024;
+const MAX_PHOTO_BYTES = 450 * 1024;
 const PNG_MAGIC = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+const JPEG_MAGIC = Buffer.from([0xff, 0xd8, 0xff]);
 
 function storePath() {
   return join(process.cwd(), "data", "dds.json");
@@ -94,6 +97,18 @@ export function validateSignatureImage(image: unknown): string {
   return image;
 }
 
+export function validatePhotoImage(image: unknown): string {
+  const prefix = "data:image/jpeg;base64,";
+  if (typeof image !== "string" || !image.startsWith(prefix)) throw new DdsError("Foto inválida. Tire a foto novamente.");
+  const base64 = image.slice(prefix.length);
+  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(base64)) throw new DdsError("Foto inválida. Tire a foto novamente.");
+  const bytes = Buffer.from(base64, "base64");
+  if (bytes.length < 1000 || bytes.length > MAX_PHOTO_BYTES || !bytes.subarray(0, 3).equals(JPEG_MAGIC)) {
+    throw new DdsError("Foto inválida ou muito grande. Tire a foto novamente.");
+  }
+  return image;
+}
+
 export function listDds(tenantId: string): DdsRecord[] {
   return readAll().filter((record) => record.tenantId === tenantId).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
@@ -116,7 +131,7 @@ export function createDds(input: NewDds): DdsRecord {
     tenantId: input.tenantId,
     companyId: input.companyId,
     unitId: input.unitId,
-    theme: requiredText(input.theme, "tema", 160),
+    theme: "",
     heldOn,
     location: requiredText(input.location, "local", 200),
     responsible: requiredText(input.responsible, "responsável", 120),
@@ -145,9 +160,34 @@ function mutate(tenantId: string, id: string, revision: number, change: (record:
   return record;
 }
 
+function requireReleased(record: DdsRecord) {
+  if (!record.groupPhoto) throw new DdsError("Registre primeiro a foto do grupo no local.");
+  if (!record.theme) throw new DdsError("Informe o tema antes de coletar assinaturas.");
+}
+
+export function attachDdsPhoto(input: { tenantId: string; id: string; revision: number; image: string; actorUserId: string }): DdsRecord {
+  const image = validatePhotoImage(input.image);
+  return mutate(input.tenantId, input.id, input.revision, (record, now) => {
+    if (record.groupPhoto) throw new DdsError("A foto do grupo já foi registrada e não pode ser trocada.");
+    record.groupPhoto = { image, capturedAt: now, capturedByUserId: input.actorUserId };
+    record.history.push({ action: "photo_attached", actorUserId: input.actorUserId, occurredAt: now });
+  });
+}
+
+export function setDdsTheme(input: { tenantId: string; id: string; revision: number; theme: string; actorUserId: string }): DdsRecord {
+  const theme = requiredText(input.theme, "tema", 160);
+  return mutate(input.tenantId, input.id, input.revision, (record, now) => {
+    if (!record.groupPhoto) throw new DdsError("Registre primeiro a foto do grupo no local.");
+    if (record.theme) throw new DdsError("O tema já foi informado.");
+    record.theme = theme;
+    record.history.push({ action: "theme_set", actorUserId: input.actorUserId, occurredAt: now });
+  });
+}
+
 export function signDdsResponsible(input: { tenantId: string; id: string; revision: number; image: string; actorUserId: string }): DdsRecord {
   const image = validateSignatureImage(input.image);
   return mutate(input.tenantId, input.id, input.revision, (record, now) => {
+    requireReleased(record);
     if (record.responsibleSignature) throw new DdsError("O responsável já assinou.");
     record.responsibleSignature = { image, signedAt: now, capturedByUserId: input.actorUserId, method: "drawn_on_screen_simple" };
     record.history.push({ action: "responsible_signed", actorUserId: input.actorUserId, occurredAt: now });
@@ -157,6 +197,7 @@ export function signDdsResponsible(input: { tenantId: string; id: string; revisi
 export function signDdsAttendee(input: { tenantId: string; id: string; attendeeId: string; revision: number; image: string; actorUserId: string }): DdsRecord {
   const image = validateSignatureImage(input.image);
   return mutate(input.tenantId, input.id, input.revision, (record, now) => {
+    requireReleased(record);
     const attendee = record.attendees.find((item) => item.id === input.attendeeId);
     if (!attendee) throw new DdsError("Participante não pertence a este DDS.");
     if (attendee.signature) throw new DdsError("Este participante já assinou.");
@@ -167,6 +208,7 @@ export function signDdsAttendee(input: { tenantId: string; id: string; attendeeI
 
 export function closeDds(input: { tenantId: string; id: string; revision: number; actorUserId: string }): DdsRecord {
   return mutate(input.tenantId, input.id, input.revision, (record, now) => {
+    requireReleased(record);
     if (!record.responsibleSignature) throw new DdsError("O responsável precisa assinar antes de encerrar.");
     if (!record.attendees.some((attendee) => attendee.signature)) throw new DdsError("Colete ao menos uma assinatura de participante antes de encerrar.");
     record.status = "closed";

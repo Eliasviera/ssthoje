@@ -4,7 +4,7 @@ import { getCurrentTenantAccess } from "@/lib/tenant-context";
 import { listClientCompanies } from "@/lib/client-service";
 import { listWorkersForTenant } from "@/lib/worker-store";
 import { appendAuditEvent } from "@/lib/audit-log";
-import { createDds, closeDds, signDdsAttendee, signDdsResponsible, DdsError } from "@/lib/dds-store";
+import { createDds, closeDds, signDdsAttendee, signDdsResponsible, attachDdsPhoto, setDdsTheme, DdsError } from "@/lib/dds-store";
 
 export type DdsFormState = { error?: string; success?: string };
 
@@ -22,7 +22,7 @@ function failure(error: unknown): DdsFormState {
   return { error: error instanceof DdsError ? error.message : "Não foi possível salvar. Atualize a página e tente novamente." };
 }
 type Access = NonNullable<Awaited<ReturnType<typeof getCurrentTenantAccess>>["context"]>;
-function audit(context: Access, userId: string, action: "dds.created" | "dds.signed" | "dds.responsible_signed" | "dds.closed") {
+function audit(context: Access, userId: string, action: "dds.created" | "dds.photo_attached" | "dds.theme_set" | "dds.signed" | "dds.responsible_signed" | "dds.closed") {
   appendAuditEvent({ tenantId: context.tenant.id, actorUserId: userId, actorRole: context.membership.role, action });
 }
 
@@ -44,11 +44,33 @@ export async function createDdsAction(_previous: DdsFormState, data: FormData): 
     });
     const manual = field(data, "manualNames", 2000).split("\n").map((line) => line.trim()).filter(Boolean).map((workerName) => ({ workerName }));
     createDds({ tenantId, companyId, unitId, actorUserId: access.session.userId,
-      theme: field(data, "theme", 160), heldOn: field(data, "heldOn", 10), location: field(data, "location", 200),
+      heldOn: field(data, "heldOn", 10), location: field(data, "location", 200),
       responsible: field(data, "responsible", 120), notes: field(data, "notes", 1000), attendees: [...registered, ...manual] });
     audit(access.context, access.session.userId, "dds.created");
     revalidatePath("/dds");
     return { success: "DDS registrado. Colete as assinaturas na tela." };
+  } catch (error) { return failure(error); }
+}
+
+export async function attachPhotoAction(_previous: DdsFormState, data: FormData): Promise<DdsFormState> {
+  const access = await getCurrentTenantAccess("dds.manage");
+  if (!access.context) return { error: "Seu perfil não pode registrar a foto." };
+  try {
+    attachDdsPhoto({ tenantId: access.context.tenant.id, id: field(data, "id", 36), revision: revisionOf(data), image: field(data, "image", 700000), actorUserId: access.session.userId });
+    audit(access.context, access.session.userId, "dds.photo_attached");
+    revalidatePath("/dds");
+    return { success: "Foto registrada. Agora informe o tema." };
+  } catch (error) { return failure(error); }
+}
+
+export async function setThemeAction(_previous: DdsFormState, data: FormData): Promise<DdsFormState> {
+  const access = await getCurrentTenantAccess("dds.manage");
+  if (!access.context) return { error: "Seu perfil não pode informar o tema." };
+  try {
+    setDdsTheme({ tenantId: access.context.tenant.id, id: field(data, "id", 36), revision: revisionOf(data), theme: field(data, "theme", 160), actorUserId: access.session.userId });
+    audit(access.context, access.session.userId, "dds.theme_set");
+    revalidatePath("/dds");
+    return { success: "Tema registrado. As assinaturas estão liberadas." };
   } catch (error) { return failure(error); }
 }
 
