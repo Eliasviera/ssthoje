@@ -1,0 +1,2 @@
+Não foi possível abrir o SST Hoje.
+O sistema não respondeu. Confira sst-hoje-inicializacao.log; a porta 3107 pode estar ocupada.

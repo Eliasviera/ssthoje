@@ -1,0 +1,81 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts",
+    ".next-verify-m20/types/**/*.ts",
+    ".next-verify-m20/dev/types/**/*.ts",
+    ".next-verify-m20-20261011131621/types/**/*.ts",
+    ".next-verify-m20-20261011131621/dev/types/**/*.ts",
+    ".next-verify-m20-20261011132120/types/**/*.ts",
+    ".next-verify-m20-20261011132120/dev/types/**/*.ts",
+    ".next-verify-m20-20261011134829/types/**/*.ts",
+    ".next-verify-m20-20261011134829/dev/types/**/*.ts",
+    ".next-verify-m20-20261011135919/types/**/*.ts",
+    ".next-verify-m20-20261011135919/dev/types/**/*.ts",
+    ".next-verify-m21-security-20261011/types/**/*.ts",
+    ".next-verify-m21-security-20261011/dev/types/**/*.ts",
+    ".next-verify-m21-dev/types/**/*.ts",
+    ".next-verify-m21-dev/dev/types/**/*.ts",
+    ".next-verify-client-demo/types/**/*.ts",
+    ".next-verify-client-demo/dev/types/**/*.ts",
+    ".next-verify-recovery-20261014/types/**/*.ts",
+    ".next-verify-recovery-20261014/dev/types/**/*.ts",
+    ".next-verify-m22-20261015/types/**/*.ts",
+    ".next-verify-m22-20261015/dev/types/**/*.ts",
+    ".next-verify-m22-readers-20261015/types/**/*.ts",
+    ".next-verify-m22-readers-20261015/dev/types/**/*.ts",
+    ".next-verify-print-m22-20261019/types/**/*.ts",
+    ".next-verify-print-m22-20261019/dev/types/**/*.ts",
+    ".next-verify-thirdparty-organize/types/**/*.ts",
+    ".next-verify-thirdparty-organize/dev/types/**/*.ts",
+    ".next-verify-permit-nc-20261024/types/**/*.ts",
+    ".next-verify-permit-nc-20261024/dev/types/**/*.ts",
+    ".next-verify-apr-origin-ui-20261025/types/**/*.ts",
+    ".next-verify-apr-origin-ui-20261025/dev/types/**/*.ts",
+    ".next-verify-pdf-completo-20261029/types/**/*.ts",
+    ".next-verify-pdf-completo-20261029/dev/types/**/*.ts",
+    ".next-verify-pdf-local-20261029/types/**/*.ts",
+    ".next-verify-pdf-local-20261029/dev/types/**/*.ts",
+    ".next-verify-pgr-review-20261031/types/**/*.ts",
+    ".next-verify-pgr-review-20261031/dev/types/**/*.ts",
+    ".next-verify-apr-suggestions-live-preview/types/**/*.ts",
+    ".next-verify-apr-suggestions-live-preview/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

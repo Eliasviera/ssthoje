@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 20,
+  "status": "candidate_not_runtime",
+  "source": "Decisão do usuário em 2026-10-24; não é regra normativa ou parecer de conformidade",
+  "scope": ["tenantId", "companyId", "unitId", "activityId"],
+  "permit_type_registry": [
+    {
+      "id": "work_at_height",
+      "label": "Trabalho em altura",
+      "category": "PT",
+      "implementation_status": "demo_only",
+      "technical_criteria_status": "pending_human_review",
+      "source_reference": "NR-35",
+      "technical_criteria_input": {
+        "status": "awaiting_user_provided_reviewed_content",
+        "provided_by": "user",
+        "content_received": false,
+        "responsible_reviewer_identification_required_now": false,
+        "criteria_may_be_implemented_before_content_and_review": false
+      }
+    },
+    {
+      "id": "lifting",
+      "label": "Içamento",
+      "category": "PT",
+      "implementation_status": "planned_unimplemented",
+      "technical_criteria_status": "not_defined",
+      "source_references": ["NR-11", "NR-18 when applicable to construction"]
+    },
+    {
+      "id": "hot_work",
+      "label": "Trabalho a quente",
+      "category": "PT",
+      "implementation_status": "planned_unimplemented",
+      "technical_criteria_status": "not_defined",
+      "source_references": ["NR-18 section 18.7.6 when applicable to construction"]
+    },
+    {
+      "id": "excavation",
+      "label": "Escavações",
+      "category": "PT",
+      "implementation_status": "planned_unimplemented",
+      "technical_criteria_status": "not_defined",
+      "source_references": ["NR-18 section 18.7.2 when applicable to construction"]
+    },
+    {
+      "id": "electrical",
+      "label": "Eletricidade",
+      "category": "PT",
+      "implementation_status": "planned_unimplemented",
+      "technical_criteria_status": "not_defined",
+      "source_references": ["NR-10"]
+    },
+    {
+      "id": "diving",
+      "label": "Mergulho profissional",
+      "category": "PT",
+      "implementation_status": "planned_unimplemented",
+      "technical_criteria_status": "not_defined",
+      "source_references": [
+        "NORMAM-222/DPC - Normas da Autoridade Marítima para Mergulho Comercial; official Marinha PDF identifies edition 2025; applicability and currentness require human review",
+        "NR-15 Annex 6 - work under hyperbaric conditions; applicability to the specific dive operation requires human review",
+        "NR-07 PCMSO - user-proposed complementary reference; specific provisions and applicability require technical review",
+        "Applicable ABNT standards for diving equipment/cylinders - specific standards not identified",
+        "User-reported NORMAM-15/DPC MOD 1 and MOD 2 are predecessor references; do not apply them automatically to NORMAM-222/DPC"
+      ],
+      "scope_confirmation": {
+        "user_confirmed": "professional_diving",
+        "confirmed_at": "2026-10-24",
+        "user_provided_operating_contexts": [
+          "Brazilian Jurisdictional Waters: territorial sea, exclusive economic zone and inland waters",
+          "Terrestrial hyperbaric environments and civil works, such as caissons, tunnels and dams"
+        ],
+        "jurisdiction_and_regulatory_applicability": "user_provided_scope_pending_primary_source_review",
+        "sector_environment_and_operation_details": "pending_technical_definition"
+      },
+      "normam_222_applicability_by_scenario": {
+        "status": "reserved_for_later_team_adjustment",
+        "adjustable_by_project_team": true,
+        "technical_conclusion_recorded": false,
+        "blocks_non_operational_prototype": false
+      },
+      "user_proposed_technical_review_roles": {
+        "diving_supervisor": "proposed_for_operation_planning_and_review; authority, qualifications and signature scope require source and human validation",
+        "occupational_safety_technical_professional": "proposed_for_industrial_or_terrestrial_work_context; applicability and authority require human validation"
+      },
+      "user_reported_predecessor_normam_15_revisions": [
+        {
+          "modification": "MOD 1",
+          "act": "Portaria DPC/DGN/MB nº 55",
+          "act_date": "2022-05-24",
+          "annex": "B",
+          "effective_date": "2022-06-01"
+        },
+        {
+          "modification": "MOD 2",
+          "act": "Portaria DPC/DGN/MB nº 63",
+          "act_date": "2022-09-22",
+          "annex": "B",
+          "effective_date": "2022-10-03"
+        }
+      ],
+      "normam_15_predecessor_status": "user_supplied_mod_1_and_mod_2; relation_to_normam_222_not_assumed",
+      "normam_222_official_pdf": "https://assets.marinha.mil.br/sites/default/files/atos-normativos/dpc/normam/normam-222.pdf",
+      "normam_222_pdf_edition": "2025 (cover)",
+      "normam_222_pdf_examined": true,
+      "normam_222_catalog_currentness_status": "not_independently_confirmed; DPC_catalog_pages_returned_http_403",
+      "normam_222_primary_source_status": "official_marinha_asset_pdf_retrieved_and_examined",
+      "prototype_status_impact": "does_not_block_non_operational_prototype; technical_criteria_and_operational_release_remain_disabled",
+      "operation_context_and_source_review_pending": true
+    },
+    {
+      "id": "confined_space_entry",
+      "label": "Entrada em espaço confinado",
+      "category": "PTE",
+      "implementation_status": "planned_unimplemented",
+      "technical_criteria_status": "not_defined",
+      "separate_from_work_permit_types": true
+    }
+  ],
+  "demo_activity_reference": {
+    "id": "demo-height-activity",
+    "kind": "work_at_height_demo",
+    "source": "existing_apr_id_and_revision",
+    "scope": ["tenantId", "companyId", "unitId"],
+    "context_fields": {
+      "activityStage": "copied_from_linked_apr",
+      "workArea": "copied_from_linked_apr",
+      "revalidate_exact_match_on_each_server_action": true,
+      "used_for_technical_evaluation": false
+    },
+    "technical_criteria_status": "pending_human_review",
+    "criteria_are_defined": false
+  },
+  "worker_training_tracking": {
+    "fields": {
+      "nr35TrainingStatus": {
+        "purpose": "Acompanhamento demonstrativo de treinamento NR-35",
+        "allowed_values": ["not_informed", "reported_pending_validation"],
+        "individual_records_default": "not_informed",
+        "self_report_is_training_evidence": false
+      },
+      "heightWorkSupervisionTrainingStatus": {
+        "purpose": "Preferência demonstrativa por treinamento focado em supervisão de trabalho em altura, separada do treinamento NR-35",
+        "allowed_values": ["not_informed", "reported_pending_validation"],
+        "individual_records_default": "not_informed",
+        "claims_general_legal_requirement": false,
+        "self_report_is_training_evidence": false
+      },
+      "scaffoldingAssemblyTrainingStatus": {
+        "purpose": "Acompanhamento demonstrativo do treinamento específico para o tipo de andaime, conforme NR-18 item 18.12.6",
+        "regulatory_basis": {
+          "jurisdiction": "Brasil",
+          "reference": "NR-18 item 18.12.6",
+          "official_page": "https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/norma-regulamentadora-no-18-nr-18",
+          "official_text_pdf": "https://www.gov.br/trabalho-e-emprego/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/comissao-tripartite-partitaria-permanente/normas-regulamentadora/normas-regulamentadoras-vigentes/NR18atualizada2026I.pdf",
+          "official_page_reports_last_modification": "Portaria MTE nº 836, de 13 de maio de 2026",
+          "requirement_summary": "A montagem e desmontagem de andaimes deve ser realizada por trabalhadores capacitados que recebam treinamento específico para o tipo de andaime utilizado."
+        },
+        "allowed_values": ["not_informed", "reported_pending_validation"],
+        "individual_records_default": "not_informed",
+        "self_report_is_training_evidence": false,
+        "human_evidence_reviewer": "activity_supervisor",
+        "required_evidence_components": ["training_completion_record", "employer_confirmation"],
+        "current_prototype_authenticates_reviewer_or_verifies_evidence": false,
+        "current_prototype_stores_evidence_documents": false
+      }
+    },
+    "does_not_verify_completion_or_validity": true,
+    "does_not_automatically_select_or_filter_workers": true,
+    "scaffolding_training_does_not_prove_qualification_or_gate_activity": true
+  },
+  "scaffold_use_tracking": {
+    "field": "demo_activity_reference.scaffoldUseStatus",
+    "allowed_values": ["not_informed", "used", "not_used"],
+    "purpose": "Registrar separadamente se a atividade utilizará andaime, conforme decisão do usuário",
+    "does_not_determine_who_assembles_or_dismantles": true,
+    "does_not_release_or_block_permit": true
+  },
+  "scaffold_assembly_assignment": {
+    "activity_field": "demo_activity_reference.scaffoldAssemblyStatus",
+    "allowed_values": ["not_informed", "included", "not_included"],
+    "workers_field": "demo_activity_reference.scaffoldAssemblerWorkerIds",
+    "selection": "explicit_existing_active_workers_in_same_tenant_company_unit",
+    "when_included": {
+      "scaffold_use_status_must_be": "used",
+      "requires_at_least_one_assigned_worker": true
+    },
+    "worker_training_status_field": "scaffoldingAssemblyTrainingStatus",
+    "human_training_evidence_reviewer": "activity_supervisor",
+    "evidence_components": ["training_completion_record", "employer_confirmation"],
+    "training_status_is_only_reported_pending_validation": true,
+    "does_not_verify_training_or_block_permit": true,
+    "does_not_store_evidence_documents": true,
+    "validation_action_and_secure_evidence_storage_pending_definition": true
+  },
+  "actor_bindings": {
+    "supervisor": {
+      "source": "existing_worker_list",
+      "field": "workerId",
+      "demo_records_are_fictitious": true,
+      "real_person_required_for_prototype": false,
+      "selection": "explicit_existing_worker_no_implicit_default",
+      "preferred_demo_qualification": {
+        "field": "heightWorkSupervisionTraining",
+        "description": "Treinamento específico/focado em supervisão de trabalho em altura, além do treinamento NR-35",
+        "status": "pending_validation",
+        "selection_preference_only": true,
+        "claims_legal_requirement": false,
+        "individual_qualifications_are_not_assumed": true
+      },
+      "scope": ["tenantId", "companyId", "unitId", "activityId"]
+    }
+  },
+  "roles": {
+    "leader": ["fill", "release_activity"],
+    "supervisor": ["fill", "release_activity", "await_correction", "record_continuation_with_nc", "verify_correction_when_no_tst"],
+    "tst_auditor": ["audit_risks_and_controls", "reassess_nc_items"],
+    "participant": ["sign_own_participation"]
+  },
+  "constraints": [
+    "O checklist do ensaio usa o mesmo tenant/empresa/unidade e activityId da atividade demo vinculada; rejeitar permalink divergente entre checklist e APR",
+    "Derivar identidade da sessão autenticada e exigir vínculo válido no escopo da atividade",
+    "No protótipo, referenciar o supervisor por workerId de funcionário já existente no escopo; dados atuais são fictícios e nenhum funcionário é escolhido automaticamente",
+    "O cenário demo referencia explicitamente uma APR existente do tenant na revisão corrente (rascunho ou em revisão), exibe seu estado sem sugerir aprovação e revalida APR/revisão/escopo no servidor em cada ação",
+    "A atividade demo de trabalho em altura referencia a APR/revisão/escopo e copia somente etapa e área descritas nela; o servidor compara esses campos com a APR atual em cada ação, sem usá-los para avaliação técnica",
+    "Na APR selecionada, exige escolha explícita, sem default, de funcionário ativo no mesmo tenant/empresa/unidade. A referência não autentica autoridade, não cria APR e não associa ou avalia riscos/respostas",
+    "Preferir na seleção demonstrativa funcionário com atributo de treinamento focado em supervisão de trabalho em altura além do treinamento NR-35; manter como pendente de validação e não declarar requisito legal nem certificação individual",
+    "Conforme orientação técnica do usuário, acompanhar separadamente treinamento para trabalhadores designados à montagem/desmontagem de andaimes e uso de andaime na atividade; quando a montagem/desmontagem estiver no escopo, a simulação associa explicitamente funcionários fictícios ativos do mesmo escopo, sem tratar relatos pendentes como comprovação",
+    "Identidade real não é pré-requisito para protótipo; operação real exige vínculo autenticado e autoridade verificada",
+    "Admin da consultoria não recebe automaticamente o papel de líder ou supervisor",
+    "Nome digitado não constitui assinatura nem prova de autoridade",
+    "Auditoria do TST é distinta da liberação pelo líder ou supervisor; NC exige aguardar reavaliação do TST quando disponível",
+    "Se NC persistir após a reavaliação, a decisão retorna ao supervisor: aguardar adequação ou registrar decisão de prosseguir com NC e justificativa",
+    "Empresa sem TST segue para decisão do supervisor sem fabricar parecer técnico",
+    "Em produção, presença/ausência de TST deve vir de configuração por escopo confiável e auditada, não do valor enviado pelo navegador",
+    "Decisão de prosseguir com NC não transforma o item em conforme e preserva a avaliação e evidências anteriores",
+    "Relato de adequação não corrige automaticamente a NC: a correção precisa de conferência e evidência",
+    "Integrante somente declara a própria participação depois da decisão de campo; a declaração não concede liberação nem altera NC",
+    "A conta autenticada que opera o ensaio não é convertida em líder, supervisor, TST ou integrante",
+    "Riscos e medidas devem ter origem rastreável no PGR aprovado e vínculo explícito pela APR",
+    "Ausência de risco correspondente impede abertura; solicitar revisão do PGR ao responsável técnico",
+    "Não inferir correspondência do tipo de trabalho por palavras no nome do risco"
+  ],
+  "pending": [
+    "Receive and review the technical content for work at height that the user will provide; no reviewer identification is required at this stage",
+    "Campos e checklist de cada tipo PT/PTE",
+    "Definir ação autenticada para o supervisor revisar registro de conclusão e confirmação do empregador; definir armazenamento seguro de evidência antes de qualquer gate operacional",
+    "Validação técnica dos critérios com referência normativa, versão aplicável e revisão humana; não exigir registro da data de vigência da NR-35",
+    "Para operação real, vínculo autenticado de supervisor por atividade e autoridade verificada; o seletor demonstrativo está implementado, mas não autentica nem concede autoridade",
+    "Ciclo operacional: liberação, alterações de condição, suspensão e encerramento",
+    "Momento e mecanismo das assinaturas individuais autenticadas (o ensaio atual usa integrantes fictícios)",
+    "Persistência transacional, histórico e provas de autorização antes de ativação"
+  ]
+}

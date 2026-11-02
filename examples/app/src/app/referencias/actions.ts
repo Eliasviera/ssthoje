@@ -1,0 +1,5 @@
+"use server";
+import {getSession} from "@/lib/session";
+import {reviewReference} from "@/lib/reference-governance";
+import {revalidatePath} from "next/cache";
+export async function referenceAction(_state:{message:string},data:FormData){const session=await getSession();if(!session)return {message:"Entre novamente."};try{const text=(name:string)=>{const v=data.get(name);if(typeof v!=="string"||v.length>600)throw new Error("Confira os campos.");return v;};const version=text("version"),outcome=text("outcome");if(!/^\d{1,6}$/.test(version)||!["reviewed","needs_update"].includes(outcome)||data.get("acknowledged")!=="on")throw new Error("Confira a referência e confirme a revisão humana.");reviewReference(session.userId,text("ruleId"),Number(version),outcome as "reviewed"|"needs_update",text("reason"));revalidatePath("/referencias");revalidatePath("/");return {message:"Revisão fictícia registrada com histórico. Não constitui aprovação normativa."};}catch(e){return {message:e instanceof Error?e.message:"Não foi possível registrar."};}}

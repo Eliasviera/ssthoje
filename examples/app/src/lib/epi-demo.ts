@@ -1,0 +1,1 @@
+export const EPI_DEMO_STATEMENT = "Confirmo somente a simulação de recebimento dos itens fictícios exibidos. Este teste não comprova entrega real, identidade, treinamento, adequação do EPI ou aceite jurídico.";

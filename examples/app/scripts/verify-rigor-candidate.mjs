@@ -1,0 +1,90 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { randomBytes, randomUUID, createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
+import pg from 'pg';
+import { reconcileRigorScopesWithDatabase } from '../src/lib/third-party-rigor-postgres-reconciliation.mjs';
+
+const name=`sst-rigor-proof-${randomUUID().replaceAll('-','')}`;
+const password=randomBytes(24).toString('hex');
+const docker=args=>execFileSync('docker',args,{encoding:'utf8',stdio:['ignore','pipe','pipe'],timeout:30000}).trim();
+let pool,started=false;
+try {
+  docker(['run','--rm','-d','--name',name,'-e',`POSTGRES_PASSWORD=${password}`,'-p','127.0.0.1::5432','postgres:17-alpine']); started=true;
+  const port=Number(docker(['port',name,'5432/tcp']).split(/\r?\n/)[0].split(':').at(-1));
+  pool=new pg.Pool({host:'127.0.0.1',port,user:'postgres',password,database:'postgres',max:3,connectionTimeoutMillis:1000});
+  for(let n=0;;n++){try{await pool.query('SELECT 1');break;}catch{if(n===39)throw new Error('not-ready');await new Promise(r=>setTimeout(r,500));}}
+  await pool.query(await readFile(new URL('../../../schemas/third-party-rigor-candidate.sql',import.meta.url),'utf8'));
+  await pool.query("INSERT INTO rigor_candidate.scopes VALUES ('tenant-a','empresa-a','unidade-a',true,'empresa-a'),('tenant-b','empresa-b','unidade-b',true,'empresa-b'),('tenant-a','empresa-arquivada','unidade-arquivada',false,'empresa-arquivada')");
+  await pool.query(`CREATE SCHEMA sst;
+    CREATE TABLE sst.client_companies (tenant_id text NOT NULL,id text NOT NULL,status text NOT NULL,PRIMARY KEY(tenant_id,id));
+    CREATE TABLE sst.client_units (tenant_id text NOT NULL,id text NOT NULL,company_id text NOT NULL,PRIMARY KEY(tenant_id,id));
+    CREATE TABLE sst.client_audit_history (tenant_id text NOT NULL,target_id text,action text NOT NULL);
+    ALTER TABLE sst.client_companies ENABLE ROW LEVEL SECURITY; ALTER TABLE sst.client_companies FORCE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_scope ON sst.client_companies USING(tenant_id=current_setting('sst.tenant_id',true));
+    ALTER TABLE sst.client_units ENABLE ROW LEVEL SECURITY; ALTER TABLE sst.client_units FORCE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_scope ON sst.client_units USING(tenant_id=current_setting('sst.tenant_id',true));
+    ALTER TABLE sst.client_audit_history ENABLE ROW LEVEL SECURITY; ALTER TABLE sst.client_audit_history FORCE ROW LEVEL SECURITY;
+    CREATE POLICY tenant_scope ON sst.client_audit_history USING(tenant_id=current_setting('sst.tenant_id',true));
+    GRANT USAGE ON SCHEMA sst TO rigor_candidate_app;
+    GRANT SELECT ON sst.client_companies,sst.client_units,sst.client_audit_history TO rigor_candidate_app;
+    INSERT INTO sst.client_companies VALUES ('tenant-a','company-a','active'),('tenant-b','company-b','active');
+    INSERT INTO sst.client_units VALUES ('tenant-a','unit-a','company-a'),('tenant-b','unit-b','company-b');
+    INSERT INTO sst.client_audit_history VALUES ('tenant-a','company-a','client.updated'),('tenant-b','company-b','client.updated');`);
+  const digest=createHash('sha256').update('politica ficticia v1').digest('hex');
+  const asApp=async(tenant,sql,params=[],user='importer-demo')=>{const c=await pool.connect();try{await c.query('BEGIN');await c.query('SET LOCAL ROLE rigor_candidate_app');await c.query("SELECT set_config('sst.tenant_id',$1,true),set_config('sst.user_id',$2,true)",[tenant,user]);const result=await c.query(sql,params);await c.query('COMMIT');return result;}catch(error){await c.query('ROLLBACK');throw error;}finally{c.release();}};
+  await pool.query("ALTER TABLE rigor_candidate.audit ADD CONSTRAINT proof_failure CHECK (false)");
+  const legacyMeta={createdAt:'2026-10-17T12:00:00-03:00',createdBy:'autor-legado-declarado',reviewer:'revisor-legado-declarado'};
+  const importSql="SELECT rigor_candidate.import_legacy_unverified('empresa-a','unidade-a',0,1,'2026-10-17','authorization',$1,'revisor-legado-declarado',$2,$3::jsonb)";
+  const importArgs=[JSON.stringify({PGR:'authorization'}),digest,JSON.stringify(legacyMeta)];
+  await assert.rejects(asApp('tenant-a',importSql,importArgs),{code:'23514'});
+  await pool.query('ALTER TABLE rigor_candidate.audit DROP CONSTRAINT proof_failure');
+  assert.equal(Number((await pool.query('SELECT count(*) FROM rigor_candidate.policies')).rows[0].count),0);
+  assert.equal((await asApp('tenant-a',importSql,importArgs)).rows[0].import_legacy_unverified,1);
+  assert.equal((await pool.query('SELECT action FROM rigor_candidate.audit')).rows[0].action,'policy.legacy_imported');
+  const currentEffective="SELECT rigor_candidate.current_effective_policy('empresa-a','unidade-a') AS policy";
+  assert.equal((await asApp('tenant-a',currentEffective)).rows[0].policy,null);
+  await pool.query("INSERT INTO rigor_candidate.authorized_attestors VALUES ('tenant-a','empresa-a','gestor-cliente-demo',true)");
+  const attestSql="SELECT rigor_candidate.attest_legacy_policy('empresa-a','unidade-a',1,$1)";
+  await assert.rejects(asApp('tenant-a',attestSql,[digest],'analista-demo'),{code:'42501'});
+  await assert.rejects(asApp('tenant-a',attestSql,['f'.repeat(64)],'gestor-cliente-demo'),{code:'40001'});
+  const attested=await asApp('tenant-a',attestSql,[digest],'gestor-cliente-demo');
+  assert.ok(attested.rows[0].attest_legacy_policy);
+  const effective=(await asApp('tenant-a',currentEffective,[],'gestor-cliente-demo')).rows[0].policy;
+  assert.equal(effective.provenance,'legacy_unverified');assert.ok(new Date(effective.effectiveFrom).getTime()>=new Date(attested.rows[0].attest_legacy_policy).getTime());
+  const savedLegacy=(await pool.query("SELECT provenance,legacy_metadata,created_by FROM rigor_candidate.policies WHERE tenant_id='tenant-a' AND version=1")).rows[0];
+  assert.equal(savedLegacy.provenance,'legacy_unverified');assert.deepEqual(savedLegacy.legacy_metadata,legacyMeta);assert.equal(savedLegacy.created_by,'importer-demo');
+  assert.equal((await pool.query('SELECT actor_user_id,snapshot_digest,action FROM rigor_candidate.audit ORDER BY id')).rows.at(-1).action,'policy.legacy_attested');
+  assert.equal((await pool.query('SELECT actor_user_id,snapshot_digest FROM rigor_candidate.attestations')).rows[0].actor_user_id,'gestor-cliente-demo');
+  await assert.rejects(pool.query("UPDATE rigor_candidate.attestations SET actor_user_id='outro' WHERE tenant_id='tenant-a'"),{code:'55000'});
+  await assert.rejects(asApp('tenant-a',"SELECT rigor_candidate.import_legacy_unverified('empresa-arquivada','unidade-arquivada',0,1,'2026-10-18','block','{}','revisor',$1,'{}')",[digest]),{code:'P0002'});
+  await assert.rejects(asApp('tenant-b',"SELECT rigor_candidate.import_legacy_unverified('empresa-a','unidade-a',1,2,'2026-10-18','block','{}','revisor',$1,'{}')",[digest]),{code:'P0002'});
+  await assert.rejects(asApp('tenant-a',"UPDATE rigor_candidate.policies SET reviewer='outro' WHERE tenant_id='tenant-a'"),{code:'42501'});
+  const revise="SELECT rigor_candidate.publish_policy('empresa-a','unidade-a',1,2,'2026-10-19','block',$1,'revisor-demo',$2)";
+  const revised=await Promise.allSettled([asApp('tenant-a',revise,[JSON.stringify({PGR:'block'}),digest]),asApp('tenant-a',revise,[JSON.stringify({PGR:'block'}),digest])]);
+  assert.equal(revised.filter(result=>result.status==='fulfilled').length,1);
+  assert.deepEqual((await pool.query("SELECT action FROM rigor_candidate.audit ORDER BY id")).rows.map(row=>row.action),['policy.legacy_imported','policy.legacy_attested','policy.revised']);
+  await assert.rejects(pool.query("UPDATE rigor_candidate.policies SET reviewer='outro' WHERE tenant_id='tenant-a'"),{code:'55000'});
+  await assert.rejects(pool.query("DELETE FROM rigor_candidate.audit WHERE tenant_id='tenant-a'"),{code:'55000'});
+  const reader=await pool.connect();
+  try { await reader.query('BEGIN'); await reader.query('SET LOCAL ROLE rigor_candidate_app');
+    assert.equal((await reader.query('SELECT * FROM rigor_candidate.policies')).rowCount,0);
+    await reader.query("SELECT set_config('sst.tenant_id','tenant-a',true)");
+    assert.equal((await reader.query('SELECT * FROM rigor_candidate.policies')).rowCount,2);
+    assert.equal((await reader.query("SELECT * FROM rigor_candidate.policies WHERE tenant_id='tenant-b'")).rowCount,0);
+    await assert.rejects(reader.query("DELETE FROM rigor_candidate.audit WHERE tenant_id='tenant-a'"),{code:'42501'});
+    await reader.query('ROLLBACK');
+  } finally {reader.release();}
+  assert.equal(Number((await pool.query('SELECT count(*) FROM rigor_candidate.audit')).rows[0].count),3);
+  const readClient=await pool.connect();
+  try {
+    await readClient.query('BEGIN READ ONLY'); await readClient.query('SET LOCAL ROLE rigor_candidate_app');
+    await readClient.query("SELECT set_config('sst.tenant_id','tenant-a',true)");
+    const reconciliation=await reconcileRigorScopesWithDatabase(readClient,'tenant-a',[{tenantId:'tenant-a',companyId:'company-a',unitId:'unit-a'},{tenantId:'tenant-b',companyId:'company-b',unitId:'unit-b'}]);
+    assert.equal(reconciliation.scopeMatches,1);assert.equal(reconciliation.scopeMismatches,0);assert.equal(reconciliation.companiesWithAudit,1);
+    await assert.rejects(readClient.query("INSERT INTO sst.client_companies VALUES ('tenant-a','blocked','active')"),{code:'25006'});
+    await readClient.query('ROLLBACK');
+  } finally {readClient.release();}
+  console.log('Prova PostgreSQL descartável aprovada: importação legada separada, atestação atual autorizada por digest, revisão concorrente, rollback/auditoria, RLS e consulta read-only.');
+} catch(error) { const detail=String(error.stack||error.message||'').replaceAll(password,'[redacted]');console.error(`Prova não concluída (${error.code||error.name}); ${detail}. Banco ativo não utilizado.`); process.exitCode=1; }
+finally { await pool?.end(); if(started)docker(['rm','-f',name]); }

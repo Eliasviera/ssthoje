@@ -1,0 +1,6195 @@
+{
+  "schemaVersion": 1,
+  "jurisdiction": "Brasil",
+  "sourceVersion": "eSocial S-1.3, consolidada at\u00e9 NT 07/2026",
+  "sourceRevisionDate": "2026-10-20",
+  "retrievedAt": "2026-11-01",
+  "sourceUrl": "https://www.gov.br/esocial/pt-br/documentacao-tecnica/leiautes-esocial-versao-s-1-3-nt-07-2026/tabelas.html/view",
+  "sourceSha256": "569a5bf34d7623f072bceed0073c8b0a2e2e3204e075b915d878c86a6bca586c",
+  "validityNote": "Snapshot para consulta de referencia; a publicacao consultada nao fornece vigencia individual por codigo nestas tabelas. Confirmar leiaute, vigencia e aplicabilidade antes de qualquer uso.",
+  "transmissionEnabled": false,
+  "tables": [
+    {
+      "table": "24",
+      "event": "S-2240",
+      "title": "Tabela 24 - Agentes Nocivos e Atividades - Aposentadoria Especial",
+      "entries": [
+        {
+          "code": "01.01.001",
+          "label": "Arsênio e seus compostos"
+        },
+        {
+          "code": "01.02.001",
+          "label": "Asbestos (ou amianto)"
+        },
+        {
+          "code": "01.03.001",
+          "label": "Benzeno e seus compostos tóxicos (exceto os abaixo especificados, que constam expressamente no Anexo IV do Decreto 3.048/1999)"
+        },
+        {
+          "code": "01.03.002",
+          "label": "Estireno (vinilbenzeno)"
+        },
+        {
+          "code": "01.04.001",
+          "label": "Berílio e seus compostos tóxicos"
+        },
+        {
+          "code": "01.05.001",
+          "label": "Bromo e seus compostos tóxicos"
+        },
+        {
+          "code": "01.06.001",
+          "label": "Cádmio e seus compostos tóxicos"
+        },
+        {
+          "code": "01.07.001",
+          "label": "Carvão mineral e seus derivados"
+        },
+        {
+          "code": "01.08.001",
+          "label": "Chumbo e seus compostos tóxicos"
+        },
+        {
+          "code": "01.09.001",
+          "label": "Cloro e seus compostos tóxicos (exceto os abaixo especificados, que constam expressamente no Anexo IV do Decreto 3.048/1999)"
+        },
+        {
+          "code": "01.09.002",
+          "label": "Metileno-ortocloroanilina, MOCA® (4,4'-metileno-bis-(2-cloroanilina), MBOCA®)"
+        },
+        {
+          "code": "01.09.003",
+          "label": "Bis (cloro metil) éter, clorometileter, (éter bis (clorometílico) ou éter metílico de clorometila), bisclorometil"
+        },
+        {
+          "code": "01.09.004",
+          "label": "Biscloroetileter (éter dicloroetílico)"
+        },
+        {
+          "code": "01.09.005",
+          "label": "Clorambucil (cloroambucil)"
+        },
+        {
+          "code": "01.09.006",
+          "label": "Cloropreno"
+        },
+        {
+          "code": "01.10.001",
+          "label": "Cromo e seus compostos tóxicos"
+        },
+        {
+          "code": "01.11.001",
+          "label": "Dissulfeto de carbono"
+        },
+        {
+          "code": "01.12.001",
+          "label": "Fósforo e seus compostos tóxicos"
+        },
+        {
+          "code": "01.13.001",
+          "label": "Iodo"
+        },
+        {
+          "code": "01.14.001",
+          "label": "Manganês e seus compostos"
+        },
+        {
+          "code": "01.15.001",
+          "label": "Mercúrio e seus compostos"
+        },
+        {
+          "code": "01.16.001",
+          "label": "Níquel e seus compostos tóxicos"
+        },
+        {
+          "code": "01.17.001",
+          "label": "Petróleo, xisto betuminoso, gás natural e seus derivados"
+        },
+        {
+          "code": "01.18.001",
+          "label": "Sílica livre"
+        },
+        {
+          "code": "01.19.001",
+          "label": "Butadieno-estireno"
+        },
+        {
+          "code": "01.19.002",
+          "label": "Acrilonitrila"
+        },
+        {
+          "code": "01.19.003",
+          "label": "1-3-butadieno"
+        },
+        {
+          "code": "01.19.004",
+          "label": "Mercaptanos (tióis)"
+        },
+        {
+          "code": "01.19.005",
+          "label": "n-hexano"
+        },
+        {
+          "code": "01.19.006",
+          "label": "Diisocianato de tolueno (TDI)"
+        },
+        {
+          "code": "01.19.007",
+          "label": "Aminas aromáticas"
+        },
+        {
+          "code": "01.19.008",
+          "label": "Aminobifenila (4-aminodifenil)"
+        },
+        {
+          "code": "01.19.009",
+          "label": "Auramina"
+        },
+        {
+          "code": "01.19.010",
+          "label": "Azatioprina"
+        },
+        {
+          "code": "01.19.011",
+          "label": "1-4-butanodiol"
+        },
+        {
+          "code": "01.19.012",
+          "label": "Dimetanosulfonato (MIRELAN)"
+        },
+        {
+          "code": "01.19.013",
+          "label": "Ciclofosfamida"
+        },
+        {
+          "code": "01.19.014",
+          "label": "Dietiletil-bestrol"
+        },
+        {
+          "code": "01.19.015",
+          "label": "Acronitrila"
+        },
+        {
+          "code": "01.19.016",
+          "label": "Nitronaftilamina"
+        },
+        {
+          "code": "01.19.017",
+          "label": "4-dimetil-aminoazobenzeno"
+        },
+        {
+          "code": "01.19.018",
+          "label": "Benzopireno"
+        },
+        {
+          "code": "01.19.019",
+          "label": "Beta-pbiscloromeropiolactona (beta-propiolactona)"
+        },
+        {
+          "code": "01.19.021",
+          "label": "Dianizidina"
+        },
+        {
+          "code": "01.19.022",
+          "label": "Dietilsulfato"
+        },
+        {
+          "code": "01.19.023",
+          "label": "Dimetilsulfato"
+        },
+        {
+          "code": "01.19.024",
+          "label": "Etilenoamina"
+        },
+        {
+          "code": "01.19.025",
+          "label": "Etilenotiureia"
+        },
+        {
+          "code": "01.19.026",
+          "label": "Fenacetina"
+        },
+        {
+          "code": "01.19.027",
+          "label": "Iodeto de metila"
+        },
+        {
+          "code": "01.19.028",
+          "label": "Etilnitrosureia"
+        },
+        {
+          "code": "01.19.029",
+          "label": "Nitrosamina"
+        },
+        {
+          "code": "01.19.030",
+          "label": "Ortotoluidina"
+        },
+        {
+          "code": "01.19.031",
+          "label": "Oximetalona (oxime-talona)"
+        },
+        {
+          "code": "01.19.032",
+          "label": "Procarbazina"
+        },
+        {
+          "code": "01.19.033",
+          "label": "Propanosultona"
+        },
+        {
+          "code": "01.19.034",
+          "label": "Óxido de etileno"
+        },
+        {
+          "code": "01.19.035",
+          "label": "Estilbenzeno (etilbenzeno)"
+        },
+        {
+          "code": "01.19.036",
+          "label": "Creosoto"
+        },
+        {
+          "code": "01.19.038",
+          "label": "Benzidina"
+        },
+        {
+          "code": "01.19.039",
+          "label": "Betanaftilamina"
+        },
+        {
+          "code": "01.19.040",
+          "label": "1-cloro-2,4-nitrodifenil"
+        },
+        {
+          "code": "01.19.041",
+          "label": "3-poxipro-pano"
+        },
+        {
+          "code": "02.01.001",
+          "label": "Ruído"
+        },
+        {
+          "code": "02.01.002",
+          "label": "Vibrações localizadas (mão-braço)"
+        },
+        {
+          "code": "02.01.003",
+          "label": "Vibração de corpo inteiro (aceleração resultante de exposição normalizada - aren)"
+        },
+        {
+          "code": "02.01.004",
+          "label": "Vibração de corpo inteiro (Valor da Dose de Vibração Resultante - VDVR)"
+        },
+        {
+          "code": "02.01.005",
+          "label": "Trabalhos com perfuratrizes e marteletes pneumáticos"
+        },
+        {
+          "code": "02.01.006",
+          "label": "Radiações ionizantes"
+        },
+        {
+          "code": "02.01.007",
+          "label": "Extração e beneficiamento de minerais radioativos"
+        },
+        {
+          "code": "02.01.008",
+          "label": "Atividades em minerações com exposição ao radônio"
+        },
+        {
+          "code": "02.01.009",
+          "label": "Realização de manutenção e supervisão em unidades de extração, tratamento e beneficiamento de minerais radioativos com exposição às radiações ionizantes"
+        },
+        {
+          "code": "02.01.010",
+          "label": "Operações com reatores nucleares ou com fontes radioativas"
+        },
+        {
+          "code": "02.01.011",
+          "label": "Trabalhos realizados com exposição aos raios Alfa, Beta, Gama e X, aos nêutrons e às substâncias radioativas para fins industriais, terapêuticos e diagnósticos"
+        },
+        {
+          "code": "02.01.012",
+          "label": "Fabricação e manipulação de produtos radioativos"
+        },
+        {
+          "code": "02.01.013",
+          "label": "Pesquisas e estudos com radiações ionizantes em laboratórios"
+        },
+        {
+          "code": "02.01.014",
+          "label": "Trabalhos com exposição ao calor nos termos da NR-15, da Portaria 3.214/1978"
+        },
+        {
+          "code": "02.01.015",
+          "label": "Pressão atmosférica anormal"
+        },
+        {
+          "code": "02.01.016",
+          "label": "Trabalhos em caixões ou câmaras hiperbáricas"
+        },
+        {
+          "code": "02.01.017",
+          "label": "Trabalhos em tubulões ou túneis sob ar comprimido"
+        },
+        {
+          "code": "02.01.018",
+          "label": "Operações de mergulho com o uso de escafandros ou outros equipamentos"
+        },
+        {
+          "code": "03.01.001",
+          "label": "Trabalhos em estabelecimentos de saúde com contato com pacientes portadores de doenças infectocontagiosas ou com manuseio de materiais contaminados"
+        },
+        {
+          "code": "03.01.002",
+          "label": "Trabalhos com animais infectados para tratamento ou para o preparo de soro, vacinas e outros produtos"
+        },
+        {
+          "code": "03.01.003",
+          "label": "Trabalhos em laboratórios de autópsia, de anatomia e anátomo-histologia"
+        },
+        {
+          "code": "03.01.004",
+          "label": "Trabalho de exumação de corpos e manipulação de resíduos de animais deteriorados"
+        },
+        {
+          "code": "03.01.005",
+          "label": "Trabalhos em galerias, fossas e tranques de esgoto"
+        },
+        {
+          "code": "03.01.006",
+          "label": "Esvaziamento de biodigestores"
+        },
+        {
+          "code": "03.01.007",
+          "label": "Coleta e industrialização do lixo"
+        },
+        {
+          "code": "04.01.001",
+          "label": "Mineração subterrânea cujas atividades sejam exercidas afastadas das frentes de produção"
+        },
+        {
+          "code": "04.01.002",
+          "label": "Trabalhos em atividades permanentes no subsolo de minerações subterrâneas em frente de produção"
+        },
+        {
+          "code": "05.01.001",
+          "label": "Agentes nocivos não constantes no Anexo IV do Decreto 3.048/1999 e incluídos por força de decisão judicial ou administrativa"
+        },
+        {
+          "code": "09.01.001",
+          "label": "Ausência de agente nocivo ou de atividades previstas no Anexo IV do Decreto 3.048/1999"
+        }
+      ]
+    },
+    {
+      "table": "27",
+      "event": "S-2220",
+      "title": "Tabela 27 - Procedimentos Diagn?sticos",
+      "entries": [
+        {
+          "code": "0001",
+          "label": "1,1-dicloro-2,2-bis (P-clorofeniletileno)"
+        },
+        {
+          "code": "0002",
+          "label": "1,1,1-tricloroetano"
+        },
+        {
+          "code": "0003",
+          "label": "1,2 dihidroxi-4-(N-acetilcisteinil)-butano"
+        },
+        {
+          "code": "0004",
+          "label": "1,25-dihidroxi vitamina D"
+        },
+        {
+          "code": "0005",
+          "label": "1,2-ciclo-hexanediol"
+        },
+        {
+          "code": "0006",
+          "label": "1,2-dibromo-3-cloropropano"
+        },
+        {
+          "code": "0007",
+          "label": "1,2-diclorobenzeno"
+        },
+        {
+          "code": "0008",
+          "label": "1,2-gliceril dinitrato"
+        },
+        {
+          "code": "0009",
+          "label": "1,3-gliceril dinitrato"
+        },
+        {
+          "code": "0010",
+          "label": "1,5-diaminonaftaleno"
+        },
+        {
+          "code": "1398",
+          "label": "11-desoxicorticosterona"
+        },
+        {
+          "code": "1399",
+          "label": "17-alfa-hidroxiprogesterona"
+        },
+        {
+          "code": "0011",
+          "label": "17-cetogênicos (17-CGS)"
+        },
+        {
+          "code": "0012",
+          "label": "17-cetosteroides"
+        },
+        {
+          "code": "0013",
+          "label": "17-cetosteroides relação alfa/beta"
+        },
+        {
+          "code": "0014",
+          "label": "17-cetosteroides totais (17-CTS)"
+        },
+        {
+          "code": "0015",
+          "label": "17-hidroxicorticosteroides (17-OHS)"
+        },
+        {
+          "code": "0016",
+          "label": "17-hidroxipregnenolona"
+        },
+        {
+          "code": "0017",
+          "label": "1-etoxi-2-propanol"
+        },
+        {
+          "code": "0018",
+          "label": "1-hidroxipireno"
+        },
+        {
+          "code": "0019",
+          "label": "1-metoxi-2-propanol"
+        },
+        {
+          "code": "0020",
+          "label": "1-naftol + 2-naftol"
+        },
+        {
+          "code": "0021",
+          "label": "2-amino-4-nitrofenol"
+        },
+        {
+          "code": "0022",
+          "label": "2,2'-dicloro-4,4'metileno dianilina"
+        },
+        {
+          "code": "0023",
+          "label": "2,2-dimetil-1,3benzodioxol"
+        },
+        {
+          "code": "0024",
+          "label": "2,4-dinitroaminotolueno"
+        },
+        {
+          "code": "0025",
+          "label": "2,4-hidroxibifenil"
+        },
+        {
+          "code": "0026",
+          "label": "2,5-diclorofenol"
+        },
+        {
+          "code": "0027",
+          "label": "2,5-heptanediona"
+        },
+        {
+          "code": "0028",
+          "label": "2,5-hexanediona + 4,5-dihidroxi-2-hexanona"
+        },
+        {
+          "code": "0029",
+          "label": "2,5-hexanodiona urinária"
+        },
+        {
+          "code": "0030",
+          "label": "2,6-dinitroaminotolueno"
+        },
+        {
+          "code": "0031",
+          "label": "2-butanona"
+        },
+        {
+          "code": "0032",
+          "label": "2-dimetilamino-4-hidroxi-5,6-dimetilpirimidina"
+        },
+        {
+          "code": "0033",
+          "label": "2-etil, 5-hidroxi-hexil-ftalato"
+        },
+        {
+          "code": "0034",
+          "label": "2-etil-5-oxi-hexil-ftalato"
+        },
+        {
+          "code": "0035",
+          "label": "2-etilfenol"
+        },
+        {
+          "code": "0036",
+          "label": "2-fenil 2-propanol"
+        },
+        {
+          "code": "0037",
+          "label": "2-isopropoxifenol"
+        },
+        {
+          "code": "0038",
+          "label": "2-metilamino-4-hidroxi-5,6-dimetilpirimidina"
+        },
+        {
+          "code": "0039",
+          "label": "2-metilpentano sanguíneo"
+        },
+        {
+          "code": "0040",
+          "label": "2-naftilamina"
+        },
+        {
+          "code": "0041",
+          "label": "3,4-diclorocatecol"
+        },
+        {
+          "code": "0042",
+          "label": "3-alfa androstanediol glucoronídeo (3-ALFADIOL)"
+        },
+        {
+          "code": "0043",
+          "label": "3-hidroxibenzopireno"
+        },
+        {
+          "code": "0044",
+          "label": "3-hidroxicarbofurano urinário"
+        },
+        {
+          "code": "0045",
+          "label": "3-metil histidina"
+        },
+        {
+          "code": "0046",
+          "label": "3-metil pentano sanguíneo"
+        },
+        {
+          "code": "0047",
+          "label": "4,4-diaminodiciclohexil metano (DDHM)"
+        },
+        {
+          "code": "0049",
+          "label": "4,4-diaminodifenilmetano"
+        },
+        {
+          "code": "0050",
+          "label": "4,4'-metileno bis-2-cloroanilina (MbOCA)"
+        },
+        {
+          "code": "0048",
+          "label": "4,4'-metilenodianilina (MDA)"
+        },
+        {
+          "code": "0051",
+          "label": "4,5-diclorocatecol"
+        },
+        {
+          "code": "0052",
+          "label": "4,6-dinitro-o-cresol (DNOC) sanguíneo"
+        },
+        {
+          "code": "0053",
+          "label": "4-amino-2,6-dinitrotolueno"
+        },
+        {
+          "code": "0054",
+          "label": "4-amino-2-nitrofenol"
+        },
+        {
+          "code": "0055",
+          "label": "4-amino-bifenil"
+        },
+        {
+          "code": "0056",
+          "label": "4-clorocatecol"
+        },
+        {
+          "code": "0057",
+          "label": "4-cloro-o-toluidina (derivados)"
+        },
+        {
+          "code": "0058",
+          "label": "4-etilfenol"
+        },
+        {
+          "code": "0059",
+          "label": "4-metilpentan-2-ona"
+        },
+        {
+          "code": "0060",
+          "label": "5,6-dimetil-2-(metilamino)pirimidin-4-ol"
+        },
+        {
+          "code": "0061",
+          "label": "5-hidroximetil-pirrolidona"
+        },
+        {
+          "code": "0062",
+          "label": "5-hydroxi-N-metilpirrolidona"
+        },
+        {
+          "code": "0063",
+          "label": "5-nucleotidase"
+        },
+        {
+          "code": "0064",
+          "label": "Aberrações cromossômicas (pesquisa)"
+        },
+        {
+          "code": "0065",
+          "label": "Absidia (pesquisa)"
+        },
+        {
+          "code": "0066",
+          "label": "Acanthamoeba (pesquisa)"
+        },
+        {
+          "code": "0067",
+          "label": "Acetaminofen"
+        },
+        {
+          "code": "0068",
+          "label": "Acetilcolinesterase eritrocitária"
+        },
+        {
+          "code": "0069",
+          "label": "Acetilcolinesterase plasmática"
+        },
+        {
+          "code": "0070",
+          "label": "Acetona sanguínea"
+        },
+        {
+          "code": "0071",
+          "label": "Acetona urinária"
+        },
+        {
+          "code": "0072",
+          "label": "Acidez titulável na urina"
+        },
+        {
+          "code": "0074",
+          "label": "Ácido 2,4,5-triclorofenoxiacético (2,4,5-T) urinário"
+        },
+        {
+          "code": "0075",
+          "label": "Ácido 2,4-diclorofenoxiacético (2,4-D) urinário"
+        },
+        {
+          "code": "0073",
+          "label": "Ácido 2,4-dinitrobenzoico"
+        },
+        {
+          "code": "0076",
+          "label": "Ácido 2-hidroxi-3-butenil mercaptúrico"
+        },
+        {
+          "code": "0077",
+          "label": "Ácido 2-hidroxipropil mercaptúrico"
+        },
+        {
+          "code": "0078",
+          "label": "Ácido 2-tiotiazolidina"
+        },
+        {
+          "code": "0079",
+          "label": "Ácido 2-tiotiazolidina-4-carboxílico (TTCA)"
+        },
+        {
+          "code": "0080",
+          "label": "Ácido 3,4-dihidroxibutil mercaptúrico"
+        },
+        {
+          "code": "0081",
+          "label": "Ácido 3-fenoxibenzoico"
+        },
+        {
+          "code": "0082",
+          "label": "Ácido 3-hidroxipropil mercaptúrico"
+        },
+        {
+          "code": "0083",
+          "label": "Ácido 4-cloro-2-metilfenoxiacético (MCPA) urinário"
+        },
+        {
+          "code": "0084",
+          "label": "Ácido 4-fluoro-3-fenoxibenzoico"
+        },
+        {
+          "code": "0085",
+          "label": "Ácido 5 hidróxi-indolacético"
+        },
+        {
+          "code": "0086",
+          "label": "Ácido acético"
+        },
+        {
+          "code": "0087",
+          "label": "Ácido ascórbico (vitamina C)"
+        },
+        {
+          "code": "0088",
+          "label": "Ácido beta hidroxi-butírico"
+        },
+        {
+          "code": "0089",
+          "label": "Ácido butoxi-acético"
+        },
+        {
+          "code": "0090",
+          "label": "Ácido cacodílico"
+        },
+        {
+          "code": "0091",
+          "label": "Ácido cis- 3-(2,2-diclorovinil)-2,2-dimetilciclopropanocarboxilico"
+        },
+        {
+          "code": "0092",
+          "label": "Ácido cis-3-(2,2-dibromovinil)-2,2-dimetilciclopropanocarboxilico"
+        },
+        {
+          "code": "0093",
+          "label": "Ácido cítrico na urina"
+        },
+        {
+          "code": "0094",
+          "label": "Ácido dehidroabiético"
+        },
+        {
+          "code": "0095",
+          "label": "Ácido delta aminolevulínico (ALA-U)"
+        },
+        {
+          "code": "0096",
+          "label": "Ácido delta aminolevulínico desidratase (ALA-D)"
+        },
+        {
+          "code": "0097",
+          "label": "Ácido d-glucárico"
+        },
+        {
+          "code": "0098",
+          "label": "Ácido dimetilarsínico"
+        },
+        {
+          "code": "0099",
+          "label": "Ácido dimetilbenzoico"
+        },
+        {
+          "code": "0100",
+          "label": "Ácido etoxiacético"
+        },
+        {
+          "code": "0101",
+          "label": "Ácido fenilfosfórico urinário"
+        },
+        {
+          "code": "0102",
+          "label": "Ácido fenilglioxílico"
+        },
+        {
+          "code": "0103",
+          "label": "Ácido fenil-mercaptúrico"
+        },
+        {
+          "code": "0104",
+          "label": "Ácido fólico eritrocitário"
+        },
+        {
+          "code": "0105",
+          "label": "Ácido fórmico"
+        },
+        {
+          "code": "0106",
+          "label": "Ácido furoico"
+        },
+        {
+          "code": "0107",
+          "label": "Ácido glioxílico"
+        },
+        {
+          "code": "0108",
+          "label": "Ácido hidroxietil-mercaptúrico"
+        },
+        {
+          "code": "0109",
+          "label": "Ácido hipúrico"
+        },
+        {
+          "code": "0110",
+          "label": "Ácido homo vanílico"
+        },
+        {
+          "code": "0111",
+          "label": "Ácido homogentísico urinário"
+        },
+        {
+          "code": "0112",
+          "label": "Ácido láctico (lactato)"
+        },
+        {
+          "code": "0113",
+          "label": "Ácido mandélico"
+        },
+        {
+          "code": "0114",
+          "label": "Ácido mercaptúrico acrilamida"
+        },
+        {
+          "code": "0115",
+          "label": "Ácido metil malônico"
+        },
+        {
+          "code": "0116",
+          "label": "Ácido metilhipúrico"
+        },
+        {
+          "code": "0117",
+          "label": "Ácido metoxiacético (2-metoxiacético)"
+        },
+        {
+          "code": "0118",
+          "label": "Ácido metoxi-propiônico (ácido isobutírico)"
+        },
+        {
+          "code": "0119",
+          "label": "Ácido monometilarsônico"
+        },
+        {
+          "code": "0120",
+          "label": "Ácido orótico"
+        },
+        {
+          "code": "0121",
+          "label": "Ácido oxálico"
+        },
+        {
+          "code": "0122",
+          "label": "Ácido perfluorooctanoico"
+        },
+        {
+          "code": "0123",
+          "label": "Ácido perfluorooctanossulfônico"
+        },
+        {
+          "code": "0124",
+          "label": "Ácido pirúvico"
+        },
+        {
+          "code": "0125",
+          "label": "Ácido S-(3-cloro-2-hidroxipropil) mercaptúrico"
+        },
+        {
+          "code": "0126",
+          "label": "Ácido S(n-Propil)mercaptúrico"
+        },
+        {
+          "code": "0127",
+          "label": "Ácido salicílico"
+        },
+        {
+          "code": "0128",
+          "label": "Ácido siálico"
+        },
+        {
+          "code": "0129",
+          "label": "Ácido tioglicólico"
+        },
+        {
+          "code": "0130",
+          "label": "Ácido trans, trans-mucônico"
+        },
+        {
+          "code": "0131",
+          "label": "Ácido trans-3-(2,2-diclorovinil)-2,2-dimetilciclopropanocarboxilico"
+        },
+        {
+          "code": "0132",
+          "label": "Ácido trans-crisantemum-dicarboxilico"
+        },
+        {
+          "code": "0133",
+          "label": "Ácido tricloroacético"
+        },
+        {
+          "code": "0134",
+          "label": "Ácido trifluoroacético"
+        },
+        {
+          "code": "0135",
+          "label": "Ácido úrico"
+        },
+        {
+          "code": "0136",
+          "label": "Ácido valproico"
+        },
+        {
+          "code": "0137",
+          "label": "Ácido vanilmandélico (VMA)"
+        },
+        {
+          "code": "0138",
+          "label": "Ácido β-hidroxietoxi acético"
+        },
+        {
+          "code": "1400",
+          "label": "Ácidos biliares"
+        },
+        {
+          "code": "0139",
+          "label": "Ácidos graxos livres"
+        },
+        {
+          "code": "0140",
+          "label": "Ácidos orgânicos (perfil quantitativo)"
+        },
+        {
+          "code": "0141",
+          "label": "Acilcarnitinas (perfil qualitativo)"
+        },
+        {
+          "code": "1401",
+          "label": "Acilcarnitinas (perfil quantitativo)"
+        },
+        {
+          "code": "0142",
+          "label": "Actinobacillus (pesquisa)"
+        },
+        {
+          "code": "0143",
+          "label": "Actinomadura (pesquisa)"
+        },
+        {
+          "code": "0144",
+          "label": "Actinomyces (pesquisa)"
+        },
+        {
+          "code": "0145",
+          "label": "Adenilatoquinase"
+        },
+        {
+          "code": "0146",
+          "label": "Adenovírus - IgG"
+        },
+        {
+          "code": "0147",
+          "label": "Adenovírus - IgM"
+        },
+        {
+          "code": "0148",
+          "label": "Adrenocorticotrófico, hormônio (ACTH)"
+        },
+        {
+          "code": "0149",
+          "label": "Adutos de DNA (pesquisa)"
+        },
+        {
+          "code": "0150",
+          "label": "Adutos de proteínas (pesquisa)"
+        },
+        {
+          "code": "0151",
+          "label": "Aflatoxinas (pesquisa)"
+        },
+        {
+          "code": "0152",
+          "label": "Agente da doença crônica emaciante (pesquisa)"
+        },
+        {
+          "code": "0153",
+          "label": "Agente da doença de Creutzfeldt-Jakob esporádica (pesquisa)"
+        },
+        {
+          "code": "0154",
+          "label": "Agente da doença de Creutzfeldt-Jakob familiar (pesquisa)"
+        },
+        {
+          "code": "0155",
+          "label": "Agente da doença de Creutzfeldt-Jakob iatrogênica (pesquisa)"
+        },
+        {
+          "code": "0156",
+          "label": "Agente da doença de Creutzfeldt-Jakob variante (pesquisa)"
+        },
+        {
+          "code": "0157",
+          "label": "Agente da encefalopatia espongiforme bovina (BSE) (pesquisa)"
+        },
+        {
+          "code": "0158",
+          "label": "Agente da encefalopatia espongiforme bovina tipo-H (pesquisa)"
+        },
+        {
+          "code": "0159",
+          "label": "Agente da encefalopatia espongiforme em ungulados exóticos (pesquisa)"
+        },
+        {
+          "code": "0160",
+          "label": "Agente da encefalopatia espongiforme felina (pesquisa)"
+        },
+        {
+          "code": "0161",
+          "label": "Agente da insônia fatal esporádica (pesquisa)"
+        },
+        {
+          "code": "0162",
+          "label": "Agente da insônia fatal familiar de Gerstmann-Sträussler-Scheinker (pesquisa)"
+        },
+        {
+          "code": "0163",
+          "label": "Agente da Kuru (pesquisa)"
+        },
+        {
+          "code": "0164",
+          "label": "Agente da prionopatia variante protease-resistente (pesquisa)"
+        },
+        {
+          "code": "0165",
+          "label": "Agente do tremor epizoótico ( scrapie disease ) (pesquisa)"
+        },
+        {
+          "code": "0166",
+          "label": "Agente do tremor epizoótico ( scrapie disease ) atípico (pesquisa)"
+        },
+        {
+          "code": "0167",
+          "label": "Ajellomyces (pesquisa)"
+        },
+        {
+          "code": "0168",
+          "label": "Albumina"
+        },
+        {
+          "code": "0169",
+          "label": "Albumina S-metilcisteína"
+        },
+        {
+          "code": "0170",
+          "label": "Alcaligenes (pesquisa)"
+        },
+        {
+          "code": "0171",
+          "label": "Alcaptonúria"
+        },
+        {
+          "code": "0172",
+          "label": "Aldolase"
+        },
+        {
+          "code": "0173",
+          "label": "Aldosterona"
+        },
+        {
+          "code": "0174",
+          "label": "Alérgenos - Perfil antigênico (painel C/36 antígenos)"
+        },
+        {
+          "code": "0176",
+          "label": "Alfa-1-antitripsina, dosagem no soro"
+        },
+        {
+          "code": "0177",
+          "label": "Alfa-1-glicoproteína ácida"
+        },
+        {
+          "code": "0175",
+          "label": "Alfa-1-microglobulina na urina"
+        },
+        {
+          "code": "0178",
+          "label": "Alfa-2-antiplasmina, teste funcional"
+        },
+        {
+          "code": "0179",
+          "label": "Alfa-2-macroglobulina"
+        },
+        {
+          "code": "0180",
+          "label": "Alfa-amilase"
+        },
+        {
+          "code": "0181",
+          "label": "Alfa-fetoproteína"
+        },
+        {
+          "code": "0182",
+          "label": "Alfa-hexaclorociclo-hexano"
+        },
+        {
+          "code": "0183",
+          "label": "Alumínio plasmático"
+        },
+        {
+          "code": "0184",
+          "label": "Alumínio urinário"
+        },
+        {
+          "code": "0185",
+          "label": "Amebíase - IgG"
+        },
+        {
+          "code": "0186",
+          "label": "Amebíase - IgM"
+        },
+        {
+          "code": "0187",
+          "label": "Amilase"
+        },
+        {
+          "code": "0188",
+          "label": "Aminoácidos, fracionamento e quantificação"
+        },
+        {
+          "code": "0189",
+          "label": "Amiodarona"
+        },
+        {
+          "code": "0190",
+          "label": "Amitriptilina"
+        },
+        {
+          "code": "0191",
+          "label": "Amônia"
+        },
+        {
+          "code": "0192",
+          "label": "AMP cíclico"
+        },
+        {
+          "code": "0193",
+          "label": "Ancylostoma (pesquisa)"
+        },
+        {
+          "code": "0194",
+          "label": "Androstenediona"
+        },
+        {
+          "code": "0195",
+          "label": "Anfetaminas"
+        },
+        {
+          "code": "0196",
+          "label": "Angiostrongylus (pesquisa)"
+        },
+        {
+          "code": "0197",
+          "label": "Anilina sanguínea"
+        },
+        {
+          "code": "0198",
+          "label": "Anilina urinária"
+        },
+        {
+          "code": "0199",
+          "label": "Anilina-hemoglobina"
+        },
+        {
+          "code": "0200",
+          "label": "Anisakis (pesquisa)"
+        },
+        {
+          "code": "0201",
+          "label": "Anti-12-hidroxi-endrin urinário"
+        },
+        {
+          "code": "0202",
+          "label": "Anti-actina"
+        },
+        {
+          "code": "0203",
+          "label": "Antibiograma"
+        },
+        {
+          "code": "0204",
+          "label": "Antibióticos, dosagem no soro"
+        },
+        {
+          "code": "0205",
+          "label": "Anticandida - IgG e IgM"
+        },
+        {
+          "code": "0206",
+          "label": "Anticardiolipina - IgA"
+        },
+        {
+          "code": "0207",
+          "label": "Anticardiolipina - IgG"
+        },
+        {
+          "code": "0208",
+          "label": "Anticardiolipina - IgM"
+        },
+        {
+          "code": "0209",
+          "label": "Anticentrômero"
+        },
+        {
+          "code": "0210",
+          "label": "Anticoagulante lúpico"
+        },
+        {
+          "code": "0211",
+          "label": "Anticorpo anti A e B"
+        },
+        {
+          "code": "0212",
+          "label": "Anticorpo anti saccharamyces - ASCA"
+        },
+        {
+          "code": "0213",
+          "label": "Anticorpo anti-DNAse B"
+        },
+        {
+          "code": "0214",
+          "label": "Anticorpo anti-hormônio do crescimento"
+        },
+        {
+          "code": "0215",
+          "label": "Anticorpo antimieloperoxidase, MPO"
+        },
+        {
+          "code": "0216",
+          "label": "Anticorpo anti-receptor de TSH (TRAB)"
+        },
+        {
+          "code": "0217",
+          "label": "Anticorpo antivírus da hepatite E"
+        },
+        {
+          "code": "0218",
+          "label": "Anticorpos antiendomisio - IgG, IgM, IgA"
+        },
+        {
+          "code": "0219",
+          "label": "Anticorpos anti-ilhota de langherans"
+        },
+        {
+          "code": "0220",
+          "label": "Anticorpos anti-influenza A - IgG"
+        },
+        {
+          "code": "0221",
+          "label": "Anticorpos anti-influenza A - IgM"
+        },
+        {
+          "code": "0222",
+          "label": "Anticorpos anti-influenza B - IgG"
+        },
+        {
+          "code": "0223",
+          "label": "Anticorpos anti-influenza B - IgM"
+        },
+        {
+          "code": "0224",
+          "label": "Anticorpos antiinsulina"
+        },
+        {
+          "code": "0225",
+          "label": "Anticorpos antiplaquetários, citometria de fluxo"
+        },
+        {
+          "code": "0226",
+          "label": "Anticorpos antitireoide (tireoglobulina)"
+        },
+        {
+          "code": "0227",
+          "label": "Anticorpos irregulares"
+        },
+        {
+          "code": "1402",
+          "label": "Anticorpos naturais - Isoaglutininas"
+        },
+        {
+          "code": "0228",
+          "label": "Anticortex supra-renal"
+        },
+        {
+          "code": "0229",
+          "label": "Antidesoxiribonuclease B"
+        },
+        {
+          "code": "0230",
+          "label": "Anti-DMP"
+        },
+        {
+          "code": "0231",
+          "label": "Anti-DNA"
+        },
+        {
+          "code": "0232",
+          "label": "Antiescleroderma"
+        },
+        {
+          "code": "0233",
+          "label": "Antifígado"
+        },
+        {
+          "code": "0235",
+          "label": "Antígeno carcinoembriogênico (CEA)"
+        },
+        {
+          "code": "0236",
+          "label": "Antígeno de diferenciação celular"
+        },
+        {
+          "code": "0237",
+          "label": "Antígeno específico prostático livre (PSA livre)"
+        },
+        {
+          "code": "0238",
+          "label": "Antígeno específico prostático total (PSA)"
+        },
+        {
+          "code": "0239",
+          "label": "Antígenos fúngicos, pesquisa"
+        },
+        {
+          "code": "0240",
+          "label": "Antígenos metílicos solúveis do BCG"
+        },
+        {
+          "code": "0241",
+          "label": "Antigliadina (glúten) - IgA"
+        },
+        {
+          "code": "0242",
+          "label": "Antigliadina (glúten) - IgG"
+        },
+        {
+          "code": "0243",
+          "label": "Antigliadina (glúten) - IgM"
+        },
+        {
+          "code": "0244",
+          "label": "Anti-hialuronidase"
+        },
+        {
+          "code": "0245",
+          "label": "Anti-JO1"
+        },
+        {
+          "code": "0246",
+          "label": "Anti-LA/SSB"
+        },
+        {
+          "code": "0247",
+          "label": "Anti-LKM-1"
+        },
+        {
+          "code": "0248",
+          "label": "Antimembrana basal"
+        },
+        {
+          "code": "0249",
+          "label": "Antimicrossomal"
+        },
+        {
+          "code": "0250",
+          "label": "Antimitocondria"
+        },
+        {
+          "code": "0251",
+          "label": "Antimitocondria, M2"
+        },
+        {
+          "code": "0252",
+          "label": "Antimônio urinário"
+        },
+        {
+          "code": "0253",
+          "label": "Antimúsculo cardíaco"
+        },
+        {
+          "code": "0254",
+          "label": "Antimúsculo estriado"
+        },
+        {
+          "code": "0255",
+          "label": "Antimúsculo liso"
+        },
+        {
+          "code": "0256",
+          "label": "Antineutrófilos (anca) C"
+        },
+        {
+          "code": "0257",
+          "label": "Antineutrófilos (anca) P"
+        },
+        {
+          "code": "0258",
+          "label": "Antiparietal"
+        },
+        {
+          "code": "0259",
+          "label": "Antiperoxidase tireoideana"
+        },
+        {
+          "code": "0260",
+          "label": "Anti-RNP"
+        },
+        {
+          "code": "0261",
+          "label": "Anti-Ro/SSA"
+        },
+        {
+          "code": "0262",
+          "label": "Anti-Sm"
+        },
+        {
+          "code": "0263",
+          "label": "Anti-TPO"
+        },
+        {
+          "code": "0264",
+          "label": "Antitrombina III"
+        },
+        {
+          "code": "0265",
+          "label": "Antrax (pesquisa)"
+        },
+        {
+          "code": "0266",
+          "label": "Apolipoproteína A (Apo A)"
+        },
+        {
+          "code": "0267",
+          "label": "Apolipoproteína B (Apo B)"
+        },
+        {
+          "code": "0268",
+          "label": "Apolipoproteína E"
+        },
+        {
+          "code": "0270",
+          "label": "Arcanobacterium (pesquisa)"
+        },
+        {
+          "code": "0271",
+          "label": "Arsênico +III urinário"
+        },
+        {
+          "code": "0272",
+          "label": "Arsênico +V urinário"
+        },
+        {
+          "code": "0273",
+          "label": "Arsênico capilar"
+        },
+        {
+          "code": "0274",
+          "label": "Arsênico inorgânico urinário"
+        },
+        {
+          "code": "1433",
+          "label": "Arsênico sanguíneo"
+        },
+        {
+          "code": "0275",
+          "label": "Arsênio - Metabólitos metilados urinários"
+        },
+        {
+          "code": "0276",
+          "label": "Ascaris (pesquisa)"
+        },
+        {
+          "code": "0277",
+          "label": "Aslo"
+        },
+        {
+          "code": "0278",
+          "label": "Aspergillus (pesquisa)"
+        },
+        {
+          "code": "0279",
+          "label": "Aspergilus , reação sorológica"
+        },
+        {
+          "code": "0280",
+          "label": "Ativador tissular de plasminogênio (TPA)"
+        },
+        {
+          "code": "0282",
+          "label": "Audiometria de tronco cerebral (PEA) BERA"
+        },
+        {
+          "code": "0283",
+          "label": "Audiometria tonal limiar com testes de discriminação"
+        },
+        {
+          "code": "0281",
+          "label": "Audiometria tonal ocupacional"
+        },
+        {
+          "code": "0284",
+          "label": "Audiometria vocal - Pesquisa de limiar de discriminação"
+        },
+        {
+          "code": "0285",
+          "label": "Audiometria vocal - Pesquisa de limiar de inteligibilidade"
+        },
+        {
+          "code": "0286",
+          "label": "Avaliação clínica com ênfase cardiocirculatória (anamnese e exame físico)"
+        },
+        {
+          "code": "0287",
+          "label": "Avaliação clínica com ênfase dermatológica (anamnese e exame físico)"
+        },
+        {
+          "code": "0288",
+          "label": "Avaliação clínica com ênfase gastrointestinal (anamnese e exame físico)"
+        },
+        {
+          "code": "0289",
+          "label": "Avaliação clínica com ênfase mental (anamnese e exame físico)"
+        },
+        {
+          "code": "0290",
+          "label": "Avaliação clínica com ênfase neurológca (anamnese e exame físico)"
+        },
+        {
+          "code": "0291",
+          "label": "Avaliação clínica com ênfase neurossensorial (anamnese e exame físico)"
+        },
+        {
+          "code": "0292",
+          "label": "Avaliação clínica com ênfase ortopédica (anamnese e exame físico)"
+        },
+        {
+          "code": "0293",
+          "label": "Avaliação clínica com ênfase respiratória (anamnese e exame físico)"
+        },
+        {
+          "code": "0294",
+          "label": "Avaliação clínica com ênfase urogenital (anamnese e exame físico)"
+        },
+        {
+          "code": "0295",
+          "label": "Avaliação clínica ocupacional (anamnese e exame físico)"
+        },
+        {
+          "code": "0296",
+          "label": "Avaliação da acuidade visual"
+        },
+        {
+          "code": "0297",
+          "label": "Avaliação da estereopsia"
+        },
+        {
+          "code": "0298",
+          "label": "Avaliação da visão de cores"
+        },
+        {
+          "code": "0299",
+          "label": "Avaliação do campo visual"
+        },
+        {
+          "code": "0300",
+          "label": "Avaliação psicossocial"
+        },
+        {
+          "code": "0301",
+          "label": "Azida sódica, teste da"
+        },
+        {
+          "code": "0302",
+          "label": "B.A.A.R. (Ziehl ou fluorescência)"
+        },
+        {
+          "code": "0303",
+          "label": "Babesia (pesquisa)"
+        },
+        {
+          "code": "0304",
+          "label": "Bacillus (pesquisa)"
+        },
+        {
+          "code": "0305",
+          "label": "Bacterioscopia"
+        },
+        {
+          "code": "0306",
+          "label": "Bacteroides (pesquisa)"
+        },
+        {
+          "code": "0307",
+          "label": "Balantidium (pesquisa)"
+        },
+        {
+          "code": "0308",
+          "label": "Barbitúricos, antidepressivos tricíclicos"
+        },
+        {
+          "code": "0309",
+          "label": "Bário urinário"
+        },
+        {
+          "code": "0310",
+          "label": "Bartituratos"
+        },
+        {
+          "code": "0311",
+          "label": "Bartonella (pesquisa)"
+        },
+        {
+          "code": "0312",
+          "label": "Benzeno urinário"
+        },
+        {
+          "code": "0313",
+          "label": "Benzidina eritrocitária"
+        },
+        {
+          "code": "0314",
+          "label": "Benzidina urinária"
+        },
+        {
+          "code": "0315",
+          "label": "Benzodiazepínicos e similares"
+        },
+        {
+          "code": "1434",
+          "label": "Berílio sanguíneo"
+        },
+        {
+          "code": "0316",
+          "label": "Berílio urinário"
+        },
+        {
+          "code": "0317",
+          "label": "Beta mercapto-lactato-disulfidúria"
+        },
+        {
+          "code": "0318",
+          "label": "Beta-2-microglobulina"
+        },
+        {
+          "code": "0319",
+          "label": "Beta-glicuronidase"
+        },
+        {
+          "code": "0320",
+          "label": "Beta-hexaclorociclo-hexano"
+        },
+        {
+          "code": "0321",
+          "label": "Bilirrubinas (direta, indireta e total)"
+        },
+        {
+          "code": "0322",
+          "label": "Biotinidase atividade"
+        },
+        {
+          "code": "0323",
+          "label": "Bisfenol A (4,4-isopropiledenedifenol)"
+        },
+        {
+          "code": "0324",
+          "label": "Bismuto plasmático"
+        },
+        {
+          "code": "0325",
+          "label": "Bismuto urinário"
+        },
+        {
+          "code": "0326",
+          "label": "Blastocystis (pesquisa)"
+        },
+        {
+          "code": "0327",
+          "label": "Blastomicose, reação sorológica"
+        },
+        {
+          "code": "0328",
+          "label": "Blastomyces (pesquisa)"
+        },
+        {
+          "code": "0329",
+          "label": "Bocavírus humano (pesquisa)"
+        },
+        {
+          "code": "0330",
+          "label": "Boro"
+        },
+        {
+          "code": "0331",
+          "label": "Borrelia (pesquisa)"
+        },
+        {
+          "code": "0332",
+          "label": "Brachispira (pesquisa)"
+        },
+        {
+          "code": "0333",
+          "label": "Brometo"
+        },
+        {
+          "code": "0334",
+          "label": "Bromofós sanguíneo"
+        },
+        {
+          "code": "0335",
+          "label": "Bromofós urinário"
+        },
+        {
+          "code": "0336",
+          "label": "Brucela - IgG"
+        },
+        {
+          "code": "0337",
+          "label": "Brucela - IgM"
+        },
+        {
+          "code": "0338",
+          "label": "Brucela, prova rápida"
+        },
+        {
+          "code": "0339",
+          "label": "Brucella (pesquisa)"
+        },
+        {
+          "code": "0340",
+          "label": "Brugia (pesquisa)"
+        },
+        {
+          "code": "0341",
+          "label": "Bunyavírus germiston (pesquisa)"
+        },
+        {
+          "code": "0342",
+          "label": "Burkholderia (pesquisa)"
+        },
+        {
+          "code": "0343",
+          "label": "Buta-2-ona"
+        },
+        {
+          "code": "0344",
+          "label": "Butanol sanguíneo"
+        },
+        {
+          "code": "1429",
+          "label": "Butilcolinesterase no plasma ou soro"
+        },
+        {
+          "code": "0345",
+          "label": "C1q"
+        },
+        {
+          "code": "0346",
+          "label": "C3 proativador"
+        },
+        {
+          "code": "0347",
+          "label": "C3A (fator B)"
+        },
+        {
+          "code": "0348",
+          "label": "CA 50"
+        },
+        {
+          "code": "0349",
+          "label": "CA-242"
+        },
+        {
+          "code": "0350",
+          "label": "CA-27-29"
+        },
+        {
+          "code": "0351",
+          "label": "Cádmio sanguíneo"
+        },
+        {
+          "code": "0352",
+          "label": "Cádmio urinário"
+        },
+        {
+          "code": "0354",
+          "label": "Cálcio iônico"
+        },
+        {
+          "code": "1435",
+          "label": "Cálcio sanguíneo"
+        },
+        {
+          "code": "1436",
+          "label": "Cálcio urinário"
+        },
+        {
+          "code": "0355",
+          "label": "Calcitonina"
+        },
+        {
+          "code": "0356",
+          "label": "Campylobacter (pesquisa)"
+        },
+        {
+          "code": "0357",
+          "label": "Campylobacter (pesquisa)"
+        },
+        {
+          "code": "0358",
+          "label": "Candida (pesquisa)"
+        },
+        {
+          "code": "0359",
+          "label": "Capacidade de fixação de ferro"
+        },
+        {
+          "code": "0360",
+          "label": "Capillaria (pesquisa)"
+        },
+        {
+          "code": "0362",
+          "label": "Carbamazepina"
+        },
+        {
+          "code": "0361",
+          "label": "Carbendazim"
+        },
+        {
+          "code": "0363",
+          "label": "Carbofuranfenol"
+        },
+        {
+          "code": "0364",
+          "label": "Carboxihemoglobina"
+        },
+        {
+          "code": "0365",
+          "label": "Cardiobacterium (pesquisa)"
+        },
+        {
+          "code": "0366",
+          "label": "Carnitina livre"
+        },
+        {
+          "code": "0367",
+          "label": "Carnitina total e frações"
+        },
+        {
+          "code": "0368",
+          "label": "Caroteno"
+        },
+        {
+          "code": "0369",
+          "label": "Catecolaminas"
+        },
+        {
+          "code": "0370",
+          "label": "Catecolaminas fracionadas - Dopamina, epinefrina, norepinefrina na urina"
+        },
+        {
+          "code": "0371",
+          "label": "Caxumba - IgG"
+        },
+        {
+          "code": "0372",
+          "label": "Caxumba - IgM"
+        },
+        {
+          "code": "0373",
+          "label": "CEE vírus, pesquisa"
+        },
+        {
+          "code": "0374",
+          "label": "Células LE"
+        },
+        {
+          "code": "0375",
+          "label": "Ceruloplasmina"
+        },
+        {
+          "code": "0376",
+          "label": "Césio urinário"
+        },
+        {
+          "code": "0377",
+          "label": "Chagas - IgG"
+        },
+        {
+          "code": "0378",
+          "label": "Chagas - IgM"
+        },
+        {
+          "code": "0379",
+          "label": "Chlamydia - IgG"
+        },
+        {
+          "code": "0380",
+          "label": "Chlamydia - IgM"
+        },
+        {
+          "code": "0381",
+          "label": "Chlamydia, cultura"
+        },
+        {
+          "code": "0382",
+          "label": "Chlamydophila (pesquisa)"
+        },
+        {
+          "code": "0383",
+          "label": "Chlormequat"
+        },
+        {
+          "code": "0384",
+          "label": "Chumbo dietila"
+        },
+        {
+          "code": "0385",
+          "label": "Chumbo sanguíneo"
+        },
+        {
+          "code": "0386",
+          "label": "Chumbo total"
+        },
+        {
+          "code": "0387",
+          "label": "Chumbo urinário"
+        },
+        {
+          "code": "0388",
+          "label": "Cianeto (cianureto) sanguíneo"
+        },
+        {
+          "code": "0389",
+          "label": "Ciclofosfamida"
+        },
+        {
+          "code": "0390",
+          "label": "Ciclo-hexanodiol"
+        },
+        {
+          "code": "0391",
+          "label": "Ciclo-hexanol"
+        },
+        {
+          "code": "0392",
+          "label": "Ciclosporina"
+        },
+        {
+          "code": "0393",
+          "label": "Cisticercose, AC"
+        },
+        {
+          "code": "0394",
+          "label": "Cistinúria"
+        },
+        {
+          "code": "0395",
+          "label": "cis-δ4 tetrahidroftalimida (THPI)"
+        },
+        {
+          "code": "0396",
+          "label": "Citomegalovírus - shell vial"
+        },
+        {
+          "code": "0397",
+          "label": "Citomegalovírus - IgG"
+        },
+        {
+          "code": "0398",
+          "label": "Citomegalovírus - IgM"
+        },
+        {
+          "code": "1437",
+          "label": "Citopatologia"
+        },
+        {
+          "code": "0399",
+          "label": "Cladophialophora (pesquisa)"
+        },
+        {
+          "code": "0400",
+          "label": "Cladosporium (pesquisa)"
+        },
+        {
+          "code": "0401",
+          "label": "Clamídia, pesquisa"
+        },
+        {
+          "code": "0402",
+          "label": "Clearance de ácido úrico"
+        },
+        {
+          "code": "0403",
+          "label": "Clearance de creatinina"
+        },
+        {
+          "code": "0404",
+          "label": "Clearance de fosfato"
+        },
+        {
+          "code": "0405",
+          "label": "Clearance de ureia"
+        },
+        {
+          "code": "0406",
+          "label": "Clearance osmolar"
+        },
+        {
+          "code": "0407",
+          "label": "Clomipramina"
+        },
+        {
+          "code": "0408",
+          "label": "Clonorchis (pesquisa)"
+        },
+        {
+          "code": "0409",
+          "label": "Cloreto de metileno sanguíneo"
+        },
+        {
+          "code": "0410",
+          "label": "Cloro"
+        },
+        {
+          "code": "0411",
+          "label": "Clorofenol"
+        },
+        {
+          "code": "0412",
+          "label": "Clorofórmio"
+        },
+        {
+          "code": "0413",
+          "label": "Clostridium (pesquisa)"
+        },
+        {
+          "code": "0414",
+          "label": "Clostridium difficile , toxina A"
+        },
+        {
+          "code": "0415",
+          "label": "Coagulograma"
+        },
+        {
+          "code": "0416",
+          "label": "Cobalto sanguíneo"
+        },
+        {
+          "code": "0417",
+          "label": "Cobalto urinário"
+        },
+        {
+          "code": "0418",
+          "label": "Cobre sanguíneo"
+        },
+        {
+          "code": "0419",
+          "label": "Cobre urinário"
+        },
+        {
+          "code": "0420",
+          "label": "Cocaína"
+        },
+        {
+          "code": "0421",
+          "label": "Coccidioides (pesquisa)"
+        },
+        {
+          "code": "0422",
+          "label": "Cólera (pesquisa)"
+        },
+        {
+          "code": "0423",
+          "label": "Colesterol (HDL)"
+        },
+        {
+          "code": "0424",
+          "label": "Colesterol (LDL)"
+        },
+        {
+          "code": "0425",
+          "label": "Colesterol (VLDL)"
+        },
+        {
+          "code": "0426",
+          "label": "Colesterol total"
+        },
+        {
+          "code": "0427",
+          "label": "Complemento C2"
+        },
+        {
+          "code": "0428",
+          "label": "Complemento C3"
+        },
+        {
+          "code": "0429",
+          "label": "Complemento C4"
+        },
+        {
+          "code": "0430",
+          "label": "Complemento C5"
+        },
+        {
+          "code": "0431",
+          "label": "Complemento CH-100"
+        },
+        {
+          "code": "0432",
+          "label": "Complemento CH-50"
+        },
+        {
+          "code": "0433",
+          "label": "Composto S (11-desoxicortisol)"
+        },
+        {
+          "code": "0434",
+          "label": "Consumo de protrombina"
+        },
+        {
+          "code": "0435",
+          "label": "Contagem de eosinófilos"
+        },
+        {
+          "code": "0436",
+          "label": "Contagem sanguínea diferencial"
+        },
+        {
+          "code": "0437",
+          "label": "Contagem sedimentar de Addis"
+        },
+        {
+          "code": "0438",
+          "label": "Contracaecum (pesquisa)"
+        },
+        {
+          "code": "0439",
+          "label": "Coombs direto"
+        },
+        {
+          "code": "0440",
+          "label": "Coombs indireto"
+        },
+        {
+          "code": "0441",
+          "label": "Coprológico funcional (caracteres, pH, digestibilidade, amônia, ácidos orgânicos e interpretação)"
+        },
+        {
+          "code": "0442",
+          "label": "Coproporfirina III na urina"
+        },
+        {
+          "code": "0443",
+          "label": "Coproporfirinas"
+        },
+        {
+          "code": "0444",
+          "label": "Coronavírus (pesquisa)"
+        },
+        {
+          "code": "0445",
+          "label": "Coronavírus humano 229E (pesquisa)"
+        },
+        {
+          "code": "0446",
+          "label": "Coronavírus relacionado à MERS (pesquisa)"
+        },
+        {
+          "code": "0447",
+          "label": "Coronavírus relacionado à SARS (pesquisa)"
+        },
+        {
+          "code": "1419",
+          "label": "Coronavírus/COVID-19 - SARS-CoV-2 - IgA"
+        },
+        {
+          "code": "1420",
+          "label": "Coronavírus/COVID-19 - SARS-CoV-2 - IgG"
+        },
+        {
+          "code": "1421",
+          "label": "Coronavírus/COVID-19 - SARS-CoV-2 - IgM"
+        },
+        {
+          "code": "1422",
+          "label": "Coronavírus/COVID-19 - SARS-CoV-2 - Pesquisa de antígeno"
+        },
+        {
+          "code": "1423",
+          "label": "Coronavírus/COVID-19 - SARS-CoV-2 - RT-PCR"
+        },
+        {
+          "code": "0448",
+          "label": "Corpos cetônicos na urina"
+        },
+        {
+          "code": "0449",
+          "label": "Corpúsculos de Donovani"
+        },
+        {
+          "code": "0450",
+          "label": "Cortisol"
+        },
+        {
+          "code": "0451",
+          "label": "Cortisol livre"
+        },
+        {
+          "code": "0452",
+          "label": "Corynebacterium (pesquisa)"
+        },
+        {
+          "code": "0453",
+          "label": "Cotinina"
+        },
+        {
+          "code": "0454",
+          "label": "Coxiella (pesquisa)"
+        },
+        {
+          "code": "0455",
+          "label": "Creatina"
+        },
+        {
+          "code": "0456",
+          "label": "Creatinina"
+        },
+        {
+          "code": "0457",
+          "label": "Creatino fosfoquinase - Fração MB"
+        },
+        {
+          "code": "0458",
+          "label": "Creatino fosfoquinase total (CK)"
+        },
+        {
+          "code": "0459",
+          "label": "Cresol urinário"
+        },
+        {
+          "code": "0460",
+          "label": "Crioaglutinina"
+        },
+        {
+          "code": "0461",
+          "label": "Crioglobulinas"
+        },
+        {
+          "code": "0462",
+          "label": "Criptococo (tinta da China), pesquisa de"
+        },
+        {
+          "code": "0463",
+          "label": "Cromatografia de açúcares na urina"
+        },
+        {
+          "code": "0464",
+          "label": "Cromatografia de aminoácidos"
+        },
+        {
+          "code": "0465",
+          "label": "Cromo eritrocitário"
+        },
+        {
+          "code": "0466",
+          "label": "Cromo sanguíneo"
+        },
+        {
+          "code": "0467",
+          "label": "Cromo urinário"
+        },
+        {
+          "code": "0468",
+          "label": "Cromossomo philadelfia"
+        },
+        {
+          "code": "0469",
+          "label": "Cryptococcus (pesquisa)"
+        },
+        {
+          "code": "0470",
+          "label": "Cryptosporidium (pesquisa)"
+        },
+        {
+          "code": "0471",
+          "label": "Cultura bacteriana"
+        },
+        {
+          "code": "1403",
+          "label": "Cultura de urina (urocultura)"
+        },
+        {
+          "code": "0472",
+          "label": "Cultura nas fezes: salmonela, shigellae e E. coli enteropatogênicas, enteroinvasora (sorol. incluída) + campylobacter SP. + E. coli enterohemorrágica"
+        },
+        {
+          "code": "0473",
+          "label": "Cultura para bactérias anaeróbicas"
+        },
+        {
+          "code": "0474",
+          "label": "Cultura para Criptosporidium"
+        },
+        {
+          "code": "0475",
+          "label": "Cultura para fungos"
+        },
+        {
+          "code": "0476",
+          "label": "Cultura para mycobacterium"
+        },
+        {
+          "code": "0477",
+          "label": "Cultura quantitativa de secreções pulmonares"
+        },
+        {
+          "code": "0478",
+          "label": "Curva glicêmica"
+        },
+        {
+          "code": "0479",
+          "label": "Curva insulínica"
+        },
+        {
+          "code": "0480",
+          "label": "Cyclospora (pesquisa)"
+        },
+        {
+          "code": "0481",
+          "label": "Dehidroepiandrosterona (DHEA)"
+        },
+        {
+          "code": "0482",
+          "label": "Dehidrotestosterona (DHT)"
+        },
+        {
+          "code": "0483",
+          "label": "Dengue - IgG"
+        },
+        {
+          "code": "0484",
+          "label": "Dengue - IgM"
+        },
+        {
+          "code": "0485",
+          "label": "Desidrogenase alfa-hidroxibutírica"
+        },
+        {
+          "code": "0486",
+          "label": "Desidrogenase glutâmica"
+        },
+        {
+          "code": "0487",
+          "label": "Desidrogenase isocítrica"
+        },
+        {
+          "code": "0488",
+          "label": "Desidrogenase láctica"
+        },
+        {
+          "code": "0489",
+          "label": "Desipramina"
+        },
+        {
+          "code": "0490",
+          "label": "Desoxicorticosterona"
+        },
+        {
+          "code": "0491",
+          "label": "Dialdeído malônico"
+        },
+        {
+          "code": "0492",
+          "label": "Diclorodifenil tricloroetano (DDT) sanguíneo"
+        },
+        {
+          "code": "0493",
+          "label": "Diclorodifenildicloroetileno (DDE) sanguíneo"
+        },
+        {
+          "code": "0494",
+          "label": "Dicloroetano"
+        },
+        {
+          "code": "0495",
+          "label": "Dicloroeteno"
+        },
+        {
+          "code": "0496",
+          "label": "Diclorometano"
+        },
+        {
+          "code": "0497",
+          "label": "Dicrocoelium (pesquisa)"
+        },
+        {
+          "code": "0498",
+          "label": "Dieldrin sanguíneo"
+        },
+        {
+          "code": "0499",
+          "label": "Dientamoeba (pesquisa)"
+        },
+        {
+          "code": "0500",
+          "label": "Dietilditiofosfato"
+        },
+        {
+          "code": "0501",
+          "label": "Dietilditiofosfato urinário (DEDTP)"
+        },
+        {
+          "code": "0502",
+          "label": "Dietilestilbestrol"
+        },
+        {
+          "code": "0503",
+          "label": "Dietilfosfato"
+        },
+        {
+          "code": "0504",
+          "label": "Dietilfosfato urinário (DEP)"
+        },
+        {
+          "code": "0505",
+          "label": "Dietilltiofosfato urinário (DETP)"
+        },
+        {
+          "code": "0506",
+          "label": "Dietiltiofosfato"
+        },
+        {
+          "code": "0507",
+          "label": "Digitoxina ou digoxina"
+        },
+        {
+          "code": "0508",
+          "label": "Dímero D"
+        },
+        {
+          "code": "0509",
+          "label": "Dimetilditiofosfato"
+        },
+        {
+          "code": "0510",
+          "label": "Dimetilditiofosfato urinário (DMDTP)"
+        },
+        {
+          "code": "0511",
+          "label": "Dimetilfosfato"
+        },
+        {
+          "code": "0512",
+          "label": "Dimetilfosfato urinário (DMP)"
+        },
+        {
+          "code": "0513",
+          "label": "Dimetil-selênio respiratório (ar expirado)"
+        },
+        {
+          "code": "0514",
+          "label": "Dimetiltiofosfato"
+        },
+        {
+          "code": "0515",
+          "label": "Dimetiltiofosfato urinário (DMTP)"
+        },
+        {
+          "code": "0516",
+          "label": "Di-n-butil fosfato"
+        },
+        {
+          "code": "0517",
+          "label": "Dinitrato-etileno-glicol"
+        },
+        {
+          "code": "0518",
+          "label": "Dinitrofenol"
+        },
+        {
+          "code": "0519",
+          "label": "Dinoseb"
+        },
+        {
+          "code": "0520",
+          "label": "Dipetalonema (pesquisa)"
+        },
+        {
+          "code": "0521",
+          "label": "Diphyllobothrium (pesquisa)"
+        },
+        {
+          "code": "0522",
+          "label": "Diquat urinário"
+        },
+        {
+          "code": "0523",
+          "label": "Dissulfeto de carbono"
+        },
+        {
+          "code": "0524",
+          "label": "DNCB Teste de Contato"
+        },
+        {
+          "code": "0525",
+          "label": "Doppler colorido arterial de membro inferior"
+        },
+        {
+          "code": "0526",
+          "label": "Doppler colorido arterial de membro superior"
+        },
+        {
+          "code": "0527",
+          "label": "Dosagem de receptor de progesterona ou de estrogênio"
+        },
+        {
+          "code": "0528",
+          "label": "Dracunculus (pesquisa)"
+        },
+        {
+          "code": "0529",
+          "label": "Ebola (pesquisa)"
+        },
+        {
+          "code": "0530",
+          "label": "ECG (Eletrocardiograma) convencional de até 12 derivações"
+        },
+        {
+          "code": "0531",
+          "label": "ECG (Eletrocardiograma) de alta resolução"
+        },
+        {
+          "code": "0532",
+          "label": "Echinococcus (pesquisa)"
+        },
+        {
+          "code": "0533",
+          "label": "Echovírus (painel), sorologia para"
+        },
+        {
+          "code": "0534",
+          "label": "Echovírus (pesquisa)"
+        },
+        {
+          "code": "0535",
+          "label": "Edwardsiella (pesquisa)"
+        },
+        {
+          "code": "0536",
+          "label": "EEG (Eletroencefalograma) de rotina"
+        },
+        {
+          "code": "0537",
+          "label": "Ehrlichia (pesquisa)"
+        },
+        {
+          "code": "0538",
+          "label": "Eikenella (pesquisa)"
+        },
+        {
+          "code": "0540",
+          "label": "Eletroforese de glicoproteínas"
+        },
+        {
+          "code": "0541",
+          "label": "Eletroforese de lipoproteínas"
+        },
+        {
+          "code": "0539",
+          "label": "Eletroforese de proteínas"
+        },
+        {
+          "code": "0542",
+          "label": "Eletroforese de proteínas urinárias"
+        },
+        {
+          "code": "0543",
+          "label": "Eletroneuromiografia de MMII"
+        },
+        {
+          "code": "0544",
+          "label": "Eletroneuromiografia de MMSS"
+        },
+        {
+          "code": "0545",
+          "label": "Elizabethkingia (pesquisa)"
+        },
+        {
+          "code": "0546",
+          "label": "Emmonsia (pesquisa)"
+        },
+        {
+          "code": "0547",
+          "label": "Encefalite japonesa B (pesquisa)"
+        },
+        {
+          "code": "0548",
+          "label": "Encephalitozoon (pesquisa)"
+        },
+        {
+          "code": "0549",
+          "label": "Endotoxinas (pesquisa)"
+        },
+        {
+          "code": "0550",
+          "label": "Endrin sanguíneo"
+        },
+        {
+          "code": "0551",
+          "label": "Enolase"
+        },
+        {
+          "code": "0552",
+          "label": "Entamoeba (pesquisa)"
+        },
+        {
+          "code": "0553",
+          "label": "Enterobacter (pesquisa)"
+        },
+        {
+          "code": "0554",
+          "label": "Enterobius (pesquisa)"
+        },
+        {
+          "code": "0555",
+          "label": "Enterococcus (pesquisa)"
+        },
+        {
+          "code": "0556",
+          "label": "Enterocytozoon (pesquisa)"
+        },
+        {
+          "code": "0557",
+          "label": "Enterovírus humano A, B e C (pesquisa)"
+        },
+        {
+          "code": "0558",
+          "label": "Enzima conversora da angiotensina (ECA)"
+        },
+        {
+          "code": "0559",
+          "label": "Enzimas eritrocitárias"
+        },
+        {
+          "code": "0560",
+          "label": "Epidermophyton (pesquisa)"
+        },
+        {
+          "code": "0561",
+          "label": "Equinococose (hidatidose), reação"
+        },
+        {
+          "code": "0562",
+          "label": "Ergoespirometria ou teste cardiopulmonar de exercício completo (espirometria forçada, consumo de O2, produção de CO2 e derivados, ECG, oximetria)"
+        },
+        {
+          "code": "0563",
+          "label": "Eritropoietina"
+        },
+        {
+          "code": "0564",
+          "label": "Erysipelothrix (pesquisa)"
+        },
+        {
+          "code": "0565",
+          "label": "Escândio urinário"
+        },
+        {
+          "code": "0566",
+          "label": "Escherichia (pesquisa)"
+        },
+        {
+          "code": "0567",
+          "label": "Escherichia coli (pesquisa)"
+        },
+        {
+          "code": "0568",
+          "label": "Espermograma"
+        },
+        {
+          "code": "0569",
+          "label": "Esplenograma (citologia)"
+        },
+        {
+          "code": "0570",
+          "label": "Esporotricose, reação sorológica"
+        },
+        {
+          "code": "0571",
+          "label": "Esporotriquina"
+        },
+        {
+          "code": "0572",
+          "label": "Estanho urinário"
+        },
+        {
+          "code": "0573",
+          "label": "Estireno sanguíneo"
+        },
+        {
+          "code": "1427",
+          "label": "Estireno urinário"
+        },
+        {
+          "code": "0574",
+          "label": "Estradiol"
+        },
+        {
+          "code": "0575",
+          "label": "Estreptozima"
+        },
+        {
+          "code": "0576",
+          "label": "Estriol"
+        },
+        {
+          "code": "0577",
+          "label": "Estrogênios totais (fenolesteroides)"
+        },
+        {
+          "code": "0578",
+          "label": "Estrona"
+        },
+        {
+          "code": "0579",
+          "label": "Estrôncio urinário"
+        },
+        {
+          "code": "0580",
+          "label": "Etanol"
+        },
+        {
+          "code": "0581",
+          "label": "Etilenotioureia (ETU)"
+        },
+        {
+          "code": "0582",
+          "label": "Etossuximida"
+        },
+        {
+          "code": "0583",
+          "label": "Exame a fresco de amostra biológica"
+        },
+        {
+          "code": "0584",
+          "label": "Exame bacteriológico de fezes"
+        },
+        {
+          "code": "0585",
+          "label": "Exame de fundo de olho"
+        },
+        {
+          "code": "1432",
+          "label": "Exame oftalmológico com avaliação de retina e/ou cristalino"
+        },
+        {
+          "code": "0586",
+          "label": "Exophiala (pesquisa)"
+        },
+        {
+          "code": "0587",
+          "label": "Falcização, teste de"
+        },
+        {
+          "code": "0588",
+          "label": "Fasciola (pesquisa)"
+        },
+        {
+          "code": "0589",
+          "label": "Fasciolopsis (pesquisa)"
+        },
+        {
+          "code": "0590",
+          "label": "Fator 4 plaquetário"
+        },
+        {
+          "code": "0591",
+          "label": "Fator antinúcleo (FAN)"
+        },
+        {
+          "code": "0592",
+          "label": "Fator II"
+        },
+        {
+          "code": "0593",
+          "label": "Fator IX"
+        },
+        {
+          "code": "0594",
+          "label": "Fator reumatoide"
+        },
+        {
+          "code": "0595",
+          "label": "Fator V"
+        },
+        {
+          "code": "0597",
+          "label": "Fator VII"
+        },
+        {
+          "code": "0598",
+          "label": "Fator VIII"
+        },
+        {
+          "code": "0599",
+          "label": "Fator VIII, dosagem do antígeno (Von Willebrand)"
+        },
+        {
+          "code": "0600",
+          "label": "Fator VIII, dosagem do inibidor"
+        },
+        {
+          "code": "0601",
+          "label": "Fator X"
+        },
+        {
+          "code": "0602",
+          "label": "Fator XI"
+        },
+        {
+          "code": "0603",
+          "label": "Fator XII"
+        },
+        {
+          "code": "0604",
+          "label": "Fator XIII"
+        },
+        {
+          "code": "0605",
+          "label": "Fenilalanina"
+        },
+        {
+          "code": "0606",
+          "label": "Fenilcetonúria"
+        },
+        {
+          "code": "0607",
+          "label": "Fenitoína"
+        },
+        {
+          "code": "0608",
+          "label": "Fenobarbital"
+        },
+        {
+          "code": "0609",
+          "label": "Fenol"
+        },
+        {
+          "code": "0610",
+          "label": "Fenotipagem do sistema Rh-Hr (anti Rho(D) + anti Rh(C) + anti Rh(E)"
+        },
+        {
+          "code": "0611",
+          "label": "Fenotipagem do sistema RH-HR (D, C, E, C E C)"
+        },
+        {
+          "code": "0612",
+          "label": "Ferritina"
+        },
+        {
+          "code": "0613",
+          "label": "Ferro sérico (sangue)"
+        },
+        {
+          "code": "1438",
+          "label": "Ferro urinário"
+        },
+        {
+          "code": "0614",
+          "label": "Fibrinogênio, teste funcional"
+        },
+        {
+          "code": "0615",
+          "label": "Filária (pesquisa)"
+        },
+        {
+          "code": "0616",
+          "label": "Filaria (sorologia)"
+        },
+        {
+          "code": "0617",
+          "label": "Filobasidiella (pesquisa)"
+        },
+        {
+          "code": "0618",
+          "label": "Flavobacterium (pesquisa)"
+        },
+        {
+          "code": "0619",
+          "label": "Flavovírus, pesquisa"
+        },
+        {
+          "code": "0620",
+          "label": "Fluazifop urinário"
+        },
+        {
+          "code": "0621",
+          "label": "Flufenoxuron sanguíneo"
+        },
+        {
+          "code": "0622",
+          "label": "Flúor sanguíneo"
+        },
+        {
+          "code": "0623",
+          "label": "Flúor urinário"
+        },
+        {
+          "code": "0624",
+          "label": "Fluoreto urinário"
+        },
+        {
+          "code": "0625",
+          "label": "Fluoribacter (pesquisa)"
+        },
+        {
+          "code": "0626",
+          "label": "Folículo estimulante, hormônio (FSH)"
+        },
+        {
+          "code": "0627",
+          "label": "Fonsecaea (pesquisa)"
+        },
+        {
+          "code": "1439",
+          "label": "Formaldeído sanguíneo"
+        },
+        {
+          "code": "1440",
+          "label": "Formaldeído urinário"
+        },
+        {
+          "code": "0629",
+          "label": "Fosfatase ácida fração prostática"
+        },
+        {
+          "code": "0630",
+          "label": "Fosfatase ácida total"
+        },
+        {
+          "code": "0631",
+          "label": "Fosfatase alcalina"
+        },
+        {
+          "code": "0632",
+          "label": "Fosfatase alcalina fração óssea"
+        },
+        {
+          "code": "0633",
+          "label": "Fosfatase alcalina termo-estável"
+        },
+        {
+          "code": "0634",
+          "label": "Fosfina sanguínea"
+        },
+        {
+          "code": "0635",
+          "label": "Fosfofructoquinase"
+        },
+        {
+          "code": "0636",
+          "label": "Fosfoglicerato quinase"
+        },
+        {
+          "code": "0637",
+          "label": "Fosfolipídios"
+        },
+        {
+          "code": "0638",
+          "label": "Fósforo"
+        },
+        {
+          "code": "0639",
+          "label": "Francisella (pesquisa)"
+        },
+        {
+          "code": "1404",
+          "label": "FREI (linfogranuloma venéreo) IDeR"
+        },
+        {
+          "code": "0640",
+          "label": "Frutosaminas"
+        },
+        {
+          "code": "0641",
+          "label": "Frutose"
+        },
+        {
+          "code": "0642",
+          "label": "Frutosúria"
+        },
+        {
+          "code": "0643",
+          "label": "Fungos, pesquisa a fresco"
+        },
+        {
+          "code": "0644",
+          "label": "Fusarium (pesquisa)"
+        },
+        {
+          "code": "0645",
+          "label": "Fusobacterium (pesquisa)"
+        },
+        {
+          "code": "0646",
+          "label": "Gad-Ab-antidescarboxilase do ácido glutâmico"
+        },
+        {
+          "code": "0647",
+          "label": "Gadolínio urinário"
+        },
+        {
+          "code": "0648",
+          "label": "Galactose"
+        },
+        {
+          "code": "0649",
+          "label": "Galactose 1-fosfatouridil transferase"
+        },
+        {
+          "code": "0650",
+          "label": "Galactosúria"
+        },
+        {
+          "code": "0651",
+          "label": "Gálio urinário"
+        },
+        {
+          "code": "0652",
+          "label": "Gama-glutamil transferase (gama-GT)"
+        },
+        {
+          "code": "0653",
+          "label": "Gardnerella (pesquisa)"
+        },
+        {
+          "code": "0654",
+          "label": "Gastrina"
+        },
+        {
+          "code": "0655",
+          "label": "Geotrichum (pesquisa)"
+        },
+        {
+          "code": "0656",
+          "label": "Giardia (pesquisa)"
+        },
+        {
+          "code": "0657",
+          "label": "Giardia (sorologia)"
+        },
+        {
+          "code": "0658",
+          "label": "Glicemia"
+        },
+        {
+          "code": "0659",
+          "label": "Glicemia após sobrecarga com dextrosol ou glicose"
+        },
+        {
+          "code": "0660",
+          "label": "Gliceraldeído, 3-fosfato desidrogenase"
+        },
+        {
+          "code": "0661",
+          "label": "Glicose 6-fosfato desidrogenase"
+        },
+        {
+          "code": "0662",
+          "label": "Glicose fosfato isomerase"
+        },
+        {
+          "code": "1441",
+          "label": "Glicose urinária"
+        },
+        {
+          "code": "0663",
+          "label": "Glifosato"
+        },
+        {
+          "code": "0664",
+          "label": "Globulina"
+        },
+        {
+          "code": "0665",
+          "label": "Globulina de ligação de hormônios sexuais (SHBG)"
+        },
+        {
+          "code": "0666",
+          "label": "Globulina transportadora da tiroxina (TBG)"
+        },
+        {
+          "code": "0667",
+          "label": "Glucagon"
+        },
+        {
+          "code": "0668",
+          "label": "Glutation"
+        },
+        {
+          "code": "0669",
+          "label": "Glutation peroxidase"
+        },
+        {
+          "code": "0670",
+          "label": "Gonococo - IgG"
+        },
+        {
+          "code": "0671",
+          "label": "Gonococo - IgM"
+        },
+        {
+          "code": "0672",
+          "label": "Grupo ABO, classificação reversa"
+        },
+        {
+          "code": "0673",
+          "label": "Grupo sanguíneo ABO, e fator Rho (inclui Du)"
+        },
+        {
+          "code": "0674",
+          "label": "Haemophilus (pesquisa)"
+        },
+        {
+          "code": "0675",
+          "label": "Háfnio urinário"
+        },
+        {
+          "code": "0676",
+          "label": "Ham, teste de (hemólise ácida)"
+        },
+        {
+          "code": "0677",
+          "label": "Hansen, pesquisa de"
+        },
+        {
+          "code": "0678",
+          "label": "Haptoglobina"
+        },
+        {
+          "code": "0679",
+          "label": "Heinz, corpúsculos"
+        },
+        {
+          "code": "0680",
+          "label": "Helicobacter (pesquisa)"
+        },
+        {
+          "code": "0681",
+          "label": "Helicobacter pylori - IgA"
+        },
+        {
+          "code": "0682",
+          "label": "Helicobacter pylori - IgG"
+        },
+        {
+          "code": "0683",
+          "label": "Helicobacter pylori - IgM"
+        },
+        {
+          "code": "0684",
+          "label": "Hemácias fetais"
+        },
+        {
+          "code": "0685",
+          "label": "Hematócrito"
+        },
+        {
+          "code": "0686",
+          "label": "Hemocultura"
+        },
+        {
+          "code": "0687",
+          "label": "Hemoglobina"
+        },
+        {
+          "code": "0688",
+          "label": "Hemoglobina (eletroforese ou HPLC)"
+        },
+        {
+          "code": "0689",
+          "label": "Hemoglobina glicada (A1 total)"
+        },
+        {
+          "code": "0690",
+          "label": "Hemoglobina glicada (Fração A1c)"
+        },
+        {
+          "code": "0691",
+          "label": "Hemoglobina plasmática livre"
+        },
+        {
+          "code": "0692",
+          "label": "Hemoglobina, solubilidade (HbS e HbD)"
+        },
+        {
+          "code": "0693",
+          "label": "Hemograma com contagem de plaquetas ou frações (eritrograma, leucograma, plaquetas)"
+        },
+        {
+          "code": "0694",
+          "label": "Hemophilus (bordetella) pertussis (pesquisa)"
+        },
+        {
+          "code": "0695",
+          "label": "Hemossedimentação, (VHS)"
+        },
+        {
+          "code": "0696",
+          "label": "Hemossiderina (siderócitos), sangue"
+        },
+        {
+          "code": "0697",
+          "label": "Hemossiderina (siderócitos), urina"
+        },
+        {
+          "code": "0698",
+          "label": "Heparina"
+        },
+        {
+          "code": "0699",
+          "label": "Hepatite A - HAV - IgG"
+        },
+        {
+          "code": "0700",
+          "label": "Hepatite A - HAV - IgM"
+        },
+        {
+          "code": "0702",
+          "label": "Hepatite B - HBCAC - IgG"
+        },
+        {
+          "code": "0701",
+          "label": "Hepatite B - HBCAC - IgM"
+        },
+        {
+          "code": "0703",
+          "label": "Hepatite B - HBeAC (anti-HBE)"
+        },
+        {
+          "code": "1405",
+          "label": "Hepatite B - HBeAG"
+        },
+        {
+          "code": "0704",
+          "label": "Hepatite B - HBsAC (anti-HBs)"
+        },
+        {
+          "code": "0234",
+          "label": "Hepatite B - HBsAG"
+        },
+        {
+          "code": "0705",
+          "label": "Hepatite C - Anti-HCV - IgG"
+        },
+        {
+          "code": "0706",
+          "label": "Hepatite C - Anti-HCV - IgM"
+        },
+        {
+          "code": "0707",
+          "label": "Hepatite delta - IgG"
+        },
+        {
+          "code": "0708",
+          "label": "Hepatite delta - IgM"
+        },
+        {
+          "code": "0709",
+          "label": "Hepatite delta, antigeno"
+        },
+        {
+          "code": "0710",
+          "label": "Heptacloro-epóxido"
+        },
+        {
+          "code": "0711",
+          "label": "HER-2 - Dosagem do receptor"
+        },
+        {
+          "code": "0712",
+          "label": "Herpes simples - IgG"
+        },
+        {
+          "code": "0713",
+          "label": "Herpes simples - IgM"
+        },
+        {
+          "code": "0714",
+          "label": "Herpes zóster - IgG"
+        },
+        {
+          "code": "0715",
+          "label": "Herpes zóster - IgM"
+        },
+        {
+          "code": "0716",
+          "label": "Herpesvírus (pesquisa)"
+        },
+        {
+          "code": "0717",
+          "label": "Heterophyes (pesquisa)"
+        },
+        {
+          "code": "0718",
+          "label": "Hexaclorobenzeno"
+        },
+        {
+          "code": "0719",
+          "label": "Hexafluoroisopropanol (HFIP)"
+        },
+        {
+          "code": "0720",
+          "label": "Hexametilenodiamina (1,6-hexametilenodiamina)"
+        },
+        {
+          "code": "0721",
+          "label": "Hexona (metil isobutil cetona)"
+        },
+        {
+          "code": "0722",
+          "label": "Hexosaminidase A"
+        },
+        {
+          "code": "0723",
+          "label": "Hidrazina"
+        },
+        {
+          "code": "0724",
+          "label": "Hidroxiprogesterona"
+        },
+        {
+          "code": "0725",
+          "label": "Hidroxiprolina"
+        },
+        {
+          "code": "0726",
+          "label": "Hipersensibilidade retardada (intradermo reação IDeR)"
+        },
+        {
+          "code": "0727",
+          "label": "Histamina"
+        },
+        {
+          "code": "0728",
+          "label": "Histidina na urina"
+        },
+        {
+          "code": "0729",
+          "label": "Histona"
+        },
+        {
+          "code": "0730",
+          "label": "Histoplasma (pesquisa)"
+        },
+        {
+          "code": "0731",
+          "label": "Histoplasmose"
+        },
+        {
+          "code": "0732",
+          "label": "HIV - Antígeno P24"
+        },
+        {
+          "code": "0733",
+          "label": "HIV1 ou HIV2, pesquisa de anticorpos"
+        },
+        {
+          "code": "0734",
+          "label": "HLA-DR"
+        },
+        {
+          "code": "0735",
+          "label": "HLA-DR+DQ"
+        },
+        {
+          "code": "0736",
+          "label": "Homocisteína"
+        },
+        {
+          "code": "0737",
+          "label": "Hormônio antidiurético"
+        },
+        {
+          "code": "0738",
+          "label": "Hormônio do crescimento (HGH)"
+        },
+        {
+          "code": "0739",
+          "label": "Hormônio gonodotrofico corionico"
+        },
+        {
+          "code": "0740",
+          "label": "Hormônio luteinizante (LH)"
+        },
+        {
+          "code": "0741",
+          "label": "Hormônio tireoestimulante (TSH)"
+        },
+        {
+          "code": "0742",
+          "label": "HPV (vírus do papiloma humano)"
+        },
+        {
+          "code": "0743",
+          "label": "HTLV-I / II"
+        },
+        {
+          "code": "0744",
+          "label": "Hymenolepis (pesquisa)"
+        },
+        {
+          "code": "0745",
+          "label": "Identificação de helmintos"
+        },
+        {
+          "code": "0746",
+          "label": "Ifosfamida"
+        },
+        {
+          "code": "0747",
+          "label": "IgA"
+        },
+        {
+          "code": "0748",
+          "label": "IgA na saliva"
+        },
+        {
+          "code": "0749",
+          "label": "IgD"
+        },
+        {
+          "code": "0750",
+          "label": "IgE"
+        },
+        {
+          "code": "0751",
+          "label": "IGF BP3 (proteína ligadora dos fatores de crescimento \"insulinlike\")"
+        },
+        {
+          "code": "0752",
+          "label": "IgG"
+        },
+        {
+          "code": "0753",
+          "label": "IgM"
+        },
+        {
+          "code": "0754",
+          "label": "Imipramina"
+        },
+        {
+          "code": "0755",
+          "label": "Impedanciometria"
+        },
+        {
+          "code": "0756",
+          "label": "Imunocomplexos circulantes"
+        },
+        {
+          "code": "0757",
+          "label": "Imunocomplexos circulantes, com células Raji"
+        },
+        {
+          "code": "0758",
+          "label": "Imunoeletroforese (estudo da gamopatia)"
+        },
+        {
+          "code": "0759",
+          "label": "Imunofenotipagem para doença residual mínima"
+        },
+        {
+          "code": "0760",
+          "label": "Imunofenotipagem para hemoglobinúria paroxistica noturna"
+        },
+        {
+          "code": "0761",
+          "label": "Imunofenotipagem para leucemias agudas ou sindrome mielodisplásica"
+        },
+        {
+          "code": "0762",
+          "label": "Imunofenotipagem para linfoma não Hodgkin / sindrome linfoproliferativa crônica"
+        },
+        {
+          "code": "0763",
+          "label": "Imunofenotipagem para perfil imune"
+        },
+        {
+          "code": "0764",
+          "label": "Imunofixação"
+        },
+        {
+          "code": "0765",
+          "label": "Índice de tiroxina livre (ITL)"
+        },
+        {
+          "code": "0766",
+          "label": "Índio urinário"
+        },
+        {
+          "code": "0767",
+          "label": "Inibidor de C1 esterase"
+        },
+        {
+          "code": "0768",
+          "label": "Inibidor do fator IX"
+        },
+        {
+          "code": "0769",
+          "label": "Inibidor do TPA (PAI)"
+        },
+        {
+          "code": "0770",
+          "label": "Inibidor dos fatores da hemostasia"
+        },
+        {
+          "code": "0771",
+          "label": "Insulina"
+        },
+        {
+          "code": "0772",
+          "label": "Iodo"
+        },
+        {
+          "code": "0773",
+          "label": "Iodo proteico (PBI)"
+        },
+        {
+          "code": "0774",
+          "label": "Iontoforese para a coleta de suor, com dosagem de cloro"
+        },
+        {
+          "code": "0775",
+          "label": "Irídio urinário"
+        },
+        {
+          "code": "0776",
+          "label": "Isoaglutininas"
+        },
+        {
+          "code": "0777",
+          "label": "Isobutanol urinário"
+        },
+        {
+          "code": "0778",
+          "label": "Isoforonodiamina"
+        },
+        {
+          "code": "0779",
+          "label": "Isolamento de agentes específicos (vírus, bactérias, protozoários, fungos, outros parasitas)"
+        },
+        {
+          "code": "0780",
+          "label": "Isomerase fosfohexose"
+        },
+        {
+          "code": "0781",
+          "label": "Isoniazida"
+        },
+        {
+          "code": "0782",
+          "label": "Isopropanol urinário"
+        },
+        {
+          "code": "0783",
+          "label": "Isospora (pesquisa)"
+        },
+        {
+          "code": "0784",
+          "label": "Isospora (sorologia)"
+        },
+        {
+          "code": "0785",
+          "label": "Ito (cancro mole), IDeR"
+        },
+        {
+          "code": "0786",
+          "label": "Ítrio urinário"
+        },
+        {
+          "code": "0787",
+          "label": "Klebsiella (pesquisa)"
+        },
+        {
+          "code": "0788",
+          "label": "Kveim (sarcoidose), IDeR"
+        },
+        {
+          "code": "0789",
+          "label": "Lactogênico placentário-hormônio"
+        },
+        {
+          "code": "0790",
+          "label": "Lactose, teste de tolerância"
+        },
+        {
+          "code": "0791",
+          "label": "Lamotrigina"
+        },
+        {
+          "code": "0792",
+          "label": "Larvas (fezes), pesquisa"
+        },
+        {
+          "code": "0793",
+          "label": "Lassa vírus, pesquisa"
+        },
+        {
+          "code": "0794",
+          "label": "Legionella - IgG"
+        },
+        {
+          "code": "0795",
+          "label": "Legionella - IgM"
+        },
+        {
+          "code": "0796",
+          "label": "Leishmania (pesquisa)"
+        },
+        {
+          "code": "0797",
+          "label": "Leishmaniose - IgG"
+        },
+        {
+          "code": "0798",
+          "label": "Leishmaniose - IgM"
+        },
+        {
+          "code": "0799",
+          "label": "Leptina"
+        },
+        {
+          "code": "1406",
+          "label": "Leptospira (pesquisa)"
+        },
+        {
+          "code": "0800",
+          "label": "Leptospirose - IgG"
+        },
+        {
+          "code": "0801",
+          "label": "Leptospirose - IgM"
+        },
+        {
+          "code": "0802",
+          "label": "Leucino aminopeptidase"
+        },
+        {
+          "code": "0804",
+          "label": "Leucócitos e hemácias, pesquisa nas fezes"
+        },
+        {
+          "code": "0803",
+          "label": "Leucócitos, contagem (leucograma)"
+        },
+        {
+          "code": "0806",
+          "label": "Leveduras, pesquisa nas fezes"
+        },
+        {
+          "code": "0807",
+          "label": "Lichtheimia (pesquisa)"
+        },
+        {
+          "code": "0808",
+          "label": "Lidocaina"
+        },
+        {
+          "code": "0809",
+          "label": "Lindano (γ-HCH) gama-hexaclorociclo-hexano"
+        },
+        {
+          "code": "0810",
+          "label": "Linfócitos T \"helper\" contagem de (IF com OKT-4) (CD-4+)"
+        },
+        {
+          "code": "0811",
+          "label": "Linfócitos T supressores contagem de (IF com OKT-8)"
+        },
+        {
+          "code": "0812",
+          "label": "Lipase"
+        },
+        {
+          "code": "0813",
+          "label": "Lipase lipoproteica"
+        },
+        {
+          "code": "0814",
+          "label": "Lipídios totais"
+        },
+        {
+          "code": "0815",
+          "label": "Lipoides na urina"
+        },
+        {
+          "code": "0816",
+          "label": "Lipoproteína (a) - Lp (a)"
+        },
+        {
+          "code": "0817",
+          "label": "Listeria (pesquisa)"
+        },
+        {
+          "code": "0818",
+          "label": "Listeriose, reação sorológica"
+        },
+        {
+          "code": "0819",
+          "label": "Lítio sanguíneo"
+        },
+        {
+          "code": "0820",
+          "label": "Lítio urinário"
+        },
+        {
+          "code": "0821",
+          "label": "Loa (pesquisa)"
+        },
+        {
+          "code": "0822",
+          "label": "Lyme - IgG"
+        },
+        {
+          "code": "0823",
+          "label": "Lyme - IgM"
+        },
+        {
+          "code": "0824",
+          "label": "Lyssavírus (pesquisa)"
+        },
+        {
+          "code": "0825",
+          "label": "Lyssavírus do morcego Australiano (pesquisa)"
+        },
+        {
+          "code": "0826",
+          "label": "Lyssavírus do morcego europeu tipos 1 e 2 (pesquisa)"
+        },
+        {
+          "code": "0827",
+          "label": "Macroprolactina"
+        },
+        {
+          "code": "0828",
+          "label": "Madurella (pesquisa)"
+        },
+        {
+          "code": "1442",
+          "label": "Magnésio sanguíneo"
+        },
+        {
+          "code": "1443",
+          "label": "Magnésio urinário"
+        },
+        {
+          "code": "0830",
+          "label": "Malária - IgG"
+        },
+        {
+          "code": "0831",
+          "label": "Malária - IgM"
+        },
+        {
+          "code": "0832",
+          "label": "Malassezia (pesquisa)"
+        },
+        {
+          "code": "0833",
+          "label": "Malation urinário"
+        },
+        {
+          "code": "0834",
+          "label": "Maltose, teste de tolerância"
+        },
+        {
+          "code": "1444",
+          "label": "Mamografia"
+        },
+        {
+          "code": "0836",
+          "label": "Manganês sanguíneo"
+        },
+        {
+          "code": "0835",
+          "label": "Manganês urinário"
+        },
+        {
+          "code": "0837",
+          "label": "Mansonella (pesquisa)"
+        },
+        {
+          "code": "0838",
+          "label": "Mantoux, IDeR"
+        },
+        {
+          "code": "1445",
+          "label": "Mapeamento de retina (oftalmoscopia indireta)"
+        },
+        {
+          "code": "0839",
+          "label": "Marcador tumoral CA 125"
+        },
+        {
+          "code": "0840",
+          "label": "Marcador tumoral CA 15-3"
+        },
+        {
+          "code": "0841",
+          "label": "Marcador tumoral CA 19.9"
+        },
+        {
+          "code": "0842",
+          "label": "Marcador tumoral CA 72-4"
+        },
+        {
+          "code": "0843",
+          "label": "Marcadores tumorais"
+        },
+        {
+          "code": "0844",
+          "label": "MCA (antígeno cárcino-mamário)"
+        },
+        {
+          "code": "0845",
+          "label": "Medida de pico de fluxo expiratório"
+        },
+        {
+          "code": "0846",
+          "label": "Medida seriada por 3 semanas do pico de fluxo expiratório"
+        },
+        {
+          "code": "0847",
+          "label": "MEHP + 5-OH-MEHP+ 5-oxo-MEHP+ 5-cx-MEPP"
+        },
+        {
+          "code": "0848",
+          "label": "Melanina na urina"
+        },
+        {
+          "code": "0849",
+          "label": "Mercúrio sanguíneo"
+        },
+        {
+          "code": "0850",
+          "label": "Mercúrio urinário"
+        },
+        {
+          "code": "0851",
+          "label": "Metabólitos de atrazina urinários (atrazina dealquilada, deetilada, deisoprpilada)"
+        },
+        {
+          "code": "0852",
+          "label": "Metagonimus (pesquisa)"
+        },
+        {
+          "code": "0853",
+          "label": "Meta-hemoglobina"
+        },
+        {
+          "code": "0854",
+          "label": "Metais pesados, pesquisa em unhas, cabelos, outros tecidos"
+        },
+        {
+          "code": "0855",
+          "label": "Metalotioneína urinária"
+        },
+        {
+          "code": "0856",
+          "label": "Metanefrinas urinárias"
+        },
+        {
+          "code": "0857",
+          "label": "Metanol"
+        },
+        {
+          "code": "0858",
+          "label": "Metapneumovírus (pesquisa)"
+        },
+        {
+          "code": "0859",
+          "label": "Metaxililenodiamina"
+        },
+        {
+          "code": "0860",
+          "label": "Methotrexate (metotrexato)"
+        },
+        {
+          "code": "0861",
+          "label": "Metil (4-hidroxi-1H-benzimidazol-2-il)"
+        },
+        {
+          "code": "0862",
+          "label": "Metil (5-hidoxi-1H-benzimidazol-2-il)"
+        },
+        {
+          "code": "0863",
+          "label": "Metil etil cetona"
+        },
+        {
+          "code": "0864",
+          "label": "Metil isobutil cetona"
+        },
+        {
+          "code": "1426",
+          "label": "Metilclorofórmio no ar exalado"
+        },
+        {
+          "code": "0865",
+          "label": "Métodos diagnósticos por imagem antebraço"
+        },
+        {
+          "code": "0866",
+          "label": "Métodos diagnósticos por imagem antebraço articulação acromioclavicular"
+        },
+        {
+          "code": "0867",
+          "label": "Métodos diagnósticos por imagem articulação coxofemoral (quadril)"
+        },
+        {
+          "code": "0868",
+          "label": "Métodos diagnósticos por imagem articulação escapuloumeral (ombro)"
+        },
+        {
+          "code": "0869",
+          "label": "Métodos diagnósticos por imagem articulação esternoclavicular"
+        },
+        {
+          "code": "0870",
+          "label": "Métodos diagnósticos por imagem articulação tibiotársica (tornozelo)"
+        },
+        {
+          "code": "0871",
+          "label": "Métodos diagnósticos por imagem articulações sacro"
+        },
+        {
+          "code": "0872",
+          "label": "Métodos diagnósticos por imagem bacia"
+        },
+        {
+          "code": "0873",
+          "label": "Métodos diagnósticos por imagem braço"
+        },
+        {
+          "code": "0874",
+          "label": "Métodos diagnósticos por imagem calcâneo"
+        },
+        {
+          "code": "0875",
+          "label": "Métodos diagnósticos por imagem clavícula"
+        },
+        {
+          "code": "1407",
+          "label": "Métodos diagnósticos por imagem coluna"
+        },
+        {
+          "code": "1408",
+          "label": "Métodos diagnósticos por imagem coluna cervical"
+        },
+        {
+          "code": "1409",
+          "label": "Métodos diagnósticos por imagem coluna dorsal"
+        },
+        {
+          "code": "1410",
+          "label": "Métodos diagnósticos por imagem coluna lombar"
+        },
+        {
+          "code": "1411",
+          "label": "Métodos diagnósticos por imagem coluna sacro-cóccix"
+        },
+        {
+          "code": "0876",
+          "label": "Métodos diagnósticos por imagem coração e vasos da base"
+        },
+        {
+          "code": "0877",
+          "label": "Métodos diagnósticos por imagem cotovelo"
+        },
+        {
+          "code": "0878",
+          "label": "Métodos diagnósticos por imagem coxa"
+        },
+        {
+          "code": "0879",
+          "label": "Métodos diagnósticos por imagem escanometria"
+        },
+        {
+          "code": "0880",
+          "label": "Métodos diagnósticos por imagem escápula"
+        },
+        {
+          "code": "0881",
+          "label": "Métodos diagnósticos por imagem esterno"
+        },
+        {
+          "code": "0882",
+          "label": "Métodos diagnósticos por imagem joelho"
+        },
+        {
+          "code": "0883",
+          "label": "Métodos diagnósticos por imagem laringe ou hipofaringe ou pescoço (partes moles)"
+        },
+        {
+          "code": "0884",
+          "label": "Métodos diagnósticos por imagem mão ou quirodáctilo"
+        },
+        {
+          "code": "0886",
+          "label": "Métodos diagnósticos por imagem panorâmica dos membros inferiores"
+        },
+        {
+          "code": "0887",
+          "label": "Métodos diagnósticos por imagem patela"
+        },
+        {
+          "code": "0888",
+          "label": "Métodos diagnósticos por imagem pé ou pododáctilo"
+        },
+        {
+          "code": "0889",
+          "label": "Métodos diagnósticos por imagem perna"
+        },
+        {
+          "code": "0890",
+          "label": "Métodos diagnósticos por imagem punho"
+        },
+        {
+          "code": "1999",
+          "label": "Métodos diagnósticos por imagem - Não especificados anteriormente"
+        },
+        {
+          "code": "1412",
+          "label": "Metotrexato"
+        },
+        {
+          "code": "0893",
+          "label": "Microalbuminúria"
+        },
+        {
+          "code": "0894",
+          "label": "Micronúcleos cromossômicos (pesquisa)"
+        },
+        {
+          "code": "0895",
+          "label": "Microsporídia, pesquisa nas fezes"
+        },
+        {
+          "code": "0896",
+          "label": "Microsporum (pesquisa)"
+        },
+        {
+          "code": "0897",
+          "label": "Mielograma"
+        },
+        {
+          "code": "0898",
+          "label": "Mioglobina"
+        },
+        {
+          "code": "0899",
+          "label": "Mioglobina urinária"
+        },
+        {
+          "code": "0900",
+          "label": "Mitomicina"
+        },
+        {
+          "code": "0901",
+          "label": "Molibdênio plasmático"
+        },
+        {
+          "code": "0902",
+          "label": "Molibdênio urinário"
+        },
+        {
+          "code": "0903",
+          "label": "Monoclorometano"
+        },
+        {
+          "code": "0904",
+          "label": "Monometilfosfato urinário (MMP)"
+        },
+        {
+          "code": "0905",
+          "label": "Mononucleose - Epstein BARR - IgG"
+        },
+        {
+          "code": "0906",
+          "label": "Mononucleose, anti-VCA (EBV) - IgM"
+        },
+        {
+          "code": "0907",
+          "label": "Monóxido de carbono no ar expirado"
+        },
+        {
+          "code": "0908",
+          "label": "Montenegro, IDeR"
+        },
+        {
+          "code": "0909",
+          "label": "Moraxella (pesquisa)"
+        },
+        {
+          "code": "0910",
+          "label": "Morfoline urinário"
+        },
+        {
+          "code": "0911",
+          "label": "Morganella (pesquisa)"
+        },
+        {
+          "code": "0912",
+          "label": "Muco-nasal, pesquisa de eosinófilos e mastócitos"
+        },
+        {
+          "code": "0913",
+          "label": "Mucopolissacaridose, pesquisa"
+        },
+        {
+          "code": "0914",
+          "label": "Mucoproteínas"
+        },
+        {
+          "code": "0915",
+          "label": "Mycobacterium (pesquisa)"
+        },
+        {
+          "code": "0916",
+          "label": "Mycoplasma (pesquisa)"
+        },
+        {
+          "code": "0891",
+          "label": "Mycoplasma pneumoniae - IgG"
+        },
+        {
+          "code": "0892",
+          "label": "Mycoplasma pneumoniae - IgM"
+        },
+        {
+          "code": "0917",
+          "label": "N-(2-carbonamidaetil)-valina"
+        },
+        {
+          "code": "0918",
+          "label": "N-(2-cianoetil)-valina"
+        },
+        {
+          "code": "0919",
+          "label": "N-(2-hidroxietil)-valina"
+        },
+        {
+          "code": "0920",
+          "label": "N-(2-hidroxipropil)-valina"
+        },
+        {
+          "code": "0921",
+          "label": "N-1(hidroxibutenil) valina (adutos de hemoglobina)"
+        },
+        {
+          "code": "0922",
+          "label": "N-2(hidroxibutenil) valina (adutos de hemoglobina)"
+        },
+        {
+          "code": "0923",
+          "label": "N-acetil, 3,4-diidroxibutil-cisteína"
+        },
+        {
+          "code": "0924",
+          "label": "N-acetil-beta-glicosaminidase na urina"
+        },
+        {
+          "code": "0925",
+          "label": "N-acetil-S-(2-carbonamidaetil)-cisteína"
+        },
+        {
+          "code": "1425",
+          "label": "N-acetil-S-(N-metilcarbamoil) cisteína na urina"
+        },
+        {
+          "code": "0926",
+          "label": "N-acetil-S-2-hidroxietil-L-cisteína"
+        },
+        {
+          "code": "0927",
+          "label": "Naegleria (pesquisa)"
+        },
+        {
+          "code": "0928",
+          "label": "Naftóis urinários"
+        },
+        {
+          "code": "0929",
+          "label": "NBT estimulado"
+        },
+        {
+          "code": "0930",
+          "label": "N-butil álcool"
+        },
+        {
+          "code": "0931",
+          "label": "N-dimetil acetamida + N-hidroximetil-N-metil acetamida"
+        },
+        {
+          "code": "0932",
+          "label": "Necator (pesquisa)"
+        },
+        {
+          "code": "0933",
+          "label": "Neisseria (pesquisa)"
+        },
+        {
+          "code": "0934",
+          "label": "Neotestudina (pesquisa)"
+        },
+        {
+          "code": "0935",
+          "label": "N-heptano"
+        },
+        {
+          "code": "0936",
+          "label": "Nióbio urinário"
+        },
+        {
+          "code": "1446",
+          "label": "Níquel sanguíneo"
+        },
+        {
+          "code": "0937",
+          "label": "Níquel urinário"
+        },
+        {
+          "code": "0938",
+          "label": "Nitrogênio amoniacal"
+        },
+        {
+          "code": "0939",
+          "label": "Nitrogênio total"
+        },
+        {
+          "code": "0940",
+          "label": "Nitroglicóis totais urinários"
+        },
+        {
+          "code": "0941",
+          "label": "N-metil-2-pirrolidona"
+        },
+        {
+          "code": "0942",
+          "label": "N-metilacetamida"
+        },
+        {
+          "code": "0943",
+          "label": "N-metilformamida"
+        },
+        {
+          "code": "0944",
+          "label": "N-metilformamida + N-hidroximetil-N-metilformamida"
+        },
+        {
+          "code": "0945",
+          "label": "N-metilvalina"
+        },
+        {
+          "code": "0946",
+          "label": "Nocardia (pesquisa)"
+        },
+        {
+          "code": "0947",
+          "label": "Norovírus (pesquisa)"
+        },
+        {
+          "code": "0948",
+          "label": "Nortriptilina"
+        },
+        {
+          "code": "0949",
+          "label": "N-telopeptídeo"
+        },
+        {
+          "code": "0950",
+          "label": "Ocitocinase"
+        },
+        {
+          "code": "0951",
+          "label": "O-cresol urinário"
+        },
+        {
+          "code": "0952",
+          "label": "Onchocerca (pesquisa)"
+        },
+        {
+          "code": "0953",
+          "label": "Opisthorchis (pesquisa)"
+        },
+        {
+          "code": "0954",
+          "label": "Orbivírus (pesquisa)"
+        },
+        {
+          "code": "0955",
+          "label": "Orthopoxvírus (pesquisa)"
+        },
+        {
+          "code": "0956",
+          "label": "Ortoreovírus de mamíferos, tipos 1 a 3 (pesquisa)"
+        },
+        {
+          "code": "0957",
+          "label": "Ósmio urinário"
+        },
+        {
+          "code": "0958",
+          "label": "Osmolalidade"
+        },
+        {
+          "code": "0959",
+          "label": "Osmolalidade na urina"
+        },
+        {
+          "code": "0960",
+          "label": "Osteocalcina"
+        },
+        {
+          "code": "0961",
+          "label": "O-toluidina"
+        },
+        {
+          "code": "0962",
+          "label": "Oxcarbazepina"
+        },
+        {
+          "code": "0963",
+          "label": "Óxido nitroso na urina"
+        },
+        {
+          "code": "0964",
+          "label": "P,p-1-diclorobenzofenona"
+        },
+        {
+          "code": "0965",
+          "label": "Paládio urinário"
+        },
+        {
+          "code": "0966",
+          "label": "P-aminofenol"
+        },
+        {
+          "code": "0967",
+          "label": "Papilomavírus humano (HPV) (pesquisa)"
+        },
+        {
+          "code": "0968",
+          "label": "PAPP-A"
+        },
+        {
+          "code": "0969",
+          "label": "Paracoccidioides (pesquisa)"
+        },
+        {
+          "code": "0970",
+          "label": "Paracoccidioidomicose, anticorpos totais - IgG"
+        },
+        {
+          "code": "0971",
+          "label": "Paragonimus (pesquisa)"
+        },
+        {
+          "code": "0972",
+          "label": "Parapoxvírus (pesquisa)"
+        },
+        {
+          "code": "0973",
+          "label": "Paraquat urinário"
+        },
+        {
+          "code": "0974",
+          "label": "Parasitológico de fezes"
+        },
+        {
+          "code": "0975",
+          "label": "Paratormônio - PTH"
+        },
+        {
+          "code": "0976",
+          "label": "Parechovírus (pesquisa)"
+        },
+        {
+          "code": "0977",
+          "label": "Parvovírus - IgG"
+        },
+        {
+          "code": "1413",
+          "label": "Parvovírus - IgM"
+        },
+        {
+          "code": "0978",
+          "label": "Parvovírus (pesquisa)"
+        },
+        {
+          "code": "0979",
+          "label": "Parvovírus humano 4 e 5 (pesquisa)"
+        },
+        {
+          "code": "0980",
+          "label": "Parvovírus humano B19 (pesquisa)"
+        },
+        {
+          "code": "0981",
+          "label": "Pasteurella (pesquisa)"
+        },
+        {
+          "code": "0982",
+          "label": "PCB 101"
+        },
+        {
+          "code": "0983",
+          "label": "PCB 138"
+        },
+        {
+          "code": "0984",
+          "label": "PCB 153"
+        },
+        {
+          "code": "0985",
+          "label": "PCB 180"
+        },
+        {
+          "code": "0986",
+          "label": "PCB 28"
+        },
+        {
+          "code": "0987",
+          "label": "PCB 52"
+        },
+        {
+          "code": "1424",
+          "label": "p-clorocatecol (para-clorocatecol) urinário"
+        },
+        {
+          "code": "0988",
+          "label": "Pegivírus humano (pesquisa)"
+        },
+        {
+          "code": "0989",
+          "label": "Penicillium (pesquisa)"
+        },
+        {
+          "code": "0990",
+          "label": "Pentacloroetano"
+        },
+        {
+          "code": "0991",
+          "label": "Pentaclorofenol sanguíneo/plasmático"
+        },
+        {
+          "code": "0992",
+          "label": "Pentaclorofenol urinário"
+        },
+        {
+          "code": "0993",
+          "label": "Peptídeo C"
+        },
+        {
+          "code": "0994",
+          "label": "Peptídeo natriurético BNP/PROBNP"
+        },
+        {
+          "code": "0995",
+          "label": "Peptídio intestinal vasoativo"
+        },
+        {
+          "code": "0996",
+          "label": "Peptostreptococcus (pesquisa)"
+        },
+        {
+          "code": "0997",
+          "label": "Perfil lipídico/lipidograma"
+        },
+        {
+          "code": "0998",
+          "label": "Pesquisa de agente infeccioso específico por PCR"
+        },
+        {
+          "code": "0999",
+          "label": "Pesquisa de mutação de alelo específico por PCR"
+        },
+        {
+          "code": "1000",
+          "label": "pH - Tornassol"
+        },
+        {
+          "code": "1001",
+          "label": "Piridinolina"
+        },
+        {
+          "code": "1002",
+          "label": "Pirimidina-5-nucleotidase"
+        },
+        {
+          "code": "1003",
+          "label": "Piruvato quinase"
+        },
+        {
+          "code": "1004",
+          "label": "Planigrafia de tórax, mediastino ou laringe"
+        },
+        {
+          "code": "1005",
+          "label": "Plaquetas, teste de agregação"
+        },
+        {
+          "code": "1006",
+          "label": "Plasminogênio"
+        },
+        {
+          "code": "1007",
+          "label": "Plasmodium (pesquisa)"
+        },
+        {
+          "code": "1008",
+          "label": "Platina urinária"
+        },
+        {
+          "code": "1009",
+          "label": "Plesiomonas (pesquisa)"
+        },
+        {
+          "code": "1010",
+          "label": "Pneumocysti carinii (pesquisa)"
+        },
+        {
+          "code": "1011",
+          "label": "P-nitrocresol"
+        },
+        {
+          "code": "1012",
+          "label": "P-nitrofenol"
+        },
+        {
+          "code": "1013",
+          "label": "Poliomavírus BK (pesquisa)"
+        },
+        {
+          "code": "1014",
+          "label": "Poliomavírus JC (pesquisa)"
+        },
+        {
+          "code": "1015",
+          "label": "Poliomavírus KI (pesquisa)"
+        },
+        {
+          "code": "1016",
+          "label": "Poliomavírus WU (pesquisa)"
+        },
+        {
+          "code": "1017",
+          "label": "Poliomelite (sorologia)"
+        },
+        {
+          "code": "1018",
+          "label": "Poliovírus (pesquisa)"
+        },
+        {
+          "code": "1019",
+          "label": "Porfibilinogênio na urina"
+        },
+        {
+          "code": "1020",
+          "label": "Porfirinas quantitativas"
+        },
+        {
+          "code": "1021",
+          "label": "Porphyromonas (pesquisa)"
+        },
+        {
+          "code": "1022",
+          "label": "Potássio"
+        },
+        {
+          "code": "1023",
+          "label": "Poxvírus, pesquisa"
+        },
+        {
+          "code": "1024",
+          "label": "PPD (tuberculina), IDeR"
+        },
+        {
+          "code": "1025",
+          "label": "Prata sanguínea"
+        },
+        {
+          "code": "1026",
+          "label": "Pré-albumina"
+        },
+        {
+          "code": "1027",
+          "label": "Pregnandiol"
+        },
+        {
+          "code": "1028",
+          "label": "Pregnantriol"
+        },
+        {
+          "code": "1029",
+          "label": "Prevotella (pesquisa)"
+        },
+        {
+          "code": "1030",
+          "label": "Primidona"
+        },
+        {
+          "code": "1031",
+          "label": "Prions (pesquisa)"
+        },
+        {
+          "code": "1032",
+          "label": "Procainamida"
+        },
+        {
+          "code": "1033",
+          "label": "Procalcitonina"
+        },
+        {
+          "code": "1447",
+          "label": "Procedimento diagnóstico em citopatologia cérvico-vaginal oncótica"
+        },
+        {
+          "code": "1034",
+          "label": "Produtos de degradação da fibrina"
+        },
+        {
+          "code": "1035",
+          "label": "Progesterona"
+        },
+        {
+          "code": "1036",
+          "label": "Prolactina"
+        },
+        {
+          "code": "1037",
+          "label": "Propanolol"
+        },
+        {
+          "code": "1038",
+          "label": "Propilenoglicol"
+        },
+        {
+          "code": "1039",
+          "label": "Propilenotioureia (PTU)"
+        },
+        {
+          "code": "1040",
+          "label": "Proteína amiloide A"
+        },
+        {
+          "code": "1041",
+          "label": "Proteína C"
+        },
+        {
+          "code": "1042",
+          "label": "Proteína C reativa"
+        },
+        {
+          "code": "1043",
+          "label": "Proteína eosinofílica catiônica"
+        },
+        {
+          "code": "1044",
+          "label": "Proteína ligadora do retinol"
+        },
+        {
+          "code": "1045",
+          "label": "Proteína nuclear matriz 22 (NMP22)"
+        },
+        {
+          "code": "1046",
+          "label": "Proteína S livre"
+        },
+        {
+          "code": "1047",
+          "label": "Proteína S total + livre"
+        },
+        {
+          "code": "1048",
+          "label": "Proteína S, teste funcional"
+        },
+        {
+          "code": "1049",
+          "label": "Proteínas de Bence Jones"
+        },
+        {
+          "code": "1050",
+          "label": "Proteínas totais"
+        },
+        {
+          "code": "1051",
+          "label": "Proteus (pesquisa)"
+        },
+        {
+          "code": "1052",
+          "label": "Protoporfirina eritrocitária livre - Zinco"
+        },
+        {
+          "code": "1053",
+          "label": "Protoporfirinas livres"
+        },
+        {
+          "code": "1054",
+          "label": "Protoporfirinas Zn"
+        },
+        {
+          "code": "1055",
+          "label": "Prova de concentração da urina (Fishberg ou Volhard)"
+        },
+        {
+          "code": "1056",
+          "label": "Prova de diluição urinária"
+        },
+        {
+          "code": "1057",
+          "label": "Prova de função pulmonar completa (ou espirometria)"
+        },
+        {
+          "code": "1058",
+          "label": "Prova do laço"
+        },
+        {
+          "code": "1059",
+          "label": "Prova do LH-Rh"
+        },
+        {
+          "code": "1060",
+          "label": "Prova do TRH-HPR"
+        },
+        {
+          "code": "1414",
+          "label": "Prova do TRH-TSH"
+        },
+        {
+          "code": "1061",
+          "label": "Prova para diabete insípido"
+        },
+        {
+          "code": "1062",
+          "label": "Providencia (pesquisa)"
+        },
+        {
+          "code": "1063",
+          "label": "Pseudallescheria (pesquisa)"
+        },
+        {
+          "code": "1064",
+          "label": "Pseudomonas (pesquisa)"
+        },
+        {
+          "code": "1065",
+          "label": "Pseudoterranova (pesquisa)"
+        },
+        {
+          "code": "1066",
+          "label": "Psitacose - IgA"
+        },
+        {
+          "code": "1067",
+          "label": "Psitacose - IgG"
+        },
+        {
+          "code": "1068",
+          "label": "Psitacose - IgM"
+        },
+        {
+          "code": "1069",
+          "label": "P-ter-butilfenol"
+        },
+        {
+          "code": "1070",
+          "label": "P-toluidina"
+        },
+        {
+          "code": "1071",
+          "label": "Quebra das fitas de DNA (pesquisa)"
+        },
+        {
+          "code": "1072",
+          "label": "Quinidina"
+        },
+        {
+          "code": "1073",
+          "label": "Radiografia de coluna cervical"
+        },
+        {
+          "code": "1074",
+          "label": "Radiografia de coluna dorsal"
+        },
+        {
+          "code": "1075",
+          "label": "Radiografia de coluna lombo-sacra"
+        },
+        {
+          "code": "1076",
+          "label": "Radiografia de membros inferiores"
+        },
+        {
+          "code": "1077",
+          "label": "Radiografia de membros superiores"
+        },
+        {
+          "code": "1078",
+          "label": "Radiografia de tórax (PA) Padrão OIT (o mais recente), com dois leitores habilitados"
+        },
+        {
+          "code": "1415",
+          "label": "Radiografia de tórax (PA) Padrão OIT (o mais recente), com pelo menos um leitor habilitado"
+        },
+        {
+          "code": "1448",
+          "label": "Radiografia de tórax em duas incidências"
+        },
+        {
+          "code": "1430",
+          "label": "Radiografia de tórax em visão anteroposterior e de perfil"
+        },
+        {
+          "code": "1079",
+          "label": "Raiva (pesquisa)"
+        },
+        {
+          "code": "1080",
+          "label": "Reação de fixação de complemento"
+        },
+        {
+          "code": "1081",
+          "label": "Reação sorológica para Coxsackie, neutralização - IgG"
+        },
+        {
+          "code": "1082",
+          "label": "Renina"
+        },
+        {
+          "code": "1083",
+          "label": "Reovírus tipos 1 a 3 (pesquisa)"
+        },
+        {
+          "code": "1084",
+          "label": "Reserva alcalina (bicarbonato)"
+        },
+        {
+          "code": "1085",
+          "label": "Resistência globular, curva de"
+        },
+        {
+          "code": "1086",
+          "label": "Reticulócitos"
+        },
+        {
+          "code": "1087",
+          "label": "Retração do coágulo"
+        },
+        {
+          "code": "1088",
+          "label": "Rhinocladiella (pesquisa)"
+        },
+        {
+          "code": "1089",
+          "label": "Rhizomucor (pesquisa)"
+        },
+        {
+          "code": "1090",
+          "label": "Rhizopus (pesquisa)"
+        },
+        {
+          "code": "1091",
+          "label": "Rhodococcus (pesquisa)"
+        },
+        {
+          "code": "1092",
+          "label": "Rickettsia (pesquisa)"
+        },
+        {
+          "code": "1093",
+          "label": "Rinovírus humano (pesquisa)"
+        },
+        {
+          "code": "1094",
+          "label": "Ristocetina, co-fator"
+        },
+        {
+          "code": "1095",
+          "label": "Rochalimaea (pesquisa)"
+        },
+        {
+          "code": "1096",
+          "label": "Ródio urinário"
+        },
+        {
+          "code": "1097",
+          "label": "Rotavírus humano tipos A, B e C (pesquisa)"
+        },
+        {
+          "code": "1098",
+          "label": "Rotina (sumário) de urina"
+        },
+        {
+          "code": "1099",
+          "label": "Rubéola - IgG"
+        },
+        {
+          "code": "1100",
+          "label": "Rubéola - IgM"
+        },
+        {
+          "code": "1101",
+          "label": "Rubídio urinário"
+        },
+        {
+          "code": "1102",
+          "label": "Sacarose, teste de tolerância"
+        },
+        {
+          "code": "1103",
+          "label": "Saksenaea (pesquisa)"
+        },
+        {
+          "code": "1104",
+          "label": "Salicilatos"
+        },
+        {
+          "code": "1105",
+          "label": "Salmonela (pesquisa)"
+        },
+        {
+          "code": "1107",
+          "label": "Sangue oculto nas fezes"
+        },
+        {
+          "code": "1108",
+          "label": "Sarampo - IgG"
+        },
+        {
+          "code": "1109",
+          "label": "Sarampo - IgM"
+        },
+        {
+          "code": "1110",
+          "label": "Sarcocystis (pesquisa)"
+        },
+        {
+          "code": "1111",
+          "label": "Sarcoptes scabei (pesquisa)"
+        },
+        {
+          "code": "1112",
+          "label": "Scedosporium (pesquisa)"
+        },
+        {
+          "code": "1113",
+          "label": "Schistosoma (pesquisa)"
+        },
+        {
+          "code": "1114",
+          "label": "Schistosomose /Esquistossomose - IgG"
+        },
+        {
+          "code": "1115",
+          "label": "Schistosomose /Esquistossomose - IgM"
+        },
+        {
+          "code": "1116",
+          "label": "Scopulariopsis (pesquisa)"
+        },
+        {
+          "code": "1117",
+          "label": "Selênio plasmático"
+        },
+        {
+          "code": "1118",
+          "label": "Selênio urinário"
+        },
+        {
+          "code": "1119",
+          "label": "Serpulina (pesquisa)"
+        },
+        {
+          "code": "1120",
+          "label": "Shigella (pesquisa)"
+        },
+        {
+          "code": "1121",
+          "label": "Sífilis - FTA-ABS - IgG"
+        },
+        {
+          "code": "1122",
+          "label": "Sífilis - FTA-ABS - IgM"
+        },
+        {
+          "code": "1123",
+          "label": "Sífilis - VDRL"
+        },
+        {
+          "code": "1124",
+          "label": "Silício sangúineo"
+        },
+        {
+          "code": "1125",
+          "label": "S-metilcisteína"
+        },
+        {
+          "code": "1126",
+          "label": "Sobrecarga de água, prova"
+        },
+        {
+          "code": "1127",
+          "label": "Sódio"
+        },
+        {
+          "code": "1128",
+          "label": "Solventes, pesquisa no ar expirado"
+        },
+        {
+          "code": "1129",
+          "label": "Somatomedina C (IGF1)"
+        },
+        {
+          "code": "1431",
+          "label": "Somatório de ácidos mandélico e fenilglioxílico na urina"
+        },
+        {
+          "code": "1130",
+          "label": "Somatotrófico coriônico-hormônio (HCS ou PHL)"
+        },
+        {
+          "code": "1131",
+          "label": "Sporothrix (pesquisa)"
+        },
+        {
+          "code": "1132",
+          "label": "Staphylococcus (pesquisa)"
+        },
+        {
+          "code": "1133",
+          "label": "Streptococcus (pesquisa)"
+        },
+        {
+          "code": "1134",
+          "label": "Strongyloides (pesquisa)"
+        },
+        {
+          "code": "1135",
+          "label": "Substâncias redutoras nas fezes"
+        },
+        {
+          "code": "1136",
+          "label": "Succinil acetona"
+        },
+        {
+          "code": "1137",
+          "label": "Sulfato de dehidroepiandrosterona (S-DHEA)"
+        },
+        {
+          "code": "1138",
+          "label": "Sulfatos inorgânicos"
+        },
+        {
+          "code": "1139",
+          "label": "Sulfatos orgânicos"
+        },
+        {
+          "code": "1140",
+          "label": "Sulfo-hemoglobina"
+        },
+        {
+          "code": "1141",
+          "label": "Sulfonamidas livre e acetilada (% de acetilação)"
+        },
+        {
+          "code": "1142",
+          "label": "T3 livre"
+        },
+        {
+          "code": "1143",
+          "label": "T3 retenção"
+        },
+        {
+          "code": "1144",
+          "label": "T3 reverso"
+        },
+        {
+          "code": "1145",
+          "label": "T4 livre"
+        },
+        {
+          "code": "1146",
+          "label": "Tacrolimus"
+        },
+        {
+          "code": "1147",
+          "label": "Taenia saginata (pesquisa)"
+        },
+        {
+          "code": "1148",
+          "label": "Taenia solium (pesquisa)"
+        },
+        {
+          "code": "1149",
+          "label": "Tálio sanguíneo"
+        },
+        {
+          "code": "1150",
+          "label": "Tálio urinário"
+        },
+        {
+          "code": "1151",
+          "label": "Telúrio urinário"
+        },
+        {
+          "code": "1152",
+          "label": "Tempo de coagulação"
+        },
+        {
+          "code": "1153",
+          "label": "Tempo de protrombina"
+        },
+        {
+          "code": "1154",
+          "label": "Tempo de reptilase"
+        },
+        {
+          "code": "1155",
+          "label": "Tempo de sangramento (Duke)"
+        },
+        {
+          "code": "1156",
+          "label": "Tempo de sangramento de IVY"
+        },
+        {
+          "code": "1157",
+          "label": "Tempo de trombina"
+        },
+        {
+          "code": "1158",
+          "label": "Tempo de tromboplastina parcial ativada (TTPA)"
+        },
+        {
+          "code": "1159",
+          "label": "Teofilina"
+        },
+        {
+          "code": "1160",
+          "label": "Ter-butil-álcool sanguíneo"
+        },
+        {
+          "code": "1161",
+          "label": "Ter-butil-álcool urinário"
+        },
+        {
+          "code": "1162",
+          "label": "Ter-butil-metil-éter sanguíneo"
+        },
+        {
+          "code": "1163",
+          "label": "Ter-butil-metil-éter urinário"
+        },
+        {
+          "code": "1164",
+          "label": "Teste de inibição da migração dos linfócitos"
+        },
+        {
+          "code": "1165",
+          "label": "Teste de tolerância a insulina ou hipoglicemiantes orais"
+        },
+        {
+          "code": "1166",
+          "label": "Teste ergométrico (de esforço)"
+        },
+        {
+          "code": "1167",
+          "label": "Teste oral de tolerância à glicose"
+        },
+        {
+          "code": "1168",
+          "label": "Teste respiratório para H. Pylori"
+        },
+        {
+          "code": "1169",
+          "label": "Testes cutâneo-alérgicos para alérgenos da poeira"
+        },
+        {
+          "code": "1170",
+          "label": "Testes cutâneo-alérgicos para alimentos"
+        },
+        {
+          "code": "1171",
+          "label": "Testes cutâneo-alérgicos para fungos"
+        },
+        {
+          "code": "1172",
+          "label": "Testes cutâneo-alérgicos para insetos hematófagos"
+        },
+        {
+          "code": "1173",
+          "label": "Testes cutâneo-alérgicos para pólens"
+        },
+        {
+          "code": "1174",
+          "label": "Testes de contato - Até 30 substâncias"
+        },
+        {
+          "code": "1175",
+          "label": "Testosterona livre"
+        },
+        {
+          "code": "1176",
+          "label": "Testosterona total"
+        },
+        {
+          "code": "1177",
+          "label": "Tetracloreto de carbono (tetraclorometano)"
+        },
+        {
+          "code": "1178",
+          "label": "Tetracloroetano"
+        },
+        {
+          "code": "1179",
+          "label": "Tetracloroetileno"
+        },
+        {
+          "code": "1428",
+          "label": "Tetracloroetileno no ar exalado"
+        },
+        {
+          "code": "1180",
+          "label": "Tetrahidroftalimida urinária"
+        },
+        {
+          "code": "1181",
+          "label": "Tetra-hidrofurano"
+        },
+        {
+          "code": "1182",
+          "label": "Thiram sanguíneo"
+        },
+        {
+          "code": "1183",
+          "label": "Tiocianato plasmático"
+        },
+        {
+          "code": "1184",
+          "label": "Tiocianato urinário"
+        },
+        {
+          "code": "1185",
+          "label": "Tireoglobulina"
+        },
+        {
+          "code": "1186",
+          "label": "Tirosina"
+        },
+        {
+          "code": "1187",
+          "label": "Tirosinose na urina"
+        },
+        {
+          "code": "1188",
+          "label": "Tolueno sanguíneo"
+        },
+        {
+          "code": "1189",
+          "label": "Tolueno urinário"
+        },
+        {
+          "code": "1190",
+          "label": "Tolueno-2,4-diamina"
+        },
+        {
+          "code": "1191",
+          "label": "Tolueno-2,6-diamina"
+        },
+        {
+          "code": "1416",
+          "label": "Tomografia de tórax"
+        },
+        {
+          "code": "1192",
+          "label": "Torovírus bovino (pesquisa)"
+        },
+        {
+          "code": "1193",
+          "label": "Torovírus equino (pesquisa)"
+        },
+        {
+          "code": "1194",
+          "label": "Torovírus humano (pesquisa)"
+        },
+        {
+          "code": "1195",
+          "label": "Torovírus porcino (pesquisa)"
+        },
+        {
+          "code": "1196",
+          "label": "Toxocara (pesquisa)"
+        },
+        {
+          "code": "1197",
+          "label": "Toxocara canis - IgG"
+        },
+        {
+          "code": "1198",
+          "label": "Toxocara canis - IgM"
+        },
+        {
+          "code": "1199",
+          "label": "Toxoplasma (pesquisa)"
+        },
+        {
+          "code": "1200",
+          "label": "Toxoplasmina, IDeR"
+        },
+        {
+          "code": "1201",
+          "label": "Toxoplasmose - IgA"
+        },
+        {
+          "code": "1202",
+          "label": "Toxoplasmose - IgG"
+        },
+        {
+          "code": "1203",
+          "label": "Toxoplasmose - IgM"
+        },
+        {
+          "code": "1204",
+          "label": "Transaminase oxalacética (amino transferase aspartato)"
+        },
+        {
+          "code": "1205",
+          "label": "Transaminase pirúvica (amino transferase de alanina)"
+        },
+        {
+          "code": "1206",
+          "label": "Transferrina"
+        },
+        {
+          "code": "1207",
+          "label": "Treponema (pesquisa)"
+        },
+        {
+          "code": "1208",
+          "label": "Triazínicos dealquilados"
+        },
+        {
+          "code": "1209",
+          "label": "Triazolam"
+        },
+        {
+          "code": "1210",
+          "label": "Trichinella (pesquisa)"
+        },
+        {
+          "code": "1211",
+          "label": "Trichomonas (pesquisa)"
+        },
+        {
+          "code": "1212",
+          "label": "Trichosporon (pesquisa)"
+        },
+        {
+          "code": "1213",
+          "label": "Trichostrongylus (pesquisa)"
+        },
+        {
+          "code": "1214",
+          "label": "Trichuris (pesquisa)"
+        },
+        {
+          "code": "1215",
+          "label": "Triclorocompostos totais"
+        },
+        {
+          "code": "1216",
+          "label": "Tricloroetano (tricloroetanol) sanguíneo"
+        },
+        {
+          "code": "1217",
+          "label": "Tricloroetano (tricloroetanol) urinário"
+        },
+        {
+          "code": "1218",
+          "label": "Tricloroetileno"
+        },
+        {
+          "code": "1219",
+          "label": "Tricloropridinol"
+        },
+        {
+          "code": "1220",
+          "label": "Tricophyton (pesquisa)"
+        },
+        {
+          "code": "1221",
+          "label": "Trifenilcarbinol urinário"
+        },
+        {
+          "code": "1222",
+          "label": "Triglicerídeos"
+        },
+        {
+          "code": "1223",
+          "label": "Trimipramina"
+        },
+        {
+          "code": "1224",
+          "label": "Tripsina imuno reativa (IRT)"
+        },
+        {
+          "code": "1225",
+          "label": "Troca de cromátides irmãs (pesquisa)"
+        },
+        {
+          "code": "1226",
+          "label": "Tromboelastograma"
+        },
+        {
+          "code": "1227",
+          "label": "Troponina"
+        },
+        {
+          "code": "1228",
+          "label": "Trypanosoma (pesquisa)"
+        },
+        {
+          "code": "1229",
+          "label": "Tungstênio urinário"
+        },
+        {
+          "code": "1230",
+          "label": "Ultrassonografia"
+        },
+        {
+          "code": "1231",
+          "label": "Ultrassonografia abdome inferior feminino (bexiga, útero, ovário e anexos)"
+        },
+        {
+          "code": "1232",
+          "label": "Ultrassonografia abdome inferior masculino (bexiga, próstata e vesículas seminais)"
+        },
+        {
+          "code": "1233",
+          "label": "Ultrassonografia abdome superior (fígado, vias biliares, vesícula, pâncreas, baço)"
+        },
+        {
+          "code": "1234",
+          "label": "Ultrassonografia abdome total (inclui abdome inferior)"
+        },
+        {
+          "code": "1235",
+          "label": "Ultrassonografia aparelho urinário feminino (rins, ureteres e bexiga)"
+        },
+        {
+          "code": "1236",
+          "label": "Ultrassonografia aparelho urinário masculino (rins, ureteres, bexiga e próstata)"
+        },
+        {
+          "code": "1237",
+          "label": "Ultrassonografia articular"
+        },
+        {
+          "code": "1238",
+          "label": "Ultrassonografia dermatológica - Pele e subcutâneo"
+        },
+        {
+          "code": "1239",
+          "label": "Urânio"
+        },
+        {
+          "code": "1240",
+          "label": "Ureaplasma (pesquisa)"
+        },
+        {
+          "code": "1241",
+          "label": "Urease, teste rápido parahelicobacter pylori"
+        },
+        {
+          "code": "1242",
+          "label": "Ureia"
+        },
+        {
+          "code": "1243",
+          "label": "Urobilinogênio"
+        },
+        {
+          "code": "1244",
+          "label": "Uroporfirinas"
+        },
+        {
+          "code": "1245",
+          "label": "Vanádio sanguíneo/plasmático"
+        },
+        {
+          "code": "1246",
+          "label": "Vanádio urinário"
+        },
+        {
+          "code": "1247",
+          "label": "Varicela - IgG"
+        },
+        {
+          "code": "1248",
+          "label": "Varicela - IgM"
+        },
+        {
+          "code": "1249",
+          "label": "Vibrio (pesquisa)"
+        },
+        {
+          "code": "1449",
+          "label": "Videolaringoscopia"
+        },
+        {
+          "code": "1251",
+          "label": "Vírus Absettarov (pesquisa)"
+        },
+        {
+          "code": "1252",
+          "label": "Vírus Akabane (pesquisa)"
+        },
+        {
+          "code": "1253",
+          "label": "Vírus Amapari (pesquisa)"
+        },
+        {
+          "code": "1254",
+          "label": "Vírus Andes (pesquisa)"
+        },
+        {
+          "code": "1255",
+          "label": "Vírus Banna (pesquisa)"
+        },
+        {
+          "code": "1256",
+          "label": "Vírus Bebaru (pesquisa)"
+        },
+        {
+          "code": "1257",
+          "label": "Vírus Belgrade (Dobrava) (pesquisa)"
+        },
+        {
+          "code": "1258",
+          "label": "Vírus Bhanja (pesquisa)"
+        },
+        {
+          "code": "1250",
+          "label": "Vírus Buffalopox vaccinia (pesquisa)"
+        },
+        {
+          "code": "1259",
+          "label": "Vírus Bunyamwera (pesquisa)"
+        },
+        {
+          "code": "1260",
+          "label": "Vírus Chapare (pesquisa)"
+        },
+        {
+          "code": "1261",
+          "label": "Vírus chikungunya (pesquisa)"
+        },
+        {
+          "code": "1262",
+          "label": "Vírus Coxsackie (A e B) (pesquisa)"
+        },
+        {
+          "code": "1263",
+          "label": "Vírus da conjuntivite hemorrágica aguda (AHC) (pesquisa)"
+        },
+        {
+          "code": "1264",
+          "label": "Vírus da coriomeningite linfocítica (pesquisa)"
+        },
+        {
+          "code": "1265",
+          "label": "Vírus da dengue tipos 1-4 (pesquisa)"
+        },
+        {
+          "code": "1266",
+          "label": "Vírus da doença da floresta Kyasanur (pesquisa)"
+        },
+        {
+          "code": "1267",
+          "label": "Vírus da doença de carneiros do Nairóbi (pesquisa)"
+        },
+        {
+          "code": "1268",
+          "label": "Vírus da doença lupina (pesquisa)"
+        },
+        {
+          "code": "1269",
+          "label": "Vírus da encefalite da Califórnia (pesquisa)"
+        },
+        {
+          "code": "1270",
+          "label": "Vírus da encefalite de Murray Valley (pesquisa)"
+        },
+        {
+          "code": "1271",
+          "label": "Vírus da encefalite de St. Louis (pesquisa)"
+        },
+        {
+          "code": "1272",
+          "label": "Vírus da encefalite do carrapato (pesquisa)"
+        },
+        {
+          "code": "1273",
+          "label": "Vírus da encefalite do carrapato da Europa Central (pesquisa)"
+        },
+        {
+          "code": "1274",
+          "label": "Vírus da encefalite do carrapato do extremo Oriente (pesquisa)"
+        },
+        {
+          "code": "1275",
+          "label": "Vírus da encefalite do carrapato siberiano (pesquisa)"
+        },
+        {
+          "code": "1276",
+          "label": "Vírus da encefalite equina do oeste (pesquisa)"
+        },
+        {
+          "code": "1277",
+          "label": "Vírus da encefalite japonesa (pesquisa)"
+        },
+        {
+          "code": "1278",
+          "label": "Vírus da encefalite primavera-verão russa (pesquisa)"
+        },
+        {
+          "code": "1279",
+          "label": "Vírus da estomatite vesicular (pesquisa)"
+        },
+        {
+          "code": "1280",
+          "label": "Vírus da família Bunyaviridae (pesquisa)"
+        },
+        {
+          "code": "1281",
+          "label": "Vírus da família Caliciviridae (pesquisa)"
+        },
+        {
+          "code": "1282",
+          "label": "Vírus da febre amarela (pesquisa)"
+        },
+        {
+          "code": "1283",
+          "label": "Vírus da febre com trombocitopenia severa (pesquisa)"
+        },
+        {
+          "code": "1284",
+          "label": "Vírus da febre de Lassa (pesquisa)"
+        },
+        {
+          "code": "1285",
+          "label": "Vírus da febre de Rift Valley (pesquisa)"
+        },
+        {
+          "code": "1286",
+          "label": "Vírus da febre do carrapato do Colorado (pesquisa)"
+        },
+        {
+          "code": "1288",
+          "label": "Vírus da febre hemorrágica da Crimeia/Congo (pesquisa)"
+        },
+        {
+          "code": "1289",
+          "label": "Vírus da febre hemorrágica de Alkhurma (pesquisa)"
+        },
+        {
+          "code": "1287",
+          "label": "Vírus da febre hemorrágica de Omsk (pesquisa)"
+        },
+        {
+          "code": "1290",
+          "label": "Vírus da imudeficiência humana - HIV (pesquisa)"
+        },
+        {
+          "code": "1291",
+          "label": "Vírus da imudeficiência símia (pesquisa)"
+        },
+        {
+          "code": "1292",
+          "label": "Vírus da lebre Snoeshoe (pesquisa)"
+        },
+        {
+          "code": "1293",
+          "label": "Vírus da meningite de perus de Israel (pesquisa)"
+        },
+        {
+          "code": "1294",
+          "label": "Vírus da meningoencefalomielite (pesquisa)"
+        },
+        {
+          "code": "1295",
+          "label": "Vírus da mosca da areia de Naples (pesquisa)"
+        },
+        {
+          "code": "1296",
+          "label": "Vírus da varíola bovina (pesquisa)"
+        },
+        {
+          "code": "1297",
+          "label": "Vírus das águas brancas de Arroyo (pesquisa)"
+        },
+        {
+          "code": "1298",
+          "label": "Vírus Dhori (pesquisa)"
+        },
+        {
+          "code": "1299",
+          "label": "Vírus do molusco contagioso (pesquisa)"
+        },
+        {
+          "code": "1300",
+          "label": "Vírus do morcego de Lagos (pesquisa)"
+        },
+        {
+          "code": "1301",
+          "label": "Vírus Dugbe (pesquisa)"
+        },
+        {
+          "code": "1302",
+          "label": "Vírus Duvenhage (pesquisa)"
+        },
+        {
+          "code": "1303",
+          "label": "Vírus Everglades (pesquisa)"
+        },
+        {
+          "code": "1304",
+          "label": "Vírus Flexal (pesquisa)"
+        },
+        {
+          "code": "1305",
+          "label": "Vírus Ganjam (pesquisa)"
+        },
+        {
+          "code": "1306",
+          "label": "Vírus Germiston (pesquisa)"
+        },
+        {
+          "code": "1307",
+          "label": "Vírus Getah (pesquisa)"
+        },
+        {
+          "code": "1308",
+          "label": "Vírus Guanarito (pesquisa)"
+        },
+        {
+          "code": "1309",
+          "label": "Vírus Hantaan (pesquisa)"
+        },
+        {
+          "code": "1310",
+          "label": "Vírus Hanzalova (pesquisa)"
+        },
+        {
+          "code": "1311",
+          "label": "Vírus Hazara (pesquisa)"
+        },
+        {
+          "code": "1312",
+          "label": "Vírus Hendra (pesquisa)"
+        },
+        {
+          "code": "1313",
+          "label": "Vírus Herpes Simplex 1 e 2 (pesquisa)"
+        },
+        {
+          "code": "1314",
+          "label": "Vírus Hypr (pesquisa)"
+        },
+        {
+          "code": "1315",
+          "label": "Vírus Influenza A, B e C (pesquisa)"
+        },
+        {
+          "code": "1316",
+          "label": "Vírus Ippy (pesquisa)"
+        },
+        {
+          "code": "1317",
+          "label": "Vírus Junin (pesquisa)"
+        },
+        {
+          "code": "1318",
+          "label": "Vírus Kodoko (pesquisa)"
+        },
+        {
+          "code": "1319",
+          "label": "Vírus Kumlinge (pesquisa)"
+        },
+        {
+          "code": "1320",
+          "label": "Vírus La Crosse (pesquisa)"
+        },
+        {
+          "code": "1321",
+          "label": "Vírus Latino (pesquisa)"
+        },
+        {
+          "code": "1322",
+          "label": "Vírus linfotrópico de células T de primatas, tipos 1 e 2 (pesquisa)"
+        },
+        {
+          "code": "1323",
+          "label": "Vírus Lujo (pesquisa)"
+        },
+        {
+          "code": "1324",
+          "label": "Vírus Machupo (pesquisa)"
+        },
+        {
+          "code": "1325",
+          "label": "Vírus Mayaro (pesquisa)"
+        },
+        {
+          "code": "1326",
+          "label": "Vírus Merino Walk (pesquisa)"
+        },
+        {
+          "code": "1327",
+          "label": "Vírus Middelburg (pesquisa)"
+        },
+        {
+          "code": "1328",
+          "label": "Vírus Mobala (pesquisa)"
+        },
+        {
+          "code": "1329",
+          "label": "Vírus Mokola (pesquisa)"
+        },
+        {
+          "code": "1330",
+          "label": "Vírus Monkeypox (varíola símia) (pesquisa)"
+        },
+        {
+          "code": "1331",
+          "label": "Vírus Mopeia (pesquisa)"
+        },
+        {
+          "code": "1332",
+          "label": "Vírus Morogoro (pesquisa)"
+        },
+        {
+          "code": "1333",
+          "label": "Vírus Mucambo (pesquisa)"
+        },
+        {
+          "code": "1334",
+          "label": "Vírus Ndumu (pesquisa)"
+        },
+        {
+          "code": "1335",
+          "label": "Vírus Negishi (pesquisa)"
+        },
+        {
+          "code": "1336",
+          "label": "Vírus Ngari (pesquisa)"
+        },
+        {
+          "code": "1337",
+          "label": "Vírus Nipah (pesquisa)"
+        },
+        {
+          "code": "1338",
+          "label": "Vírus Norwalk-like (pesquisa)"
+        },
+        {
+          "code": "1339",
+          "label": "Vírus O'nyong-nyong (pesquisa)"
+        },
+        {
+          "code": "1340",
+          "label": "Vírus Orf (pesquisa)"
+        },
+        {
+          "code": "1341",
+          "label": "Vírus Oropouche (pesquisa)"
+        },
+        {
+          "code": "1342",
+          "label": "Vírus Parainfluenza (pesquisa)"
+        },
+        {
+          "code": "1343",
+          "label": "Vírus Parana (pesquisa)"
+        },
+        {
+          "code": "1344",
+          "label": "Vírus Pichinde (pesquisa)"
+        },
+        {
+          "code": "1345",
+          "label": "Vírus Piry (pesquisa)"
+        },
+        {
+          "code": "1346",
+          "label": "Vírus Powassan (pesquisa)"
+        },
+        {
+          "code": "1347",
+          "label": "Vírus Prospect Hill (pesquisa)"
+        },
+        {
+          "code": "1348",
+          "label": "Vírus Pseudocowpox (pseudo varíola bovina) (pesquisa)"
+        },
+        {
+          "code": "1349",
+          "label": "Vírus Punta Toro (pesquisa)"
+        },
+        {
+          "code": "1350",
+          "label": "Vírus Puumala (pesquisa)"
+        },
+        {
+          "code": "1351",
+          "label": "Vírus relacionado à leucemia murina xenotrópico (pesquisa)"
+        },
+        {
+          "code": "1352",
+          "label": "Vírus Rocio (pesquisa)"
+        },
+        {
+          "code": "1353",
+          "label": "Vírus Ross River (pesquisa)"
+        },
+        {
+          "code": "1354",
+          "label": "Vírus Sabia (pesquisa)"
+        },
+        {
+          "code": "1355",
+          "label": "Vírus Sal Vieja (pesquisa)"
+        },
+        {
+          "code": "1356",
+          "label": "Vírus San Perlita (pesquisa)"
+        },
+        {
+          "code": "1357",
+          "label": "Vírus sem nome ou de Muerto Canyon (pesquisa)"
+        },
+        {
+          "code": "1358",
+          "label": "Vírus Seoul (pesquisa)"
+        },
+        {
+          "code": "1359",
+          "label": "Vírus Símio 40 (SV40) (pesquisa)"
+        },
+        {
+          "code": "1360",
+          "label": "Vírus sincicial respiratório - Elisa - IgG"
+        },
+        {
+          "code": "1368",
+          "label": "Vírus sincicial respiratório (pesquisa)"
+        },
+        {
+          "code": "1417",
+          "label": "Vírus sincicial respiratório (sorologia)"
+        },
+        {
+          "code": "1361",
+          "label": "Vírus sincicial respiratório humano (pesquisa)"
+        },
+        {
+          "code": "1369",
+          "label": "Vírus Tamiami (pesquisa)"
+        },
+        {
+          "code": "1362",
+          "label": "Vírus Thogoto (pesquisa)"
+        },
+        {
+          "code": "1363",
+          "label": "Vírus Torque teno (TTV) (pesquisa)"
+        },
+        {
+          "code": "1364",
+          "label": "Vírus Toscana (pesquisa)"
+        },
+        {
+          "code": "1365",
+          "label": "Vírus tumorais do macaco Yaba (pesquisa)"
+        },
+        {
+          "code": "1366",
+          "label": "Vírus varíola (maior e menor) (pesquisa)"
+        },
+        {
+          "code": "1367",
+          "label": "Vírus Wesselsbron (pesquisa)"
+        },
+        {
+          "code": "1370",
+          "label": "Vitamina A"
+        },
+        {
+          "code": "1371",
+          "label": "Vitamina B1"
+        },
+        {
+          "code": "1372",
+          "label": "Vitamina B12"
+        },
+        {
+          "code": "1373",
+          "label": "Vitamina B2"
+        },
+        {
+          "code": "1374",
+          "label": "Vitamina B3"
+        },
+        {
+          "code": "1375",
+          "label": "Vitamina B6"
+        },
+        {
+          "code": "1376",
+          "label": "Vitamina D2"
+        },
+        {
+          "code": "1418",
+          "label": "Vitamina D3"
+        },
+        {
+          "code": "1377",
+          "label": "Vitamina E"
+        },
+        {
+          "code": "1378",
+          "label": "Vitamina K"
+        },
+        {
+          "code": "1379",
+          "label": "Waaler-Rose (fator reumatoide)"
+        },
+        {
+          "code": "1380",
+          "label": "Weil Felix (Ricketsiose)"
+        },
+        {
+          "code": "1381",
+          "label": "Western blot (anticorpos anti-HIV)"
+        },
+        {
+          "code": "1382",
+          "label": "Western blot (anticorpos anti-HTV-I ou HTLV-II)"
+        },
+        {
+          "code": "1383",
+          "label": "Widal, reação de"
+        },
+        {
+          "code": "1384",
+          "label": "Wuchereria (pesquisa)"
+        },
+        {
+          "code": "1385",
+          "label": "X frágil (pesquisa)"
+        },
+        {
+          "code": "1386",
+          "label": "Xileno sanguíneo"
+        },
+        {
+          "code": "1387",
+          "label": "Xilose, teste de absorção à"
+        },
+        {
+          "code": "1388",
+          "label": "Xylohypha (pesquisa)"
+        },
+        {
+          "code": "1389",
+          "label": "Yersinia (pesquisa)"
+        },
+        {
+          "code": "1390",
+          "label": "Yersinia pestis (pesquisa)"
+        },
+        {
+          "code": "1391",
+          "label": "Zika vírus (pesquisa)"
+        },
+        {
+          "code": "1392",
+          "label": "Zika vírus (sorologia)"
+        },
+        {
+          "code": "1393",
+          "label": "Zinco sanguíneo"
+        },
+        {
+          "code": "1394",
+          "label": "Zinco urinário"
+        },
+        {
+          "code": "1395",
+          "label": "Zircônio urinário"
+        },
+        {
+          "code": "1396",
+          "label": "α-fluoro-β-alanine (FBAL)"
+        },
+        {
+          "code": "1397",
+          "label": "α-naftol"
+        },
+        {
+          "code": "1992",
+          "label": "Detecção de agente químico não especificado anteriormente"
+        },
+        {
+          "code": "1993",
+          "label": "Detecção de agentes infecciosos não especificados anteriormente por ELISA"
+        },
+        {
+          "code": "1994",
+          "label": "Detecção de agentes infecciosos não especificados anteriormente por imunofluorescência"
+        },
+        {
+          "code": "1995",
+          "label": "Detecção de agentes infecciosos não especificados anteriormente por métodos sorológicos"
+        },
+        {
+          "code": "1996",
+          "label": "Detecção de agentes infecciosos não especificados anteriormente por PCR"
+        },
+        {
+          "code": "1997",
+          "label": "Detecção de agentes infecciosos não especificados anteriormente por western blot"
+        },
+        {
+          "code": "1998",
+          "label": "Detecção de medicamento não especificado anteriormente"
+        },
+        {
+          "code": "9999",
+          "label": "Outros procedimentos diagnósticos não descritos anteriormente"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sst-hoje.local/schemas/pgr-risk-inventory.json",
+  "title": "Inventario de riscos do PGR",
+  "description": "Contrato estrutural. Nao classifica riscos nem substitui avaliacao profissional.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "tenantId", "companyId", "unitId", "revision", "title", "activityDescription", "actionPlan", "items"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "tenantId": { "type": "string", "minLength": 1, "maxLength": 140 },
+    "companyId": { "type": "string", "minLength": 1, "maxLength": 140 },
+    "unitId": { "type": "string", "minLength": 1, "maxLength": 140 },
+    "revision": { "type": "integer", "minimum": 1 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 140 },
+    "activityDescription": { "type": "string", "minLength": 1, "maxLength": 3000 },
+    "actionPlan": { "type": "string", "minLength": 1, "maxLength": 5000 },
+    "legacySource": { "$ref": "#/$defs/legacySource" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/riskItem" }
+    }
+  },
+  "$defs": {
+    "text": { "type": "string", "maxLength": 3000 },
+    "legacySource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["draftId", "status", "revision", "authorUserId", "createdAt", "updatedAt", "snapshots", "history"],
+      "properties": {
+        "draftId": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "status": { "enum": ["draft", "in_review", "approved"] },
+        "revision": { "type": "integer", "minimum": 1 },
+        "authorUserId": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "reviewerUserId": { "type": "string", "maxLength": 200 },
+        "reviewerRole": { "type": "string", "maxLength": 80 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "updatedAt": { "type": "string", "maxLength": 64 },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "action", "occurredAt", "actorUserId", "actorRole"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+              "action": { "enum": ["draft", "in_review", "approved", "updated"] },
+              "occurredAt": { "type": "string", "maxLength": 64 },
+              "actorUserId": { "type": "string", "minLength": 1, "maxLength": 200 },
+              "actorRole": { "type": "string", "minLength": 1, "maxLength": 80 },
+              "note": { "type": "string", "maxLength": 1000 }
+            }
+          }
+        },
+        "snapshots": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["version", "title", "activityDescription", "riskInventory", "actionPlan", "savedAt", "actorUserId", "actorRole"],
+            "properties": {
+              "version": { "type": "integer", "minimum": 1 },
+              "title": { "type": "string", "maxLength": 140 },
+              "activityDescription": { "$ref": "#/$defs/text" },
+              "riskInventory": { "type": "string", "maxLength": 5000 },
+              "actionPlan": { "type": "string", "maxLength": 5000 },
+              "savedAt": { "type": "string", "maxLength": 64 },
+              "actorUserId": { "type": "string", "maxLength": 200 },
+              "actorRole": { "type": "string", "maxLength": 80 }
+            }
+          }
+        }
+      }
+    },
+    "riskItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "process", "activity", "hazard", "sourceCircumstance", "possibleHarm", "exposedGroups", "exposureDescription", "existingMeasures", "evidenceRefs", "assessment"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "process": { "$ref": "#/$defs/text" },
+        "activity": { "$ref": "#/$defs/text" },
+        "hazard": { "$ref": "#/$defs/text" },
+        "sourceCircumstance": { "$ref": "#/$defs/text" },
+        "possibleHarm": { "$ref": "#/$defs/text" },
+        "exposedGroups": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "uniqueItems": true
+        },
+        "exposureDescription": { "$ref": "#/$defs/text" },
+        "existingMeasures": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 1000 }
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 200 }
+        },
+        "assessment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status"],
+          "properties": {
+            "status": { "enum": ["reported", "under_review", "assessed"] },
+            "method": { "type": "string", "maxLength": 500 },
+            "decision": { "type": "string", "maxLength": 1000 },
+            "assessor": { "type": "string", "maxLength": 200 },
+            "assessedAt": { "type": "string", "format": "date-time" }
+          },
+          "allOf": [
+            {
+              "if": { "properties": { "status": { "const": "assessed" } } },
+              "then": { "required": ["method", "decision", "assessor", "assessedAt"] }
+            }
+          ]
+        },
+        "esocialTable24": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "label", "catalogVersion", "sourceUrl", "rationale"],
+          "properties": {
+            "code": { "type": "string", "minLength": 1, "maxLength": 30 },
+            "label": { "type": "string", "minLength": 1, "maxLength": 1000 },
+            "catalogVersion": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "sourceUrl": { "type": "string", "format": "uri", "maxLength": 500 },
+            "rationale": { "type": "string", "minLength": 1, "maxLength": 2000 }
+          }
+        },
+        "exposureEvaluations": {
+          "type": "array",
+          "maxItems": 30,
+          "items": { "$ref": "#/$defs/exposureEvaluation" }
+        }
+      }
+    },
+    "exposureEvaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "agent", "type", "status", "evidenceRefs"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "agent": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "type": { "enum": ["qualitative", "quantitative"] },
+        "status": { "enum": ["planned", "collected", "reviewed"] },
+        "method": { "type": "string", "maxLength": 200 },
+        "result": { "type": "string", "maxLength": 1000 },
+        "unit": { "type": "string", "maxLength": 200 },
+        "evaluatedAt": { "type": "string", "format": "date" },
+        "responsible": { "type": "string", "maxLength": 200 },
+        "qualification": { "type": "string", "maxLength": 300 },
+        "professionalRegistration": { "type": "string", "maxLength": 200 },
+        "artReference": { "type": "string", "maxLength": 200 },
+        "evidenceRefs": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 200 } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["collected", "reviewed"] } } },
+          "then": { "required": ["method", "result", "responsible", "evaluatedAt"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "quantitative" }, "status": { "enum": ["collected", "reviewed"] } } },
+          "then": { "required": ["unit"] }
+        }
+      ]
+    }
+  }
+}

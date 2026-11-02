@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "incremental": false },
+  "include": [
+    "next-env.d.ts",
+    "src/lib/third-party-integration-gate.ts",
+    "src/lib/third-party-store.ts",
+    "src/lib/third-party-service.ts",
+    "src/lib/audit-log.ts",
+    "src/app/integracoes/terceiros/**/*.tsx",
+    "src/app/integracoes/terceiros/**/*.ts",
+    "src/app/relatorios/terceiros/page.tsx",
+    "tests/third-party-integration.test.ts"
+  ],
+  "exclude": ["node_modules", ".next"]
+}

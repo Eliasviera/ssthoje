@@ -1,0 +1,11 @@
+export type SiteContent = { eyebrow: string; headline: string; summary: string; ctaLabel: string; image: "flow" | "brand"; plans: { title: string; description: string }[]; faq: { question: string; answer: string }[] };
+export const DEFAULT_SITE_CONTENT: SiteContent = {
+  eyebrow: "GESTÃO PARA CONSULTORIAS DE SST", headline: "Não deixa para amanhã.", summary: "Organize empresas, documentos e pendências em um só lugar. Dê à sua equipe clareza sobre o que precisa de atenção hoje.", ctaLabel: "Acessar demonstração", image: "flow",
+  plans: [{ title: "Essencial", description: "Uma base para organizar empresas, trabalhadores e documentos da consultoria." }, { title: "Profissional", description: "Mais capacidade para acompanhar a operação e ampliar o atendimento da equipe." }],
+  faq: [{ question: "Para quem é o SST Hoje?", answer: "Para consultorias de Saúde e Segurança do Trabalho que precisam organizar empresas, unidades, trabalhadores e documentos." }, { question: "O sistema substitui a revisão profissional?", answer: "Não. As avaliações e os documentos precisam de revisão pelas pessoas habilitadas e autorizadas. A ferramenta organiza o trabalho e preserva as evidências." }, { question: "Já posso contratar e pagar?", answer: "Esta versão é uma demonstração local. Planos e eventos de cobrança são fictícios; não há contratação ou pagamento por esta página." }],
+};
+export function validateSiteContent(value: SiteContent): SiteContent {
+  function text(input: unknown, max: number) { if (typeof input !== "string" || !input.trim() || input.length > max) throw new Error(`Preencha os textos dentro do limite de ${max} caracteres.`); return input.trim(); }
+  if (!value || !["flow", "brand"].includes(value.image) || !Array.isArray(value.plans) || value.plans.length !== 2 || !Array.isArray(value.faq) || value.faq.length !== 3) throw new Error("Confira a imagem, os dois planos e as três perguntas.");
+  return { eyebrow: text(value.eyebrow, 70), headline: text(value.headline, 100), summary: text(value.summary, 420), ctaLabel: text(value.ctaLabel, 45), image: value.image, plans: value.plans.map(p => ({ title: text(p?.title, 60), description: text(p?.description, 240) })), faq: value.faq.map(f => ({ question: text(f?.question, 120), answer: text(f?.answer, 600) })) };
+}

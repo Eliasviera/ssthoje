@@ -1,0 +1,14 @@
+milestone: M00
+name: Descoberta e ambiente
+status: in_progress
+summary: "Inspecionar ambiente e preparar plano de execução"
+files_changed: []
+tests:
+  - command: "comando realmente executado"
+    result: "pass | fail | not_run"
+mock_vs_real:
+  real: []
+  mock: []
+blockers: []
+needs_human_approval: true
+next_step: "Aguardar aprovação antes de iniciar M01 quando solicitado pelo checkpoint"

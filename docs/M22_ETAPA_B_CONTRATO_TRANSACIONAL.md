@@ -1,0 +1,97 @@
+# M22 — contrato transacional da Etapa B para reconciliação legada
+
+Data: 2026-10-20. Especificação e funções candidatas; nenhuma foi ativada.
+
+## Objetivo e limite
+
+Definir a operação server-side que grava snapshot do convite, vínculo convite→caso e revisão do recibo em históricos append-only. Ela prova qual contexto foi conferido e qual alvo foi escolhido por uma pessoa revisora. Não prova que o JSON permaneceu bloqueado, não torna o arquivo privado verificado e não declara aplicabilidade/conformidade. JSON e fluxo atual permanecem operacionais; este contrato não autoriza migration, cutover, transferência de arquivo nem integração com o runtime.
+
+## Portas anteriores à implementação
+
+1. **Identidade de membership:** hoje `getCurrentTenantAccess` consulta `DEMO_MEMBERSHIPS` em memória, enquanto PostgreSQL tem `sst.tenant_memberships`. Antes de ativar a função, a autorização web e a checagem SQL devem consultar a mesma fonte ou comparar, na mesma operação, `user_id`, tenant ativo, membership ativo e role. Divergência nega. A permissão web continua sendo `documents.review` + `thirdparty.read` + módulo Terceiros habilitado; no mapa atual, `consultoria_admin` e `sst_tst` são elegíveis, `thirdparty.manage` isolado não é.
+2. **Sessão server-side:** a rota deve derivar `user_id` e `tenant_id` da sessão/contexto já autorizado; não receber esses valores, ator, event type, revisão corrente, digest ou estado de verificação como autoridade do browser. A função compara `sst.user_id`/`sst.tenant_id` aos registros ativos em PostgreSQL e deriva `actor_user_id` do contexto da transação. GUC é contexto server-side, não credencial criptográfica; nenhuma credencial PostgreSQL ou EXECUTE vai ao browser.
+3. **Origem mutável:** convite e recibo são relidos pelo servidor do JSON por chave de origem. O servidor constrói snapshot canônico dos campos mínimos aprovados e calcula SHA-256 sobre uma serialização versionada, com ordem de chaves/categorias definida, UTF-8 e distinção explícita entre `null` e texto vazio. O mesmo digest é exibido à pessoa revisora e enviado como expectativa. Antes de confirmar, o servidor relê a origem e recalcula o digest; divergência ou ausência aborta e exige nova revisão/estado `ambiguous` ou `unavailable`. JSON não participa do commit PostgreSQL: não declarar lock da origem; o que fica provado é o snapshot efetivamente revisado e capturado. A transação deve guardar `source_store`, tenant, invitation/receipt IDs, hash do contexto e hora de captura.
+4. **Arquivo e objeto:** antes do evento `matched`, o servidor recalcula SHA-256/tamanho do arquivo de origem e do objeto privado após leitura de retorno. PostgreSQL confere recibo, versão documental e objeto `verified` no event-head atual com mesmo tenant/hash/tamanho. Falha não grava `matched`. Esta fronteira exige adapter de storage e permanece fora do que a função SQL sozinha consegue verificar.
+
+## Operações lógicas
+
+A API candidata deve separar captura e decisão, ainda que a confirmação final use uma única transação SQL:
+
+- `capture_invitation_context(source_invitation_id, expected_context_sha256, freshly_computed_context_sha256, minimal_snapshot_fields)`: validar membership; conferir digest calculado pelo serviço contra expectativa; serializar por tenant/store/convite; append snapshot somente se a origem estiver igual ao contexto apresentado; repetição com mesma chave/revisão/conteúdo retorna o snapshot existente; divergência é conflito. O serviço calcula hash dos dados canônicos; a função valida formato e igualdade com o digest esperado, não tem acesso ao JSON.
+- `record_invitation_case_link(snapshot_id, expected_context_sha256, expected_revision, next_state, exact_case_ids?, rationale)`: derivar tenant/ator; bloquear a chave do convite e a cabeça do ledger; verificar que snapshot é da mesma origem/tenant/hash; conferir tenant/membership/role; validar transição; `proposed` exige consultoria elegível e caso completo `(company_id, unit_id, third_party_id, workflow_id)` existente por FK; `linked` exige conta `cliente` que seja representante vigente, não revogado, no mesmo escopo empresa/unidade, e deve confirmar exatamente o alvo da proposta corrente. Inserir revisão `expected_revision + 1`. Estados não resolvidos mantêm alvos nulos.
+- `record_receipt_reconciliation(legacy_receipt_id, expected_revision, next_state, link_event_id?, exact_document_target?, rationale)`: bloquear chave do recibo e do convite em ordem fixa; comparar recibo com origem e snapshot revisados; verificar que o último evento de convite é `linked`, pertence ao mesmo `(tenant, store, invitation_id)` do recibo e tem exatamente o alvo escolhido; validar categoria permitida e digest/tamanho; conferir versão/série/terceiro e event-head `verified`; validar transição e revisão esperada; inserir somente um evento append-only.
+
+Uma nova chamada não deve conseguir usar um evento `linked` histórico depois de `reopened`, `ambiguous`, `rejected` ou qualquer estado mais recente. Em repetição idêntica, devolver o ID/resultante já gravado; mesma chave com conteúdo, contexto, alvo ou revisão esperada diferentes retorna conflito sem inserir evento.
+
+## Transições do vínculo convite→caso
+
+| Estado corrente | Próximo estado | Requisito |
+|---|---|---|
+| inexistente | `pending` | Snapshot capturado e membership autorizado. |
+| `pending` | `proposed`, `ambiguous`, `rejected`, `unavailable` | Revisão da consultoria; `proposed` registra o caso exato sem ativar o vínculo. |
+| `proposed` | `linked`, `ambiguous`, `rejected`, `unavailable` | `linked` requer confirmação independente do representante cliente vigente para o mesmo caso/empresa/unidade. |
+| `ambiguous` | `proposed`, `rejected`, `unavailable` | Nova evidência/revisão humana; nunca selecionar por similaridade. |
+| `unavailable` | `pending` | Origem recuperada; snapshot novo/revalidado com digest. |
+| `linked` | `reopened` | Conflito ou revisão material; o vínculo anterior deixa de ser corrente para novas conciliações. |
+| `reopened` | `proposed`, `ambiguous`, `rejected`, `unavailable` | Nova proposta da consultoria e confirmação cliente separada. |
+| `rejected` | — | Terminal; correção exige procedimento explícito futuro, sem editar ou apagar histórico. |
+
+A transição e inserção devem ser serializadas por chave natural, inclusive quando ainda não existe linha para bloquear. Usar advisory transaction lock determinístico sobre tenant/store/source ID ou catálogo de locks equivalente; colisões do hash de advisory lock podem somente serializar operações extras, nunca substituir comparação da chave natural. Depois do lock, reler a maior revisão. Revisão ausente começa em 1; revisão esperada divergente falha como conflito.
+
+## Auditoria do caminho de autorização atual — 2026-10-20
+
+A leitura do código confirmou o bloqueio de identidade descrito acima. `src/lib/tenant-context.ts` chama `requireTenantAccess`, que resolve tenant e membership exclusivamente de `DEMO_TENANTS`/`DEMO_MEMBERSHIPS` em memória em `src/lib/tenant-access.ts`. Em seguida, `src/lib/tenant-read-transaction.ts` abre a transação e define `sst.user_id` e `sst.tenant_id`; ele não relê nem compara a linha de `sst.tenant_memberships`. A policy `memberships_current_user` em `db/migrations/0001_tenant_registry.sql` restringe a linha visível por esses GUCs, mas isso não demonstra, por si só, que a membership da sessão corresponde à linha cadastrada no banco.
+
+Consequência: a implementação global ainda **não** usa fonte única/paridade contínua. A existência de importador/seed ou de FKs para membership não pode ser tratada como prova de equivalência. O guard global não foi alterado, pois serve múltiplas áreas e uma mudança ali pode alterar acessos fora de M22.
+
+Em 2026-10-20, foi adicionado um gate isolado ao endpoint read-only de reconciliação de escopo da política (`third-party-rigor-postgres-read.ts`). Em 2026-10-21, a mesma checagem passou a proteger a leitura do painel de Terceiros (`third-party-gate-read-store.ts`) e o leitor PostgreSQL candidato (`third-party-postgres-read-store.ts`). Dentro da transação, compara `user_id`, tenant e papel derivados da sessão/guard web com membership ativa e tenant ativo retornados pelo PostgreSQL sob RLS; ausência ou divergência nega acesso. As leituras também conferem permissão e módulo Terceiros habilitado.
+
+Limite: o gate cobre somente essas leituras M22/Terceiros. Em 2026-11-01, `scripts/verify-tenant-membership-isolated.mjs` executou o helper sob `sst_hoje_app` em PostgreSQL descartável com RLS, confirmando caso ativo compatível e negação para linha ausente, membership/tenant suspensos, papel divergente, identidade/tenant divergentes e GUCs de usuário/tenant ausentes. O container foi removido. Essa prova valida o helper e a policy para os contextos cobertos, mas não alinha a fonte global de autorização, não valida convite/recibo e não autoriza reutilização como suficiente para gravação. Toda mutação M22 deverá revalidar e bloquear membership/tenant dentro da função confiável no mesmo commit.
+
+Também foi criado `src/lib/third-party-legacy-invitation-context.ts` com a canonicalização pura `sst-m22-legacy-invitation-context-v1`. A serialização é uma tupla UTF-8 ordenada com versão, `source_store`, tenant, convite, IDs de empresa/unidade, CNPJ declarado, escopo e categorias solicitadas ordenadas; `null` e texto vazio permanecem distintos. A função rejeita categoria ausente, não suportada ou duplicada e CNPJ vazio fora da forma nula. Ela não lê o JSON nem grava snapshots/eventos; é chamada pela prévia read-only descrita abaixo. O fluxo futuro de confirmação deve reler a origem, gerar/apresentar o mesmo digest, recalculá-lo antes da confirmação e abortar em drift; isso não cria lock distribuído sobre o JSON.
+
+Em seguida foi adicionada uma prévia somente leitura em `GET /api/third-party-rigor/invitations/{invitationId}/context`. Ela exige `documents.review`, `thirdparty.read`, módulo Terceiros habilitado e a checagem de paridade da membership; projeta apenas IDs de empresa/unidade, CNPJ declarado, escopo e categorias, e retorna o digest como `preview_only`/`persisted: false`. ID inexistente ou de outro tenant é indistinguível (`404`). O endpoint relê `data/third-party.json` a cada chamada, sem armazenar caminho, token, nomes, recibos ou bytes.
+
+Limite operacional: a prévia prova apenas o snapshot lido naquela chamada. Ela não segura lock no JSON, não grava o snapshot em PostgreSQL, não confirma uma decisão humana e ainda não tem interface de revisão/confirmar. Uma futura confirmação deve receber o digest esperado, reler e recalcular o mesmo convite e abortar com conflito em qualquer drift antes de chamar uma função de escrita confiável.
+
+## Isolamento, privilégios e ordem de lock
+
+- Um executor candidato dedicado `NOLOGIN NOSUPERUSER NOBYPASSRLS`, separado do papel web. Não pode ser owner das tabelas nem ter `BYPASSRLS`; a função com `SECURITY DEFINER` deve continuar sujeita ao `FORCE ROW LEVEL SECURITY`. Search path fixo em `pg_catalog`; objetos sempre qualificados; sem SQL dinâmico.
+- Revogar EXECUTE de `PUBLIC`; conceder somente funções explícitas ao papel server-side controlado. App não ganha SELECT/DML direto. Não criar `GRANT` amplo no schema.
+- RLS e FKs continuam defesa adicional; dentro da função validar tenant ativo e membership ativo sob lock compatível com suspensão, além do role permitido e dos IDs exatos.
+- Ordem única para evitar deadlock: membership/tenant → advisory lock da origem do convite → advisory lock do recibo → cabeças de evento/snapshot → alvo de caso/série/versão/objeto. Toda mutação/evento é append-only e confirma no mesmo commit PostgreSQL.
+- Falhas retornam categorias estáveis sem revelar existência de objetos de outro tenant. Não gravar um `matched` parcial; nenhuma falha em storage apaga o JSON original.
+
+## Provas mínimas antes de qualquer ativação
+
+Em PostgreSQL descartável com o papel executor real: actor/tenant por GUC ausente ou trocado; tenant/member suspenso; role inelegível; drift entre autorização web e DB; tenant/store/convite do recibo diferente do vínculo; snapshot/digest/contexto alterado; convite ausente; estado anterior terminal ou transição proibida; expected revision concorrente (uma grava, outra recebe conflito); `matched` usando link que não é cabeça atual; target/terceiro/unidade divergente; categoria incompatível; bytes/object event-head/hash/tamanho inválidos; repetição idempotente igual e chave repetida divergente; ausência de grants diretos; RLS cross-tenant e rollback sem evento parcial. Repetir UPDATE/DELETE/TRUNCATE sobre cada histórico, incluindo as tabelas novas.
+
+Apenas após estas provas e fonte única/coerente de membership poderá ser considerada uma integração server-side demonstrativa. Etapa B não ativa decisão, cutover de política ou portal público.
+
+## Primeiro candidato de escrita — 2026-10-20
+
+Criado `schemas/third-party-legacy-reconciliation-functions-candidate.sql` com `capture_invitation_context`. A função deriva tenant e ator dos GUCs server-side, relê e bloqueia tenant/membership ativos em papel permitido, serializa por `(tenant, store, invitation_id)` via advisory transaction lock, exige digest SHA-256 esperado igual ao recalculado pelo serviço, exige categorias suportadas/únicas/ordenadas e grava snapshot append-only com revisão sequencial. Retry com digest e campos idênticos devolve o snapshot já capturado; mesmo digest com payload divergente falha. O executor é `NOLOGIN`, não-superuser e sem `BYPASSRLS`, com EXECUTE concedido apenas ao papel candidato. Para `FOR SHARE`, PostgreSQL também exige privilégio UPDATE; o executor recebeu somente UPDATE da coluna `row_version` nas tabelas de tenant/membership, sem operação UPDATE exposta pela função.
+
+Prova em PostgreSQL 17 descartável passou pelo `examples/app/scripts/verify-m22-evidence-candidates.mjs`: 36/36 tabelas com RLS forçada e 114 FKs; captura e retry idempotente; digest esperado divergente e payload conflitante negados; role cliente, membership suspensa, ator/tenant divergentes e GUC ausente negados; leitura/escrita direta dos snapshots negada; duas capturas simultâneas da mesma chave serializadas em uma única revisão. A prova executou as etapas A e B selecionada, e o container foi removido. Nenhum banco ativo, runtime, PDF existente ou dado real foi acessado.
+
+Limites: SQL não lê nem bloqueia o JSON e não calcula o SHA-256 canônico; depende do serviço reler a origem e calcular novamente o digest imediatamente antes da chamada. Seguem pendentes adapter/runtime, fonte coerente de membership, confirmação humana e reconciliação recibo→documento. O SQL continua fora das migrations e não declara Etapa B concluída.
+
+## Segundo candidato — vínculo convite→caso — 2026-10-20
+
+Adicionada `record_invitation_case_link` ao mesmo SQL candidato. A operação deriva tenant/ator dos GUCs e bloqueia tenant/membership ativos em papel permitido; obtém a chave natural pelo snapshot, toma o mesmo advisory lock da captura e verifica se o snapshot ainda é o mais recente. A consultoria emite `pending` e então `proposed` com o caso exato, sem ativar vínculo. Só um representante `cliente` vigente e não revogado para a mesma empresa/unidade pode criar `linked`, confirmando os quatro IDs exatamente como propostos. O lock por representante também serializa com revogação concorrente. Estados sem proposta/decisão não carregam alvos. Compara `expected_revision`, grava evento append-only, e retry idêntico pelo mesmo ator retorna evento existente; payload divergente conflita. `reopened` invalida o vínculo corrente para novas conciliações.
+
+### Reforço da confirmação independente do cliente — 2026-10-22
+
+A revisão da hierarquia identificou que o primeiro desenho permitia à consultoria criar diretamente `linked`, embora o contrato exija confirmação cliente. O evento candidato agora admite `proposed` com o alvo exato; transição direta `pending→linked` é proibida. O SQL aceita `linked` somente de membership ativo `cliente` que possua registro de representante ativo e evento `designated`, sem `revoked`, e exige que a confirmação corresponda à proposta corrente. O candidato server-side separa `proposeCurrentLegacyInvitationCaseLink` (releitura/digest, snapshot e proposta na transação da consultoria) de `confirmCurrentLegacyInvitationCaseLink` (releitura/digest e confirmação na transação da conta cliente). A função trava o registro do representante em ordem compatível com a revogação. Esta camada continua sem rota/UI e não prova poderes legais nem validade da evidência formal; essas verificações seguem humanas.
+
+A prova descartável em PostgreSQL 17, pelo mesmo verificador, passou: `pending→linked→reopened→linked`; retries idênticos; transição `linked→pending` negada; revisão obsoleta, alvo de caso inexistente e snapshot superado negados; duas confirmações concorrentes para a revisão 0 resultaram em uma gravação e um conflito `40001`. O head final da prova após reabertura não reteve alvo de caso. Etapa A continuou em 36/36 tabelas RLS forçadas e 114 FKs; containers removidos. A prova não valida lock sobre JSON, confirmação humana, runtime, estado do arquivo ou a função futura de recibo.
+
+## Terceiro candidato — reconciliação do recibo — 2026-10-20
+
+Implementada `record_receipt_reconciliation` no SQL candidato. A função deriva tenant/ator dos GUCs, valida membership ativa elegível, lê o recibo imutável e adquire locks transacionais na ordem convite→recibo. Exige o snapshot atual com digest esperado e usa exclusivamente o evento de vínculo mais recente. `matched` requer vínculo `linked` para o snapshot corrente; aceita apenas PGR→PGR, PCMSO→PCMSO, LTCAT→LTCAT e Outro→OTHER; exige versão documental atual do terceiro vinculado com o mesmo digest/tamanho do recibo e evento-head do objeto em `verified`. Os IDs do caso, vínculo, série, versão e categoria-alvo são derivados no servidor. Eventos não matched não recebem alvo. Repetição idêntica é idempotente; seu retry matched só retorna o evento se o vínculo, a versão atual e o event-head verified continuarem vigentes.
+
+As transições são `inexistente→pending`, `pending→matched/ambiguous/rejected/unavailable`, `ambiguous→matched/rejected/unavailable`, `unavailable→pending`, `matched→reopened`, `reopened→matched/ambiguous/rejected/unavailable`; `rejected` é terminal. Expected revision divergente conflita. O executor recebeu SELECT/INSERT apenas no histórico, SELECT nos catálogos necessários e UPDATE restrito a colunas usadas por `FOR SHARE`; EXECUTE segue somente no papel app candidato.
+
+A prova PostgreSQL 17 descartável passou pelo verificador: transições e retries `pending→matched→reopened→matched`, versão inexistente, categoria sem destino, transição ilegal, revisão obsoleta e duas revisões concorrentes do mesmo recibo (uma gravação e um `40001`). Permaneceram 36/36 tabelas RLS forçadas e 114 FKs; o script removeu o container descartável. Não houve acesso a banco ativo, arquivos reais, runtime, importação ou migration.
+
+Limite: a função compara os metadados persistidos do recibo, versão e objeto, mas não lê o JSON nem prova bytes físicos. Antes da chamada, um adapter server-side ainda deve reler o recibo e recomputar SHA-256/tamanho, e verificar o objeto por leitura de retorno. A função continua candidata e desconectada do runtime. Próxima fronteira: adapter de storage verificado e alinhamento autoritativo da fonte de membership antes de qualquer ativação.

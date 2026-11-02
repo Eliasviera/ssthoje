@@ -1,0 +1,50 @@
+[
+  {
+    "route": "/site",
+    "sample": 1,
+    "status": 200,
+    "ttfbMs": 49.1,
+    "totalMs": 112.2,
+    "bytes": 28220
+  },
+  {
+    "route": "/site",
+    "sample": 2,
+    "status": 200,
+    "ttfbMs": 9.2,
+    "totalMs": 40.4,
+    "bytes": 28220
+  },
+  {
+    "route": "/site",
+    "sample": 3,
+    "status": 200,
+    "ttfbMs": 9.2,
+    "totalMs": 36.6,
+    "bytes": 28220
+  },
+  {
+    "route": "/login",
+    "sample": 1,
+    "status": 200,
+    "ttfbMs": 33.4,
+    "totalMs": 61.2,
+    "bytes": 16441
+  },
+  {
+    "route": "/login",
+    "sample": 2,
+    "status": 200,
+    "ttfbMs": 7.9,
+    "totalMs": 35.5,
+    "bytes": 16441
+  },
+  {
+    "route": "/login",
+    "sample": 3,
+    "status": 200,
+    "ttfbMs": 5.9,
+    "totalMs": 34.6,
+    "bytes": 16441
+  }
+]

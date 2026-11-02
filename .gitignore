@@ -1,0 +1,20 @@
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.pg.example.txt
+*.pem
+*.key
+credenciais*
+ACESSOS-PAINEIS.md
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+examples/app/data/
+empresas teste/
+*.tar.gz
+*.log
+examples/backup-*/
+**/data/
+*.jsonl
