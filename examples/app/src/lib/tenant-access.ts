@@ -78,6 +78,8 @@ export const SECTION_PERMISSIONS = Object.freeze({
   auditoria: ["tenant.audit.read"],
   trabalhadores: ["workers.read"],
   "analise-risco": ["safety.risk_analysis.manage"],
+  dds: ["dds.read"],
+  checklists: ["checklist.read"],
 } satisfies Record<string, readonly TenantPermission[]>);
 
 export function getVisibleSections(role: TenantRole): string[] {
