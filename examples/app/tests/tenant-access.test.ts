@@ -28,9 +28,10 @@ test("membro SST não recebe permissões administrativas", () => {
 });
 
 test("membros com acesso ao painel podem consultar o catálogo sem gerir associações", () => {
-  for (const userId of ["sst-demo-user", "sst-demo-sst", "sst-demo-medico", "sst-demo-client-authority"]) {
+  for (const userId of ["sst-demo-user", "sst-demo-sst", "sst-demo-medico"]) {
     assert.equal(requireTenantAccess(userId, "tenant.dashboard.read").ok, true);
   }
+  assert.equal(requireTenantAccess("sst-demo-client-authority", "tenant.dashboard.read").ok, false);
   assert.equal(hasTenantPermission("cliente", "esocial.table24.manage"), false);
   assert.equal(hasTenantPermission("cliente", "esocial.table27.manage"), false);
   assert.equal(hasTenantPermission("consultoria_admin", "esocial.table24.manage"), false);
@@ -79,6 +80,17 @@ test("acesso desconhecido é negado por padrão", () => {
 test("papel SaaS master não ganha acesso aos dados de tenant por pertencer a outra consultoria", () => {
   assert.equal(hasTenantPermission("saas_master", "saas.tenants.manage"), true);
   assert.equal(requireTenantAccess("sst-demo-user", "saas.tenants.manage").ok, false);
+});
+
+test("Master não abre dados operacionais por informar tenant e nenhuma consultoria atravessa o vínculo", () => {
+  const permissions = ["tenant.clients.read", "tenant.clients.manage", "workers.read", "documents.read", "documents.review", "pgr.manage", "thirdparty.read", "epi.read", "dds.read", "checklist.read", "aso.manage", "pcmso.manage", "tenant.audit.read"];
+  for (const tenantId of [undefined, "tenant-horizonte", "tenant-aurora"]) {
+    for (const permission of permissions) assert.equal(requireTenantAccess("sst-demo-master", permission, tenantId).ok, false);
+  }
+  for (const permission of permissions) {
+    assert.equal(requireTenantAccess("sst-demo-user", permission, "tenant-aurora").ok, false);
+    assert.equal(requireTenantAccess("sst-demo-user-b", permission, "tenant-horizonte").ok, false);
+  }
 });
 
 test("dados de tenant não aparecem na consulta de auditoria de outra consultoria", () => {

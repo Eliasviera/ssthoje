@@ -12,7 +12,10 @@ try {
 }
 
 const nextCli = resolve(projectRoot, "node_modules", "next", "dist", "bin", "next");
-const child = spawn(process.execPath, [nextCli, "dev", "--hostname", "localhost"], {
+// A porta padrão do projeto é 3107 (atalhos do desktop, assets/abrir-sst-hoje.mjs e
+// docs/ACESSOS-PAINEIS.md dependem dela). Sobrescreva com SST_PORT ou PORT se precisar.
+const port = process.env.SST_PORT ?? process.env.PORT ?? "3107";
+const child = spawn(process.execPath, [nextCli, "dev", "--hostname", "localhost", "--port", port], {
   cwd: projectRoot,
   stdio: "inherit",
   env: {

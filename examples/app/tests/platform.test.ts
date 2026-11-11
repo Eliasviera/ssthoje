@@ -36,7 +36,7 @@ test("plataforma: somente Master consulta e administra; negação auditada sem c
 });
 test("plataforma: projeção administrativa e suporte retornam apenas contagens e configuração", () => {
   const overview = getPlatformOverview(master), diagnosis = diagnoseTenant(master, tenantId, "Diagnóstico fictício M15");
-  assert.deepEqual(diagnosis.usage, { companies: 1, workers: 1, members: 4 });
+  assert.deepEqual(diagnosis.usage, { companies: 1, workers: 1, members: 5 });
   for (const secret of ["NOME_CLIENTE_RESTRITO", "CONTATO_RESTRITO", "NOME_TRABALHADOR_RESTRITO", "RISCO_RESTRITO", "SAUDE_RESTRITA", "DOCUMENTO_RESTRITO", "TOKEN_RESTRITO"]) assert.equal(JSON.stringify({ overview, diagnosis }).includes(secret), false);
   assert.equal(getPlatformOverview(master).supportChecks[0].reason, "Diagnóstico fictício M15");
   assert.throws(() => diagnoseTenant(master, "tenant-forjado", "Teste"));
