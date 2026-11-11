@@ -6,6 +6,9 @@ if (verificationId && !/^[a-z0-9-]{1,40}$/.test(verificationId)) {
   throw new Error("SST_BUILD_VERIFY_ID deve conter até 40 letras minúsculas, números ou hífens.");
 }
 const nextConfig: NextConfig = {
+  // "standalone" só é usado na imagem Docker (SST_STANDALONE=1). O Elastic
+  // Beanstalk roda `next start`, que NÃO funciona com output standalone.
+  output: process.env.SST_STANDALONE === "1" ? "standalone" : undefined,
   distDir: process.env.SST_ISOLATED_BUILD === "1" ? `.next-verify-${verificationId || "m20"}` : ".next",
   /* config options here */
   devIndicators: false,

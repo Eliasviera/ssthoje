@@ -1,0 +1,25 @@
+node_modules
+.next
+.next-verify-*
+output
+tmp
+sst-tenant-tests-*
+uploads
+*.tsbuildinfo
+.git
+.gitignore
+.env*
+.env.local
+.env-Eliaseng.local
+.env.pg.app.local
+Dockerfile
+.dockerignore
+*.log
+
+# data/ tem 300+ MB de artefatos de teste locais; só os catálogos-base entram na imagem.
+data/*
+!data/field-vocabulary.json
+!data/apr-catalog.json
+!data/equipment-checklists.json
+!data/dds-topics.json
+!data/safety-operations.json

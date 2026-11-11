@@ -1,0 +1,24 @@
+# Arquivos que NÃO vão para o Elastic Beanstalk.
+# Atenção: .next É enviado (o Procfile roda `next start`, sem build no servidor).
+node_modules
+.git
+.next/cache
+.next/dev
+.next-verify-*
+output
+tmp
+uploads
+sst-tenant-tests-*
+*.tsbuildinfo
+*.log
+Dockerfile
+.dockerignore
+compose.yaml
+
+# 300+ MB de artefatos de teste locais; só os catálogos-base sobem.
+data/*
+!data/field-vocabulary.json
+!data/apr-catalog.json
+!data/equipment-checklists.json
+!data/dds-topics.json
+!data/safety-operations.json
