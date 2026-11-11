@@ -3,26 +3,33 @@
 import { revalidatePath } from "next/cache";
 import { appendAuditEvent } from "@/lib/audit-log";
 import { getCurrentTenantAccess } from "@/lib/tenant-context";
+import { listWorkersForTenant } from "@/lib/worker-store";
 import { listPgrInventoriesPostgres } from "@/lib/pgr-postgres-store";
 import { getPgrStorageMode } from "@/lib/pgr-storage-mode";
 import { selectApprovedPgrRisks } from "@/lib/safety-apr-pgr-selection";
 import { WORK_PERMIT_SOURCE_FIELD_MAPS } from "@/lib/work-permit-source-field-maps";
-import { createWorkPermitDraft, updateWorkPermitDraft } from "@/lib/work-permit-draft-store";
+import { createWorkPermitDraft, getWorkPermitDraft, updateWorkPermitDraft } from "@/lib/work-permit-draft-store";
+import { addWorkPermitSigner, signWorkPermit, WorkPermitSignatureError } from "@/lib/work-permit-signature-store";
 import {
+  addSafetyAprSigner,
   createSafetyApr,
   createSafetyChecklistTemplate,
   activateSafetyChecklistTemplate,
   listSafetyAprs,
   saveSafetyAprAnswers,
+  signSafetyApr,
   submitSafetyAprForReview,
   type AprChecklistAnswer,
   SafetyOperationsValidationError,
 } from "@/lib/safety-operations-store";
 import {
+  addRiskAnalysisSigner,
   createRiskAnalysis,
   issueRiskAnalysis,
+  listRiskAnalyses,
   RiskAnalysisValidationError,
   saveRiskAnalysisDraft,
+  signRiskAnalysis,
   type RiskAnalysisFields,
 } from "@/lib/risk-analysis-store";
 import { listClientCompanies } from "@/lib/client-service";
@@ -98,6 +105,14 @@ function positiveInteger(value: string) {
   return Number.isSafeInteger(parsed) ? parsed : null;
 }
 
+/** Quando a pessoa vem do cadastro, o nome registrado é o oficial — o texto digitado não prevalece. */
+function resolveSignerName(tenantId: string, workerId: string, typedName: string): { name: string } | { error: string } {
+  if (!workerId) return { name: typedName };
+  const worker = listWorkersForTenant(tenantId).find((entry) => entry.id === workerId && entry.status === "active");
+  if (!worker) return { error: "O trabalhador selecionado não está disponível nesta consultoria." };
+  return { name: worker.displayName };
+}
+
 function textList(data: FormData, name: string): string[] {
   return data.getAll(name).map((value) => typeof value === "string" ? value.trim() : "");
 }
@@ -105,11 +120,35 @@ function textList(data: FormData, name: string): string[] {
 function report(error: unknown, fallback: string) {
   if (error instanceof SafetyOperationsValidationError) return error.message;
   if (error instanceof RiskAnalysisValidationError) return error.message;
+  if (error instanceof WorkPermitSignatureError) return error.message;
   console.error("Operação de APR/checklist não concluída.", error instanceof Error ? error.name : "unknown");
   return fallback;
 }
 
 function getRiskAnalysisFields(data: FormData): RiskAnalysisFields {
+  // Etapas vindas do acervo: o formulário envia stageIds e, por perigo, a aplicabilidade e a justificativa.
+  const catalogModelId = text(data, "catalogModelId", 200) || undefined;
+  let stages: RiskAnalysisFields["stages"];
+  const stagesRaw = text(data, "stagesPayload", 200000);
+  // Etapas vêm do acervo (modelo) ou são montadas manualmente na AR; ambas são aceitas.
+  if (stagesRaw) {
+    try {
+      const parsed = JSON.parse(stagesRaw) as RiskAnalysisFields["stages"];
+      if (Array.isArray(parsed)) {
+        stages = parsed
+          .filter((stage) => stage && typeof stage.name === "string" && stage.name.trim())
+          .map((stage, index) => ({
+            ...stage,
+            order: index + 1,
+            hazards: Array.isArray(stage.hazards)
+              ? stage.hazards.filter((hazard) => hazard && typeof hazard.hazard === "string" && hazard.hazard.trim())
+              : [],
+          }));
+      }
+    } catch {
+      stages = undefined;
+    }
+  }
   return {
     title: text(data, "title", 140),
     activity: text(data, "activity", 1000),
@@ -117,6 +156,8 @@ function getRiskAnalysisFields(data: FormData): RiskAnalysisFields {
     assessment: text(data, "assessment", 5000),
     controls: text(data, "controls", 5000),
     responsibleName: text(data, "responsibleName", 120),
+    catalogModelId,
+    stages,
   };
 }
 
@@ -152,6 +193,7 @@ export async function createRiskAnalysisAction(
       action: "safety.risk_analysis_created",
       targetId: record.id,
     });
+    revalidatePath("/analise-risco");
     revalidatePath("/");
     return { success: "Rascunho de AR criado. Revise a avaliação e emita somente quando estiver concluída." };
   } catch (error) {
@@ -183,6 +225,7 @@ export async function saveRiskAnalysisDraftAction(
       action: "safety.risk_analysis_saved",
       targetId: record.id,
     });
+    revalidatePath("/analise-risco");
     revalidatePath("/");
     return { success: `Rascunho de AR salvo na revisão ${record.revision}.` };
   } catch (error) {
@@ -202,7 +245,15 @@ export async function issueRiskAnalysisAction(
     return { error: "Confirme a emissão e atualize a revisão da AR." };
   }
   try {
-    const record = issueRiskAnalysis(access.context.tenant.id, recordId, expectedRevision, access.session.userId);
+    const tenantId = access.context.tenant.id;
+    const draft = listRiskAnalyses(tenantId).find((record) => record.id === recordId);
+    if (!draft || draft.status !== "draft") {
+      return { error: "A análise não está disponível para emissão." };
+    }
+    if (!(await validateRiskAnalysisScope(tenantId, draft.companyId, draft.unitId))) {
+      return { error: "A empresa está inativa ou a unidade não está mais vinculada. Confira o cadastro antes de emitir a AR." };
+    }
+    const record = issueRiskAnalysis(tenantId, recordId, expectedRevision, access.session.userId);
     appendAuditEvent({
       tenantId: access.context.tenant.id,
       actorUserId: access.session.userId,
@@ -210,6 +261,7 @@ export async function issueRiskAnalysisAction(
       action: "safety.risk_analysis_issued",
       targetId: record.id,
     });
+    revalidatePath("/analise-risco");
     revalidatePath("/");
     return { success: `AR emitida na revisão ${record.revision}. O documento foi registrado como decisão do profissional identificado; o sistema não verifica habilitação profissional.` };
   } catch (error) {
@@ -334,6 +386,10 @@ export async function createSafetyAprAction(
     });
     if (!selection) return { error: "O PGR aprovado e os riscos selecionados não estão disponíveis neste escopo. Atualize a página." };
     const { inventory, risks: selectedRisks } = selection;
+    const fieldDescriptions = new Map(selectedRisks.map((risk) => [risk.id, text(data, `riskFieldDescription_${risk.id}`, 1000)]));
+    if (selectedRisks.some((risk) => !fieldDescriptions.get(risk.id))) {
+      return { error: "Na etapa Perigos e medidas, descreva cada risco selecionado com palavras usadas pela equipe no campo." };
+    }
 
     const apr = createSafetyApr({
       tenantId,
@@ -354,6 +410,7 @@ export async function createSafetyAprAction(
         hazard: risk.hazard,
         possibleHarm: risk.possibleHarm,
         exposureDescription: risk.exposureDescription,
+        fieldDescription: fieldDescriptions.get(risk.id),
       })),
       additionalRisks: additionalHazards.map((hazard, index) => ({
         hazard,
@@ -448,5 +505,171 @@ export async function submitSafetyAprForReviewAction(
     return { success: "APR enviada para revisão humana. O envio não autoriza o início do trabalho." };
   } catch (error) {
     return { error: report(error, "Não foi possível enviar a APR para revisão.") };
+  }
+}
+
+export async function addRiskAnalysisSignerAction(
+  _previous: SafetyOperationsFormState,
+  data: FormData,
+): Promise<SafetyOperationsFormState> {
+  const access = await getCurrentTenantAccess("pgr.manage");
+  if (!access.authenticated || !access.context) return { error: "Seu perfil não pode incluir assinantes nesta AR." };
+  const recordId = text(data, "recordId", 36);
+  const role = text(data, "role", 16);
+  const workerId = text(data, "workerId", 36);
+  const resolved = resolveSignerName(access.context.tenant.id, workerId, text(data, "name", 120));
+  if ("error" in resolved) return { error: resolved.error };
+  if (!recordId) return { error: "Atualize a página e escolha a AR novamente." };
+  try {
+    const record = addRiskAnalysisSigner(access.context.tenant.id, recordId, resolved.name, role, access.session.userId, workerId || undefined);
+    appendAuditEvent({
+      tenantId: access.context.tenant.id,
+      actorUserId: access.session.userId,
+      actorRole: access.context.membership.role,
+      action: "safety.risk_analysis_signer_added",
+      targetId: record.id,
+    });
+    revalidatePath("/analise-risco");
+    return { success: "Assinante incluído na lista da AR." };
+  } catch (error) {
+    return { error: report(error, "Não foi possível incluir o assinante.") };
+  }
+}
+
+export async function signRiskAnalysisAction(
+  _previous: SafetyOperationsFormState,
+  data: FormData,
+): Promise<SafetyOperationsFormState> {
+  const access = await getCurrentTenantAccess("pgr.manage");
+  if (!access.authenticated || !access.context) return { error: "Seu perfil não pode coletar assinaturas nesta AR." };
+  const recordId = text(data, "recordId", 36);
+  const signerId = text(data, "signerId", 36);
+  const image = text(data, "image", 160000);
+  if (!recordId || !signerId) return { error: "Atualize a página e escolha novamente quem vai assinar." };
+  try {
+    const record = signRiskAnalysis(access.context.tenant.id, recordId, signerId, image, access.session.userId);
+    appendAuditEvent({
+      tenantId: access.context.tenant.id,
+      actorUserId: access.session.userId,
+      actorRole: access.context.membership.role,
+      action: "safety.risk_analysis_signed",
+      targetId: record.id,
+    });
+    revalidatePath("/analise-risco");
+    return { success: "Assinatura registrada. Assinatura simples, sem validade qualificada." };
+  } catch (error) {
+    return { error: report(error, "Não foi possível registrar a assinatura.") };
+  }
+}
+
+export async function addSafetyAprSignerAction(
+  _previous: SafetyOperationsFormState,
+  data: FormData,
+): Promise<SafetyOperationsFormState> {
+  const access = await getCurrentTenantAccess("pgr.manage");
+  if (!access.authenticated || !access.context) return { error: "Seu perfil não pode incluir assinantes nesta APR." };
+  const aprId = text(data, "recordId", 36);
+  const role = text(data, "role", 16);
+  const workerId = text(data, "workerId", 36);
+  const resolved = resolveSignerName(access.context.tenant.id, workerId, text(data, "name", 120));
+  if ("error" in resolved) return { error: resolved.error };
+  if (!aprId) return { error: "Atualize a página e escolha a APR novamente." };
+  try {
+    const apr = addSafetyAprSigner(access.context.tenant.id, aprId, resolved.name, role, access.session.userId, workerId || undefined);
+    appendAuditEvent({
+      tenantId: access.context.tenant.id,
+      actorUserId: access.session.userId,
+      actorRole: access.context.membership.role,
+      action: "safety.apr_signer_added",
+      targetId: apr.id,
+    });
+    revalidatePath("/apr");
+    return { success: "Assinante incluído na lista da APR." };
+  } catch (error) {
+    return { error: report(error, "Não foi possível incluir o assinante.") };
+  }
+}
+
+export async function signSafetyAprAction(
+  _previous: SafetyOperationsFormState,
+  data: FormData,
+): Promise<SafetyOperationsFormState> {
+  const access = await getCurrentTenantAccess("pgr.manage");
+  if (!access.authenticated || !access.context) return { error: "Seu perfil não pode coletar assinaturas nesta APR." };
+  const aprId = text(data, "recordId", 36);
+  const signerId = text(data, "signerId", 36);
+  const image = text(data, "image", 160000);
+  if (!aprId || !signerId) return { error: "Atualize a página e escolha novamente quem vai assinar." };
+  try {
+    const apr = signSafetyApr(access.context.tenant.id, aprId, signerId, image, access.session.userId);
+    appendAuditEvent({
+      tenantId: access.context.tenant.id,
+      actorUserId: access.session.userId,
+      actorRole: access.context.membership.role,
+      action: "safety.apr_signed",
+      targetId: apr.id,
+    });
+    revalidatePath("/apr");
+    return { success: "Assinatura registrada. Assinatura simples, sem validade qualificada." };
+  } catch (error) {
+    return { error: report(error, "Não foi possível registrar a assinatura.") };
+  }
+}
+
+export async function addWorkPermitSignerAction(
+  _previous: SafetyOperationsFormState,
+  data: FormData,
+): Promise<SafetyOperationsFormState> {
+  const access = await getCurrentTenantAccess("pgr.manage");
+  if (!access.authenticated || !access.context) return { error: "Seu perfil não pode incluir assinantes neste rascunho." };
+  const draftId = text(data, "recordId", 36);
+  const role = text(data, "role", 16);
+  const workerId = text(data, "workerId", 36);
+  const resolved = resolveSignerName(access.context.tenant.id, workerId, text(data, "name", 120));
+  if ("error" in resolved) return { error: resolved.error };
+  if (!draftId) return { error: "Abra o rascunho novamente e tente incluir o assinante." };
+  try {
+    const draft = await getWorkPermitDraft(access.context.tenant.id, draftId);
+    if (!draft) return { error: "O rascunho não está disponível nesta consultoria." };
+    addWorkPermitSigner(access.context.tenant.id, draftId, resolved.name, role, access.session.userId, workerId || undefined);
+    appendAuditEvent({
+      tenantId: access.context.tenant.id,
+      actorUserId: access.session.userId,
+      actorRole: access.context.membership.role,
+      action: "safety.work_permit_signer_added",
+      targetId: draft.id,
+    });
+    revalidatePath("/permissoes-trabalho");
+    return { success: "Assinante incluído na lista do rascunho. Isso não cria permissão nem libera trabalho." };
+  } catch (error) {
+    return { error: report(error, "Não foi possível incluir o assinante.") };
+  }
+}
+
+export async function signWorkPermitAction(
+  _previous: SafetyOperationsFormState,
+  data: FormData,
+): Promise<SafetyOperationsFormState> {
+  const access = await getCurrentTenantAccess("pgr.manage");
+  if (!access.authenticated || !access.context) return { error: "Seu perfil não pode coletar assinaturas neste rascunho." };
+  const draftId = text(data, "recordId", 36);
+  const signerId = text(data, "signerId", 36);
+  const image = text(data, "image", 160000);
+  if (!draftId || !signerId) return { error: "Abra o rascunho novamente e escolha quem vai assinar." };
+  try {
+    const draft = await getWorkPermitDraft(access.context.tenant.id, draftId);
+    if (!draft) return { error: "O rascunho não está disponível nesta consultoria." };
+    signWorkPermit(access.context.tenant.id, draftId, signerId, image, access.session.userId);
+    appendAuditEvent({
+      tenantId: access.context.tenant.id,
+      actorUserId: access.session.userId,
+      actorRole: access.context.membership.role,
+      action: "safety.work_permit_signed",
+      targetId: draft.id,
+    });
+    revalidatePath("/permissoes-trabalho");
+    return { success: "Assinatura de ciência registrada no rascunho. Assinatura simples, sem liberação de trabalho." };
+  } catch (error) {
+    return { error: report(error, "Não foi possível registrar a assinatura.") };
   }
 }

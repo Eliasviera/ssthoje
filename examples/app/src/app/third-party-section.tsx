@@ -6,6 +6,7 @@ import type { InvitationSummary } from "@/lib/third-party-store";
 import type { ThirdPartyGateOverview } from "@/lib/third-party-gate-read-store";
 import type { LegacyInvitationCaseLinkState, LegacyInvitationCaseOption } from "@/lib/third-party-legacy-invitation-read-service";
 import { THIRD_PARTY_DOCUMENT_KINDS } from "@/lib/third-party-policy";
+import type { PgrPdfImportResult, PgrPdfImportRisk } from "@/lib/pgr-pdf-import";
 import { createInvitationAction, revokeInvitationAction, renewInvitationAction, type InvitationFormState } from "./third-party-actions";
 import LegacyInvitationLinkPanel from "./legacy-invitation-link-panel";
 import { loadLegacyInvitationLinkReviewAction, type M22ReviewDataState } from "./third-party-legacy-invitation-actions";
@@ -21,7 +22,7 @@ function InviteForm({ companies }: { companies: ClientCompany[] }) {
   const [medicalAsoRequired, setMedicalAsoRequired] = useState(() => companies.length === 1 && companies[0].status === "active" && companies[0].units.length === 1 && Boolean(companies[0].thirdPartyRequirements?.includes("ASO")));
   const fileRef = useRef<HTMLInputElement>(null);
   const [importing, setImporting] = useState(false);
-  const [importResult, setImportResult] = useState<any>(null);
+  const [importResult, setImportResult] = useState<PgrPdfImportResult | null>(null);
   const [importError, setImportError] = useState("");
 
   async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
@@ -37,8 +38,8 @@ function InviteForm({ companies }: { companies: ClientCompany[] }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Erro ao importar");
       setImportResult(data.extracted);
-    } catch (err: any) {
-      setImportError(err.message || "Erro ao importar");
+    } catch (err: unknown) {
+      setImportError(err instanceof Error ? err.message : "Erro ao importar");
     } finally {
       setImporting(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -57,12 +58,12 @@ function InviteForm({ companies }: { companies: ClientCompany[] }) {
       <header><div><h4>Pré-visualização da importação</h4><p>{importResult.company?.legalName || importResult.company?.tradeName} {importResult.company?.cnpj ? `· ${importResult.company.cnpj}` : ""}</p></div></header>
       {importResult.workers && importResult.workers.length > 0 ? <>
         <p><strong>Colaboradores extraídos:</strong> {importResult.workers.length}</p>
-        <ul>{importResult.workers.slice(0, 10).map((w: any) => <li key={w.id}><strong>{w.name || w.role}:</strong> {w.registration ? `Matrícula: ${w.registration}` : ""} {w.role && w.name ? `· Cargo/Função: ${w.role}` : w.role ? `Cargo/Função: ${w.role}` : ""} {w.raw?.CPF ? `· CPF: ${w.raw.CPF}` : w.raw?.["CPF"] ? `· CPF: ${w.raw["CPF"]}` : ""} {w.raw?.["Data de Nascimento"] || w.raw?.["Nascimento"] ? `· Nasc.: ${w.raw["Data de Nascimento"] || w.raw["Nascimento"]}` : ""}</li>)}</ul>
+        <ul>{importResult.workers.slice(0, 10).map((w) => <li key={w.id}><strong>{w.name || w.role}:</strong> {w.registration ? `Matrícula: ${w.registration}` : ""} {w.role && w.name ? `· Cargo/Função: ${w.role}` : w.role ? `Cargo/Função: ${w.role}` : ""} {w.raw?.CPF ? `· CPF: ${w.raw.CPF}` : w.raw?.["CPF"] ? `· CPF: ${w.raw["CPF"]}` : ""} {w.raw?.["Data de Nascimento"] || w.raw?.["Nascimento"] ? `· Nasc.: ${w.raw["Data de Nascimento"] || w.raw["Nascimento"]}` : ""}</li>)}</ul>
         {importResult.workers.length > 10 && <p className="permission-note">... e mais {importResult.workers.length - 10} colaboradores</p>}
       </> : <>
         <p><strong>Unidade:</strong> {importResult.unit?.name} · <strong>Inventário:</strong> {importResult.inventory?.title} · {importResult.inventory?.revision}</p>
         <p><strong>Riscos/Funções extraídos:</strong> {importResult.risks?.length || 0}</p>
-        <ul>{(importResult.risks || []).slice(0, 8).map((r: any) => <li key={r.id}><strong>{r.activity}:</strong> {r.hazard}</li>)}</ul>
+        <ul>{(importResult.risks || []).slice(0, 8).map((r: PgrPdfImportRisk) => <li key={r.id}><strong>{r.activity}:</strong> {r.hazard}</li>)}</ul>
         {(importResult.risks?.length || 0) > 8 && <p className="permission-note">... e mais {(importResult.risks?.length || 0) - 8} itens</p>}
       </>}
       <p className="permission-note">Dados baixados para uso no sistema. Use-os ao criar o convite ou ao vincular na APR.</p>

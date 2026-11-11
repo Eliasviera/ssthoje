@@ -6,7 +6,9 @@ import { clearSession, createSession, getSession } from "@/lib/session";
 import { findDemoAccountByEmail } from "@/lib/demo-accounts";
 import { appendAuditEvent } from "@/lib/audit-log";
 import { isPlatformMaster } from "@/lib/platform-identity";
-import { requireTenantAccess } from "@/lib/tenant-access";
+import { requireTenantAccess, resolveTenantMembership } from "@/lib/tenant-access";
+import { findTrialAccountByEmail, isTrialActive } from "@/lib/trial-accounts";
+import { verifyTrialPassword } from "@/lib/trial-password";
 
 export type LoginState = { error: string };
 
@@ -38,9 +40,15 @@ export async function loginAction(_previousState: LoginState, formData: FormData
   }
   if (previous && now - previous.windowStartedAt > WINDOW_MS) failures.delete(email);
 
-  const account = findDemoAccountByEmail(email);
-  const validPassword = passwordsMatch(password, account?.password ?? "senha-ficticia-invalida");
-  const tenantAccess = account ? requireTenantAccess(account.userId, "tenant.dashboard.read") : null;
+  const demo = findDemoAccountByEmail(email);
+  const trial = demo ? null : findTrialAccountByEmail(email);
+  const account = demo ?? trial;
+  const validPassword = demo ? passwordsMatch(password, demo.password)
+    : trial ? isTrialActive(trial) && verifyTrialPassword(password, trial.passwordHash)
+    : passwordsMatch(password, "senha-ficticia-invalida") && false;
+  const clientAccount = account && resolveTenantMembership(account.userId)?.membership.role === "cliente";
+  const tenantAccess = account ? requireTenantAccess(account.userId, clientAccount ? "dds.read" : "tenant.dashboard.read") : null;
+  if (clientAccount && validPassword && !tenantAccess?.ok) return { error: "Sua conta precisa de um vínculo ativo com a empresa e as unidades autorizadas. Procure o responsável pelo seu acesso." };
   const master = Boolean(account && isPlatformMaster(account.userId));
   const valid = Boolean(account && validPassword && (master || tenantAccess?.ok));
   if (!valid) {
@@ -68,7 +76,7 @@ export async function loginAction(_previousState: LoginState, formData: FormData
 export async function logoutAction() {
   const session = await getSession();
   if (session) {
-    const access = requireTenantAccess(session.userId, "tenant.dashboard.read");
+    const access = requireTenantAccess(session.userId, resolveTenantMembership(session.userId)?.membership.role === "cliente" ? "dds.read" : "tenant.dashboard.read");
     if (isPlatformMaster(session.userId)) {
       appendAuditEvent({ tenantId: "platform", actorUserId: session.userId, actorRole: "saas_master", action: "auth.logout" });
     } else if (access.ok) {

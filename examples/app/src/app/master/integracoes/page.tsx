@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { requirePlatformMaster } from "@/lib/platform-service";
 import { getIntegrationSandbox } from "@/lib/integration-service";
-import { DEMO_TENANTS } from "@/lib/tenant-access";
+import { listRuntimeTenants } from "@/lib/tenant-access";
 import SandboxPanel from "./panel";
 import InboxPanel from "./inbox-panel";
 import { asaasConfig, asaasReady, listAsaasInbox } from "@/lib/asaas-inbox";
@@ -15,5 +15,5 @@ export default function SandboxPage() { return <Suspense fallback={<main>Carrega
 async function SandboxContent() {
   await connection(); const session = await getSession(); if (!session) redirect("/login");
   try { requirePlatformMaster(session.userId); } catch { redirect("/sem-acesso"); }
-  return <><SandboxPanel runs={getIntegrationSandbox(session.userId)} tenants={DEMO_TENANTS.map(t => ({id:t.id,name:t.name}))} requestKey={randomUUID()}/><InboxPanel events={listAsaasInbox(session.userId)} ready={asaasReady(asaasConfig())}/><OtpPanel rows={listSandboxOtps(session.userId)}/></>;
+  return <><SandboxPanel runs={getIntegrationSandbox(session.userId)} tenants={listRuntimeTenants().map(t => ({id:t.id,name:t.name}))} requestKey={randomUUID()}/><InboxPanel events={listAsaasInbox(session.userId)} ready={asaasReady(asaasConfig())}/><OtpPanel rows={listSandboxOtps(session.userId)}/></>;
 }

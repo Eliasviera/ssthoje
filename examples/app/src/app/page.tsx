@@ -12,5 +12,5 @@ async function Redirector(): Promise<never> {
   await connection();
   const session = await getSession();
   const membership = session ? resolveTenantMembership(session.userId) : null;
-  redirect(membership?.membership.role === "campo" ? "/dds" : "/empresas");
+  redirect(["campo", "cliente"].includes(membership?.membership.role ?? "") ? "/dds" : "/empresas");
 }

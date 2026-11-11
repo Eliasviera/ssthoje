@@ -51,6 +51,7 @@ function TenantCard({ tenant, billing }: { tenant: PlatformOverview["tenants"][n
 export default function MasterDashboard({ overview, billingOverview }: { overview: PlatformOverview; billingOverview: Record<string, BillingAccount> }) {
   const tenantName = (id: string) => overview.tenants.find(t => t.id === id)?.name ?? "Consultoria";
   const navItems: { href: string; icon: MasterNavIconName; label: string }[] = [
+    { href: "/master/convites", icon: "governance", label: "Convites de teste" },
     { href: "/master/governanca", icon: "governance", label: "Governança" },
     { href: "/master/operacao", icon: "operations", label: "Operação" },
     { href: "/master/integracoes", icon: "integrations", label: "Integrações" },

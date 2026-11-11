@@ -18,6 +18,8 @@ export type ContractorAnnex = {
   id: string; scope: AnnexScope; revision: number; status: "draft" | "included" | "closed";
   fields: AnnexFields; actorUserId: string; recordedAt: string; reason: string;
   closure?: { endedOn: string; remainingActions: string };
+  // Vínculo opcional com o convite de terceiros que originou o anexo.
+  invitationId?: string; contractorName?: string; contractorCnpj?: string;
 };
 export const ANNEX_STATUS = { draft: "Rascunho · avaliação pendente", included: "Incluído no PGR de trabalho", closed: "Encerrado · histórico preservado" } as const;
 export function needsContractorRiskReview(coverage: AnnexFields["coverage"]) { return coverage !== "covered"; }

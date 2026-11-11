@@ -1,4 +1,6 @@
 import { isTenantEnabled, isModuleEnabled } from "./tenant-state.ts";
+import { findRegisteredTrialAccount as findTrialAccountById, isTrialActive, listRegisteredTrialAccounts as listTrialAccounts } from "./trial-registry.ts";
+import { clientCompanyPermissionReady, resolveClientCompanyScope, type ClientCompanyScope } from "./client-company-scope.ts";
 
 export type TenantRole = "consultoria_admin" | "sst_tst" | "cliente" | "terceiro" | "profissional_habilitado" | "medico_coordenador" | "saas_master" | "campo";
 export type Tenant = { id: string; name: string; status: "active" | "suspended" };
@@ -56,7 +58,7 @@ export const DEMO_MEMBERSHIPS: readonly TenantMembership[] = Object.freeze([
 ]);
 
 const permissionsByRole: Readonly<Record<TenantRole, readonly TenantPermission[]>> = Object.freeze({
-  consultoria_admin: ["operations.read", "operations.manage", "epi.read", "epi.manage", "thirdparty.read", "thirdparty.manage", "aso.status.read", "pcmso.status.read", "pcmso.assign", "tenant.dashboard.read", "tenant.members.manage", "tenant.clients.read", "tenant.clients.manage", "tenant.audit.read", "documents.read", "documents.review", "documents.submit", "documents.manage", "pgr.manage", "workers.read", "workers.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage", "deviation.report", "deviation.manage"],
+  consultoria_admin: ["operations.read", "operations.manage", "safety.risk_analysis.manage", "epi.read", "epi.manage", "thirdparty.read", "thirdparty.manage", "aso.status.read", "pcmso.status.read", "pcmso.assign", "tenant.dashboard.read", "tenant.members.manage", "tenant.clients.read", "tenant.clients.manage", "tenant.audit.read", "documents.read", "documents.review", "documents.submit", "documents.manage", "pgr.manage", "workers.read", "workers.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage", "deviation.report", "deviation.manage"],
   sst_tst: ["operations.read", "epi.read", "thirdparty.read", "aso.status.read", "pcmso.status.read", "tenant.dashboard.read", "tenant.clients.read", "documents.read", "documents.review", "pgr.manage", "workers.read", "safety.risk_analysis.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage", "deviation.report", "deviation.manage", "esocial.table24.manage"],
   cliente: ["tenant.dashboard.read", "documents.read", "dds.read", "checklist.read", "deviation.report"],
   terceiro: ["documents.submit", "deviation.report"],
@@ -99,6 +101,14 @@ export function hasTenantPermission(role: TenantRole | string, permission: Tenan
 }
 
 export function resolveTenantMembership(userId: string, requestedTenantId?: string) {
+  if (userId.startsWith("trial-user-")) {
+    const account = findTrialAccountById(userId);
+    if (!account || !isTrialActive(account) || (requestedTenantId && requestedTenantId !== account.tenantId) || !isTenantEnabled(account.tenantId)) return null;
+    return {
+      membership: { userId: account.userId, tenantId: account.tenantId, role: "consultoria_admin" as const, status: "active" as const, displayName: account.displayName },
+      tenant: { id: account.tenantId, name: account.tenantName, status: "active" as const },
+    };
+  }
   const memberships = DEMO_MEMBERSHIPS.filter((membership) => membership.userId === userId && membership.status === "active");
   const membership = requestedTenantId
     ? memberships.find((entry) => entry.tenantId === requestedTenantId)
@@ -109,15 +119,25 @@ export function resolveTenantMembership(userId: string, requestedTenantId?: stri
   return tenant && isTenantEnabled(tenant.id) ? { membership, tenant } : null;
 }
 
+export function listRuntimeTenants(): readonly Tenant[] {
+  return [...DEMO_TENANTS, ...listTrialAccounts().filter((account) => isTrialActive(account)).map((account) => ({ id: account.tenantId, name: account.tenantName, status: "active" as const }))];
+}
+
+export function listRuntimeMemberships(): readonly TenantMembership[] {
+  return [...DEMO_MEMBERSHIPS, ...listTrialAccounts().filter((account) => isTrialActive(account)).map((account) => ({ userId: account.userId, tenantId: account.tenantId, displayName: account.displayName, role: "consultoria_admin" as const, status: "active" as const }))];
+}
+
 export function requireTenantAccess(
   userId: string,
   permission: TenantPermission | string,
   requestedTenantId?: string,
-): { ok: true; context: NonNullable<ReturnType<typeof resolveTenantMembership>> } | { ok: false; reason: "membership_not_found" | "permission_denied" } {
+): { ok: true; context: NonNullable<ReturnType<typeof resolveTenantMembership>> & { companyScope: ClientCompanyScope | null } } | { ok: false; reason: "membership_not_found" | "permission_denied" } {
   const context = resolveTenantMembership(userId, requestedTenantId);
   if (!context) return { ok: false, reason: "membership_not_found" };
   if (!hasTenantPermission(context.membership.role, permission)) return { ok: false, reason: "permission_denied" };
+  const companyScope = context.membership.role === "cliente" ? resolveClientCompanyScope(userId, context.tenant.id) : null;
+  if (context.membership.role === "cliente" && (!companyScope || !clientCompanyPermissionReady(permission))) return { ok: false, reason: "permission_denied" };
   const requiredModule = ({ "operations.manage": "operations", "thirdparty.manage": "thirdparty", "epi.manage": "epi" } as const)[permission as "operations.manage" | "thirdparty.manage" | "epi.manage"];
   if (requiredModule && !isModuleEnabled(context.tenant.id, requiredModule)) return { ok: false, reason: "permission_denied" };
-  return { ok: true, context };
+  return { ok: true, context: { ...context, companyScope } };
 }

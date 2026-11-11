@@ -3,6 +3,29 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { DocumentSignatureError, normalizeSignerName, sameSignerName, validateSignatureImage, type DocumentSigner, type DocumentSignature, type DocumentSignerRole } from "./document-signatures";
+
+export type RiskAnalysisApplicability = "aplicavel" | "nao_aplicavel" | "a_confirmar";
+
+/** Perigo registrado na AR, com o mesmo molde da APR: risco, controles e aplicabilidade. */
+export type RiskAnalysisHazard = {
+  id: string;
+  hazard: string;
+  risk: string;
+  controls: string;
+  ppe: string;
+  reference: string;
+  applicability: RiskAnalysisApplicability;
+  justification: string;
+};
+
+/** Etapa operacional da AR (passo a passo da atividade). */
+export type RiskAnalysisStage = {
+  id: string;
+  order: number;
+  name: string;
+  hazards: RiskAnalysisHazard[];
+};
 
 export type RiskAnalysisFields = {
   title: string;
@@ -11,6 +34,9 @@ export type RiskAnalysisFields = {
   assessment: string;
   controls: string;
   responsibleName: string;
+  /** Modelo do acervo usado como base (opcional). */
+  catalogModelId?: string;
+  stages?: RiskAnalysisStage[];
 };
 
 export type RiskAnalysisHistoryEntry = {
@@ -24,6 +50,8 @@ export type RiskAnalysisHistoryEntry = {
 
 export type RiskAnalysis = RiskAnalysisFields & {
   id: string;
+  /** Número do documento, sequencial por tenant: AR-2026-0001. */
+  documentNumber: string;
   tenantId: string;
   companyId: string;
   unitId: string;
@@ -34,6 +62,8 @@ export type RiskAnalysis = RiskAnalysisFields & {
   updatedAt: string;
   issuedAt?: string;
   issuedBy?: string;
+  signers?: DocumentSigner[];
+  signatures?: DocumentSignature[];
   history: RiskAnalysisHistoryEntry[];
 };
 
@@ -46,7 +76,7 @@ type NewRiskAnalysis = RiskAnalysisFields & {
 };
 
 const emptyData: RiskAnalysisData = { records: [] };
-const fieldLimits: Record<keyof RiskAnalysisFields, number> = {
+const fieldLimits: Record<"title" | "activity" | "workArea" | "assessment" | "controls" | "responsibleName", number> = {
   title: 140,
   activity: 1000,
   workArea: 1000,
@@ -96,15 +126,21 @@ function normalizeFields(fields: RiskAnalysisFields): RiskAnalysisFields {
       }
       return [field, value.trim()];
     }),
-  ) as RiskAnalysisFields;
+  ) as Record<"title" | "activity" | "workArea" | "assessment" | "controls" | "responsibleName", string>;
   if (Object.values(normalized).some((value) => !value)) {
     throw new RiskAnalysisValidationError("Preencha todos os campos da análise antes de salvar.");
   }
-  return normalized;
+  return {
+    ...normalized,
+    catalogModelId: fields.catalogModelId,
+    stages: Array.isArray(fields.stages) ? fields.stages : undefined,
+  };
 }
 
 function copyFields(fields: RiskAnalysisFields): RiskAnalysisFields {
   return {
+    catalogModelId: fields.catalogModelId,
+    stages: fields.stages ? structuredClone(fields.stages) : undefined,
     title: fields.title,
     activity: fields.activity,
     workArea: fields.workArea,
@@ -117,6 +153,8 @@ function copyFields(fields: RiskAnalysisFields): RiskAnalysisFields {
 function copyRiskAnalysis(record: RiskAnalysis): RiskAnalysis {
   return {
     ...record,
+    ...(record.signers ? { signers: record.signers.map((signer) => ({ ...signer })) } : {}),
+    ...(record.signatures ? { signatures: record.signatures.map((signature) => ({ ...signature })) } : {}),
     history: record.history.map((entry) => ({ ...entry, fields: copyFields(entry.fields) })),
   };
 }
@@ -158,9 +196,12 @@ export function createRiskAnalysis(input: NewRiskAnalysis): RiskAnalysis {
   const fields = normalizeFields(input);
   const data = readData();
   const now = new Date().toISOString();
+  const year = now.slice(0, 4);
+  const sequence = data.records.filter((record) => record.tenantId === input.tenantId && record.documentNumber?.startsWith(`AR-${year}-`)).length + 1;
   const record: RiskAnalysis = {
     ...fields,
     id: randomUUID(),
+    documentNumber: `AR-${year}-${String(sequence).padStart(4, "0")}`,
     tenantId: input.tenantId,
     companyId: input.companyId,
     unitId: input.unitId,
@@ -213,6 +254,75 @@ export function issueRiskAnalysis(
   record.issuedAt = record.updatedAt;
   record.issuedBy = actorUserId;
   record.history.push(captureHistory(record, "issued", actorUserId));
+  writeData(data);
+  return copyRiskAnalysis(record);
+}
+
+/**
+ * Inclui quem vai assinar (emissor ou participante). Não altera o conteúdo
+ * revisado nem a revisão do documento: a lista de assinaturas é evidência à parte.
+ */
+export function addRiskAnalysisSigner(
+  tenantId: string,
+  recordId: string,
+  nameInput: string,
+  roleInput: string,
+  actorUserId: string,
+  workerId?: string,
+): RiskAnalysis {
+  const data = readData();
+  const record = data.records.find((entry) => entry.id === recordId && entry.tenantId === tenantId);
+  if (!record) throw new RiskAnalysisValidationError("A análise não está disponível nesta consultoria.");
+  if (!actorUserId?.trim()) throw new RiskAnalysisValidationError("A conta que inclui o assinante não foi identificada.");
+  if (roleInput !== "issuer" && roleInput !== "participant") throw new RiskAnalysisValidationError("Informe se a pessoa é emissor ou participante.");
+  let name: string;
+  try { name = normalizeSignerName(nameInput); } catch (error) {
+    if (error instanceof DocumentSignatureError) throw new RiskAnalysisValidationError(error.message);
+    throw error;
+  }
+  const signers = record.signers ?? [];
+  if (signers.some((signer) => sameSignerName(signer.name, name) || (workerId ? signer.workerId === workerId : false))) {
+    throw new RiskAnalysisValidationError("Esta pessoa já está na lista de assinaturas.");
+  }
+  record.signers = [...signers, { id: randomUUID(), name, role: roleInput as DocumentSignerRole, ...(workerId ? { workerId } : {}) }];
+  record.updatedAt = new Date().toISOString();
+  writeData(data);
+  return copyRiskAnalysis(record);
+}
+
+/** Registra a assinatura desenhada na tela de uma pessoa já incluída. */
+export function signRiskAnalysis(
+  tenantId: string,
+  recordId: string,
+  signerId: string,
+  imageInput: string,
+  actorUserId: string,
+): RiskAnalysis {
+  const data = readData();
+  const record = data.records.find((entry) => entry.id === recordId && entry.tenantId === tenantId);
+  if (!record) throw new RiskAnalysisValidationError("A análise não está disponível nesta consultoria.");
+  if (!actorUserId?.trim()) throw new RiskAnalysisValidationError("A conta que coleta a assinatura não foi identificada.");
+  const signer = (record.signers ?? []).find((entry) => entry.id === signerId);
+  if (!signer) throw new RiskAnalysisValidationError("O assinante não está na lista desta análise. Atualize a página.");
+  if ((record.signatures ?? []).some((signature) => signature.signerId === signerId)) {
+    throw new RiskAnalysisValidationError("Esta pessoa já assinou esta análise.");
+  }
+  let image: string;
+  try { image = validateSignatureImage(imageInput); } catch (error) {
+    if (error instanceof DocumentSignatureError) throw new RiskAnalysisValidationError(error.message);
+    throw error;
+  }
+  const signature: DocumentSignature = {
+    signerId: signer.id,
+    signerName: signer.name,
+    role: signer.role,
+    image,
+    signedAt: new Date().toISOString(),
+    capturedByUserId: actorUserId,
+    method: "drawn_on_screen_simple",
+  };
+  record.signatures = [...(record.signatures ?? []), signature];
+  record.updatedAt = signature.signedAt;
   writeData(data);
   return copyRiskAnalysis(record);
 }

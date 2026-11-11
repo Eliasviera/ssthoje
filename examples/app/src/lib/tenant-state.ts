@@ -3,6 +3,7 @@ import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import type { PlanAccount, PlanEvent } from "./plan-catalog.ts";
 import type { OptionalModule } from "./plan-catalog.ts";
+import { isTrialActive, readRegisteredTrialAccounts } from "./trial-registry.ts";
 
 export type TenantSettings = { status: "active" | "suspended"; companiesLimit: number; workersLimit: number };
 export type PlatformChange = { id: string; tenantId: string; actorUserId: string; occurredAt: string; reason: string; before: TenantSettings; after: TenantSettings };
@@ -18,7 +19,12 @@ export function writePlatformState(db: PlatformDB) {
   const temporary = `${path}.${randomUUID()}.tmp`; writeFileSync(temporary, JSON.stringify(db, null, 2), { flag: "wx" }); renameSync(temporary, path);
 }
 export function getTenantSettings(tenantId: string): TenantSettings { return { ...DEFAULT_TENANT_SETTINGS, ...readPlatformState().settings[tenantId] }; }
-export function isTenantEnabled(tenantId: string) { return getTenantSettings(tenantId).status === "active"; }
+export function isTenantEnabled(tenantId: string) {
+  if (getTenantSettings(tenantId).status !== "active") return false;
+  if (!tenantId.startsWith("trial-tenant-")) return true;
+  const account = readRegisteredTrialAccounts().find((entry) => entry.tenantId === tenantId);
+  return Boolean(account && isTrialActive(account));
+}
 export function isModuleEnabled(tenantId: string, module: OptionalModule) { return !(readPlatformState().plans?.[tenantId]?.config.disabledModules ?? []).includes(module); }
 export function assertModuleEnabled(tenantId: string, module: OptionalModule) {
   if (!isModuleEnabled(tenantId, module)) throw new Error("Novas operações deste módulo estão desativadas. Procure a administradora da consultoria. Os registros anteriores continuam disponíveis.");

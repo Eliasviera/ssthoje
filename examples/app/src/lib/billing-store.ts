@@ -2,7 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { requirePlatformMaster, throttle } from "./platform-store.ts";
-import { DEMO_TENANTS } from "./tenant-access.ts";
+import { listRuntimeTenants } from "./tenant-access.ts";
 import { getTenantSettings, readPlatformState } from "./tenant-state.ts";
 import { DEFAULT_PLAN, planTotals } from "./plan-catalog.ts";
 import { appendAuditEvent } from "./audit-log.ts";
@@ -21,11 +21,11 @@ export function getBillingOverview(userId: string) {
   requirePlatformMaster(userId);
   appendAuditEvent({ tenantId: "platform", actorUserId: userId, actorRole: "saas_master", action: "platform.billing_read" });
   const db = read();
-  return Object.fromEntries(DEMO_TENANTS.map(t => [t.id, db.accounts[t.id] ?? emptyBillingAccount()]));
+  return Object.fromEntries(listRuntimeTenants().map(t => [t.id, db.accounts[t.id] ?? emptyBillingAccount()]));
 }
 export function manageBilling(userId: string, tenantId: string, command: BillingCommand): { duplicate: boolean; matched?: boolean } {
   requirePlatformMaster(userId); throttle(userId);
-  if (!DEMO_TENANTS.some(t => t.id === tenantId)) throw new Error("Consultoria indisponível.");
+  if (!listRuntimeTenants().some(t => t.id === tenantId)) throw new Error("Consultoria indisponível.");
   if (!command || !Object.hasOwn(BILLING_ACTIONS, command.action) || typeof command.requestId !== "string" || !/^[a-zA-Z0-9:_-]{8,160}$/.test(command.requestId) || !Number.isSafeInteger(command.expectedRevision) || command.expectedRevision < 0 || typeof command.reason !== "string" || !command.reason.trim() || command.reason.length > 600) throw new Error("Confira a operação e a justificativa fictícia, até 600 caracteres.");
   const db = read(), account = db.accounts[tenantId] ?? emptyBillingAccount();
   const commandHash = createHash("sha256").update(JSON.stringify({ action: command.action, expectedRevision: command.expectedRevision, reason: command.reason.trim(), invoiceId: command.invoiceId ?? "", referenceStatus: command.referenceStatus ?? "", referenceAmountCents: command.referenceAmountCents ?? null, expectedPlanRevision: command.expectedPlanRevision ?? null })).digest("hex");

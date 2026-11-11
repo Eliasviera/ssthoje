@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import type { PoolClient } from "pg";
 import type { PcmsoRecord, PcmsoScope, PcmsoSummary } from "./pcmso-store";
-import { DEMO_MEMBERSHIPS } from "./tenant-access";
+import { listRuntimeMemberships } from "./tenant-access";
 import type { TenantWriteContext } from "./tenant-write-operations";
 
 type PcmsoAction = "assigned" | "save" | "submit" | "review";
@@ -233,7 +233,7 @@ export async function assignPcmsoInTransaction(
   scope: PcmsoScope,
   coordinatorId: string,
 ): Promise<PcmsoSummary> {
-  const coordinator = DEMO_MEMBERSHIPS.find((member) => member.userId === coordinatorId && member.tenantId === context.tenantId
+  const coordinator = listRuntimeMemberships().find((member) => member.userId === coordinatorId && member.tenantId === context.tenantId
     && member.status === "active" && member.role === "medico_coordenador");
   if (!coordinator) throw new Error("Selecione um coordenador médico desta consultoria.");
   const unit = await client.query(

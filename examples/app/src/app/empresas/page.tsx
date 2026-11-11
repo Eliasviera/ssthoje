@@ -24,7 +24,18 @@ async function CompaniesContent() {
   return <main className="main-area" style={{ marginLeft: 0 }}>
     <header className="topbar">
       <div className="breadcrumbs"><span>{tenant.name}</span><span className="crumb-separator">/</span><strong>Empresas</strong></div>
-      <Link className="secondary-button" href="/empresas">Voltar às empresas</Link>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <Link className="secondary-button" href="/analise-risco">AR · Análise de risco</Link>
+        <Link className="secondary-button" href="/apr">APR e checklists</Link>
+        <Link className="secondary-button" href="/cipa">CIPA</Link>
+        <Link className="secondary-button" href="/checklists">Checklists</Link>
+        <Link className="secondary-button" href="/equipamentos">Equipamentos</Link>
+        <Link className="secondary-button" href="/dds">DDS</Link>
+        <Link className="secondary-button" href="/desvios">Desvios</Link>
+        <Link className="secondary-button" href="/relatorios/desvios">Relatório de desvios</Link>
+        <Link className="secondary-button" href="/permissoes-trabalho">PT e PTE</Link>
+        <Link className="secondary-button" href="/empresas">Voltar às empresas</Link>
+      </div>
     </header>
     <div className="content-wrap">
       <section className="welcome-row" aria-labelledby="page-title">

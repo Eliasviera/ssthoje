@@ -1,6 +1,6 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 import { getCurrentTenantAccess } from "@/lib/tenant-context";
-import { listInspections } from "@/lib/checklist-store";
+import { listInspectionsForAccess } from "@/lib/company-scoped-reads";
 import { listClientCompanies } from "@/lib/client-service";
 
 const kindLabel = { area: "Checklist de área", equipment: "Checklist de equipamento" } as const;
@@ -15,7 +15,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   if (!access.context) return new Response("Acesso negado.", { status: access.authenticated ? 403 : 401 });
   const tenantId = access.context.tenant.id;
   const { id } = await params;
-  const inspection = listInspections(tenantId).find((item) => item.id === id);
+  const inspection = listInspectionsForAccess(access.context).find((item) => item.id === id);
   if (!inspection) return new Response("Inspeção não encontrada.", { status: 404 });
   const company = (await listClientCompanies(tenantId)).find((item) => item.id === inspection.companyId);
   const unit = company?.units.find((item) => item.id === inspection.unitId);

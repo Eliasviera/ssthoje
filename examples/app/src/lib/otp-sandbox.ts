@@ -2,7 +2,7 @@ import { randomInt, randomUUID, scryptSync, timingSafeEqual } from "node:crypto"
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { requirePlatformMaster, throttle } from "./platform-store.ts";
-import { DEMO_TENANTS } from "./tenant-access.ts";
+import { listRuntimeTenants } from "./tenant-access.ts";
 import { getTenantSettings } from "./tenant-state.ts";
 import { appendAuditEvent } from "./audit-log.ts";
 
@@ -10,7 +10,7 @@ type Challenge = { id:string; tenantId:string; actorUserId:string; createdAt:num
 const path=()=>join(process.cwd(),"data","otp-sandbox.json");
 function read():Challenge[] { try{return JSON.parse(readFileSync(path(),"utf8"));}catch(e){if((e as NodeJS.ErrnoException).code==="ENOENT")return [];throw e;} }
 function write(rows:Challenge[]) { mkdirSync(dirname(path()),{recursive:true});const temp=`${path()}.${randomUUID()}.tmp`;writeFileSync(temp,JSON.stringify(rows),{flag:"wx"});renameSync(temp,path()); }
-function authorize(userId:string,tenantId:string) {requirePlatformMaster(userId);if(!DEMO_TENANTS.some(t=>t.id===tenantId)||getTenantSettings(tenantId).status!=="active")throw new Error("Selecione uma consultoria ativa fictícia.");}
+function authorize(userId:string,tenantId:string) {requirePlatformMaster(userId);if(!listRuntimeTenants().some(t=>t.id===tenantId)||getTenantSettings(tenantId).status!=="active")throw new Error("Selecione uma consultoria ativa fictícia.");}
 function audit(userId:string,id:string) {appendAuditEvent({tenantId:"platform",actorUserId:userId,actorRole:"saas_master",action:"platform.integration_run",targetId:id});}
 export function issueSandboxOtp(userId:string,tenantId:string) {
   authorize(userId,tenantId);throttle(userId);

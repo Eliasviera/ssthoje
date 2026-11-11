@@ -24,8 +24,11 @@ export async function createTemplateAction(_previous: ChecklistFormState, data: 
   const access = await getCurrentTenantAccess("checklist.manage");
   if (!access.context) return { error: "Seu perfil não pode criar modelos." };
   try {
+    const rawItems = data.getAll("items").map((value) => typeof value === "string" ? value.trim() : "").filter(Boolean);
+    const criticalItems = new Set(data.getAll("criticalItems").map(String));
+    const items = rawItems.map((textValue, index) => ({ text: textValue, critical: criticalItems.has(String(index)) }));
     createTemplate({ tenantId: access.context.tenant.id, actorUserId: access.session.userId, kind: field(data, "kind", 10) as ChecklistKind,
-      name: field(data, "name", 120), items: field(data, "items", 30000).split("\n") });
+      name: field(data, "name", 120), items });
     audit(access.context, access.session.userId, "checklist.template_created");
     revalidatePath("/checklists");
     return { success: "Modelo criado." };
@@ -40,6 +43,27 @@ export async function archiveTemplateAction(_previous: ChecklistFormState, data:
     audit(access.context, access.session.userId, "checklist.template_archived");
     revalidatePath("/checklists");
     return { success: "Modelo arquivado. Inspeções anteriores foram preservadas." };
+  } catch (error) { return failure(error); }
+}
+
+export async function syncPendingInspectionAction(_previous: ChecklistFormState, data: FormData): Promise<ChecklistFormState> {
+  const access = await getCurrentTenantAccess("checklist.apply");
+  if (!access.context) return { error: "Seu perfil não pode registrar inspeções." };
+  try {
+    const tenantId = access.context.tenant.id;
+    const templateId = field(data, "templateId", 36);
+    const scope = field(data, "scope", 281).split("|");
+    const answers: Record<string, { answer: string; note: string }> = {};
+    for (const [key, value] of data.entries()) {
+      if (key.startsWith("answer:") && typeof value === "string") answers[key.slice(7)] = { answer: value, note: field(data, `note:${key.slice(7)}`, 500) };
+    }
+    const freeNotes = [0, 1].map((index) => ({ label: field(data, `free${index}label`, 80), text: field(data, `free${index}text`, 500) })).filter((entry) => entry.label || entry.text);
+    completeInspection({ tenantId, actorUserId: access.session.userId, templateId, companyId: scope[0] || "", unitId: scope[1] || "",
+      subject: field(data, "subject", 160), performedOn: field(data, "performedOn", 10), inspector: field(data, "inspector", 120),
+      answers, freeNotes, equipmentId: field(data, "equipmentId", 60) || undefined, image: field(data, "image", 120000) });
+    audit(access.context, access.session.userId, "checklist.completed");
+    revalidatePath("/checklists");
+    return { success: "Inspeção sincronizada do aparelho." };
   } catch (error) { return failure(error); }
 }
 
@@ -62,9 +86,13 @@ export async function completeInspectionAction(_previous: ChecklistFormState, da
     for (const [key, value] of data.entries()) {
       if (key.startsWith("answer:") && typeof value === "string") answers[key.slice(7)] = { answer: value, note: field(data, `note:${key.slice(7)}`, 500) };
     }
+    const freeNotes = [0, 1].map((index) => ({
+      label: field(data, `free${index}label`, 80),
+      text: field(data, `free${index}text`, 500),
+    })).filter((entry) => entry.label || entry.text);
     completeInspection({ tenantId, actorUserId: access.session.userId, templateId, companyId, unitId,
       subject: field(data, "subject", 160), performedOn: field(data, "performedOn", 10), inspector: field(data, "inspector", 120),
-      answers, image: field(data, "image", 120000) });
+      answers, freeNotes, equipmentId: field(data, "equipmentId", 60) || undefined, image: field(data, "image", 120000) });
     audit(access.context, access.session.userId, "checklist.completed");
     revalidatePath("/checklists");
     return { success: "Inspeção registrada com assinatura. Itens não conformes devem ser tratados em Não conformidades." };

@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { appendAuditEvent } from "./audit-log.ts";
-import { DEMO_MEMBERSHIPS, requireTenantAccess } from "./tenant-access.ts";
+import { listRuntimeMemberships, requireTenantAccess } from "./tenant-access.ts";
 
 export type PcmsoScope = { companyId: string; unitId: string; companyName: string; unitName: string };
 export type PcmsoStatus = "draft" | "in_review" | "reviewed";
@@ -58,7 +58,7 @@ export function listMedicalUnitScopes(userId: string): PcmsoScope[] {
 }
 export function assignPcmso(userId: string, scope: PcmsoScope, coordinatorId: string): PcmsoSummary {
   const access = context(userId, "pcmso.assign");
-  const coordinator = DEMO_MEMBERSHIPS.find(m => m.userId === coordinatorId && m.tenantId === access.tenant.id && m.status === "active" && m.role === "medico_coordenador");
+  const coordinator = listRuntimeMemberships().find(m => m.userId === coordinatorId && m.tenantId === access.tenant.id && m.status === "active" && m.role === "medico_coordenador");
   if (!coordinator) throw new Error("Selecione um coordenador médico desta consultoria.");
   const db = read();
   const now = new Date().toISOString();

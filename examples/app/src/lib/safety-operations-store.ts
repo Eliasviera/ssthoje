@@ -3,6 +3,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { DocumentSignatureError, normalizeSignerName, sameSignerName, validateSignatureImage, type DocumentSigner, type DocumentSignature, type DocumentSignerRole } from "./document-signatures";
 
 export type SafetyChecklistItem = { id: string; prompt: string };
 export type SafetyChecklistActivityKind = "general_activity" | "confined_space_nr33";
@@ -30,6 +31,7 @@ export type AprRiskSnapshot = {
   hazard: string;
   possibleHarm: string;
   exposureDescription: string;
+  fieldDescription?: string;
 };
 // Risco identificado durante a avaliação da tarefa que não estava no PGR selecionado.
 // Fica separado dos riscos de origem PGR para preservar a rastreabilidade da base.
@@ -64,6 +66,8 @@ export type SafetyAprRevision = {
 };
 export type SafetyApr = {
   id: string;
+  /** Número do documento, sequencial por tenant: APR-2026-0001. */
+  documentNumber?: string;
   tenantId: string;
   revision: number;
   status: "draft" | "in_review";
@@ -86,6 +90,9 @@ export type SafetyApr = {
   // Ausente nas APRs legadas; não reconstruir revisão/referência retroativamente.
   checklistSnapshot?: SafetyChecklistTemplate;
   answers: AprChecklistAnswer[];
+  /** Quem assina a ciência: emissor (líder/encarregado) e participantes da atividade. */
+  signers?: DocumentSigner[];
+  signatures?: DocumentSignature[];
   history?: SafetyAprRevision[];
   createdAt: string;
   createdBy: string;
@@ -148,6 +155,8 @@ function copyApr(apr: SafetyApr): SafetyApr {
   return { ...apr, risks: apr.risks.map((risk) => ({ ...risk })), answers: apr.answers.map((answer) => ({ ...answer })),
     ...(apr.additionalRisks ? { additionalRisks: apr.additionalRisks.map(risk => ({ ...risk, controls: [...risk.controls] })) } : {}),
     ...(apr.additionalPgrControls ? { additionalPgrControls: apr.additionalPgrControls.map(control => ({ ...control })) } : {}),
+    ...(apr.signers ? { signers: apr.signers.map(signer => ({ ...signer })) } : {}),
+    ...(apr.signatures ? { signatures: apr.signatures.map(signature => ({ ...signature })) } : {}),
     ...(apr.checklistSnapshot ? { checklistSnapshot: copyTemplate(apr.checklistSnapshot) } : {}),
     ...(apr.history ? { history: apr.history.map(entry => ({ ...entry, answers: entry.answers.map(answer => ({ ...answer })) })) } : {}) };
 }
@@ -336,9 +345,12 @@ export function createSafetyApr(input: NewApr): SafetyApr {
     && entry.tenantId === input.tenantId && entry.version === input.checklistTemplateVersion && entry.status === "active");
   if (!template) throw new SafetyOperationsValidationError("O modelo de checklist ativo não está disponível. Atualize a página.");
   const now = new Date().toISOString();
+  const year = now.slice(0, 4);
+  const sequence = data.aprs.filter((entry) => entry.tenantId === input.tenantId && entry.documentNumber?.startsWith(`APR-${year}-`)).length + 1;
   const apr: SafetyApr = {
     ...input,
     id: randomUUID(),
+    documentNumber: `APR-${year}-${String(sequence).padStart(4, "0")}`,
     revision: 1,
     status: "draft",
     risks: input.risks.map((risk) => ({ ...risk })),
@@ -388,6 +400,59 @@ function prepareAprHistory(apr: SafetyApr) {
     throw new SafetyOperationsValidationError("O histórico da APR diverge do estado atual. Confira a origem antes de continuar.");
   }
 }
+/** Inclui quem vai assinar a APR: emissor (líder/encarregado) ou participante. */
+export function addSafetyAprSigner(tenantId: string, aprId: string, nameInput: string, roleInput: string, actorUserId: string, workerId?: string): SafetyApr {
+  const data = readData();
+  const apr = data.aprs.find((entry) => entry.id === aprId && entry.tenantId === tenantId);
+  if (!apr) throw new SafetyOperationsValidationError("A APR não está disponível nesta consultoria.");
+  if (!actorUserId?.trim()) throw new SafetyOperationsValidationError("A conta que inclui o assinante não foi identificada.");
+  if (roleInput !== "issuer" && roleInput !== "participant") throw new SafetyOperationsValidationError("Informe se a pessoa é emissor ou participante.");
+  let name: string;
+  try { name = normalizeSignerName(nameInput); } catch (error) {
+    if (error instanceof DocumentSignatureError) throw new SafetyOperationsValidationError(error.message);
+    throw error;
+  }
+  const signers = apr.signers ?? [];
+  if (signers.some((signer) => sameSignerName(signer.name, name) || (workerId ? signer.workerId === workerId : false))) {
+    throw new SafetyOperationsValidationError("Esta pessoa já está na lista de assinaturas.");
+  }
+  apr.signers = [...signers, { id: randomUUID(), name, role: roleInput as DocumentSignerRole, ...(workerId ? { workerId } : {}) }];
+  apr.updatedAt = new Date().toISOString();
+  writeData(data);
+  return copyApr(apr);
+}
+
+/** Registra a assinatura desenhada na tela de uma pessoa já incluída na APR. */
+export function signSafetyApr(tenantId: string, aprId: string, signerId: string, imageInput: string, actorUserId: string): SafetyApr {
+  const data = readData();
+  const apr = data.aprs.find((entry) => entry.id === aprId && entry.tenantId === tenantId);
+  if (!apr) throw new SafetyOperationsValidationError("A APR não está disponível nesta consultoria.");
+  if (!actorUserId?.trim()) throw new SafetyOperationsValidationError("A conta que coleta a assinatura não foi identificada.");
+  const signer = (apr.signers ?? []).find((entry) => entry.id === signerId);
+  if (!signer) throw new SafetyOperationsValidationError("O assinante não está na lista desta APR. Atualize a página.");
+  if ((apr.signatures ?? []).some((signature) => signature.signerId === signerId)) {
+    throw new SafetyOperationsValidationError("Esta pessoa já assinou esta APR.");
+  }
+  let image: string;
+  try { image = validateSignatureImage(imageInput); } catch (error) {
+    if (error instanceof DocumentSignatureError) throw new SafetyOperationsValidationError(error.message);
+    throw error;
+  }
+  const signature: DocumentSignature = {
+    signerId: signer.id,
+    signerName: signer.name,
+    role: signer.role,
+    image,
+    signedAt: new Date().toISOString(),
+    capturedByUserId: actorUserId,
+    method: "drawn_on_screen_simple",
+  };
+  apr.signatures = [...(apr.signatures ?? []), signature];
+  apr.updatedAt = signature.signedAt;
+  writeData(data);
+  return copyApr(apr);
+}
+
 export function saveSafetyAprAnswers(tenantId: string, aprId: string, expectedRevision: number, answers: AnswerInput[], actorUserId: string): SafetyApr {
   const data = readData();
   const apr = data.aprs.find((entry) => entry.id === aprId && entry.tenantId === tenantId);

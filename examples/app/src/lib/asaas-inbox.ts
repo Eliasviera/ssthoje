@@ -1,14 +1,14 @@
 import { createHash, randomUUID, timingSafeEqual } from "node:crypto";
 import { existsSync, linkSync, mkdirSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { DEMO_TENANTS } from "./tenant-access.ts";
+import { listRuntimeTenants } from "./tenant-access.ts";
 import { getTenantSettings } from "./tenant-state.ts";
 import { requirePlatformMaster, throttle } from "./platform-store.ts";
 import { appendAuditEvent } from "./audit-log.ts";
 
 export type AsaasConfig = { enabled: boolean; token: string; tenantId: string; paymentId: string };
 export function asaasConfig(): AsaasConfig { return { enabled: process.env.SST_ASAAS_SANDBOX_ENABLED === "true", token: process.env.SST_ASAAS_WEBHOOK_TOKEN ?? "", tenantId: process.env.SST_ASAAS_SANDBOX_TENANT_ID ?? "", paymentId: process.env.SST_ASAAS_SANDBOX_PAYMENT_ID ?? "" }; }
-export function asaasReady(c: AsaasConfig) { return c.enabled && /^[^\s]{32,255}$/.test(c.token) && DEMO_TENANTS.some(t=>t.id===c.tenantId) && /^pay_[a-zA-Z0-9_-]{1,100}$/.test(c.paymentId); }
+export function asaasReady(c: AsaasConfig) { return c.enabled && /^[^\s]{32,255}$/.test(c.token) && listRuntimeTenants().some(t=>t.id===c.tenantId) && /^pay_[a-zA-Z0-9_-]{1,100}$/.test(c.paymentId); }
 export function authenticateAsaas(token: string | null, c: AsaasConfig) {
   if (!asaasReady(c)) return false;
   const a=Buffer.from(token ?? ""), b=Buffer.from(c.token);

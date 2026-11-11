@@ -3,7 +3,7 @@ import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { MOCK_ADAPTERS, signFixture, verifyFixture, type IntegrationKind, type SandboxResult } from "./integration-adapters.ts";
 import { requirePlatformMaster, throttle } from "./platform-store.ts";
-import { DEMO_TENANTS } from "./tenant-access.ts";
+import { listRuntimeTenants } from "./tenant-access.ts";
 import { getTenantSettings } from "./tenant-state.ts";
 import { appendAuditEvent } from "./audit-log.ts";
 
@@ -22,7 +22,7 @@ function audit(userId: string, action: "platform.integration_read" | "platform.i
 export function getIntegrationSandbox(userId: string) { requirePlatformMaster(userId); audit(userId, "platform.integration_read"); return structuredClone(read().slice(-30).reverse()); }
 export function runIntegrationSandbox(userId: string, tenantId: string, kind: IntegrationKind, scenario: Scenario, key: string, reason: string) {
   requirePlatformMaster(userId); throttle(userId);
-  if (!DEMO_TENANTS.some(t => t.id === tenantId) || getTenantSettings(tenantId).status !== "active") throw new Error("Selecione uma consultoria ativa de demonstração.");
+  if (!listRuntimeTenants().some(t => t.id === tenantId) || getTenantSettings(tenantId).status !== "active") throw new Error("Selecione uma consultoria ativa de demonstração.");
   if (!Object.hasOwn(MOCK_ADAPTERS, kind) || !["success", "duplicate", "invalid_signature", "failure"].includes(scenario) || typeof key !== "string" || !/^[a-zA-Z0-9-]{8,80}$/.test(key) || typeof reason !== "string" || !reason.trim() || reason.length > 600) throw new Error("Confira a integração, o cenário e a justificativa fictícia.");
   const runs = read(), old = runs.find(r => r.tenantId === tenantId && r.kind === kind && r.key === key);
   if (old) { if (old.scenario !== scenario) throw new Error("Esta chave já identifica outro cenário. Atualize a página."); return { id: old.id, repeated: true }; }

@@ -46,6 +46,7 @@ async function CompanyDetail({ params, searchParams }: { params: Promise<{ compa
   if (!company) notFound();
 
   const canReadWorkers = hasTenantPermission(membership.role, "workers.read");
+  const canReadOperations = hasTenantPermission(membership.role, "operations.read");
   const canReadEpi = hasTenantPermission(membership.role,"epi.read")&&!!(await getCurrentTenantAccess("epi.read",tenant.id)).context;
   const canManageEpi = hasTenantPermission(membership.role,"epi.manage")&&!!(await getCurrentTenantAccess("epi.manage",tenant.id)).context;
   const canReadPgr = hasTenantPermission(membership.role, "documents.read");
@@ -102,6 +103,13 @@ async function CompanyDetail({ params, searchParams }: { params: Promise<{ compa
           {canReadThirdParty && <Link className="primary-button" href={`/empresas/${company.id}?tab=terceiros`}>Analisar terceiros deste cliente · {new Set(thirdPartyInvitations.map(entry => entry.contractorCnpj)).size}</Link>}
         </div>
         {canReadThirdParty && thirdPartyInvitations.length === 0 && <p>Nenhuma terceira vinculada por solicitação documental. Abra Terceiros para informar a contratada, a atividade e os documentos solicitados.</p>}
+        {canReadOperations && <>
+          <h3>Módulos da consultoria</h3>
+          <div className="client-card-actions">
+            <Link className="secondary-button" href="/analise-risco">Análise de Risco (AR)</Link>
+            <Link className="secondary-button" href="/apr">Análise Preliminar de Risco (APR) e checklists</Link>
+          </div>
+        </>}
       </section>}
       {selectedTab === "resumo" && <div className="company-detail">
         <section className="panel company-detail-panel" aria-labelledby="company-details-title">

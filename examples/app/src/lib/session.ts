@@ -3,6 +3,8 @@ import "server-only";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { findDemoAccountById } from "./demo-accounts";
+import { findTrialAccountById, isTrialActive } from "./trial-accounts";
+import { isTenantEnabled } from "./tenant-state";
 
 const COOKIE_NAME = "sst_hoje_session";
 const SESSION_SECONDS = 60 * 60 * 8;
@@ -60,7 +62,9 @@ export async function getSession(): Promise<DemoSession | null> {
     const value: unknown = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
     if (!value || typeof value !== "object") return null;
     const session = value as Partial<DemoSession>;
-    const account = typeof session.userId === "string" ? findDemoAccountById(session.userId) : null;
+    const trial = typeof session.userId === "string" && session.userId.startsWith("trial-user-") ? findTrialAccountById(session.userId) : null;
+    if (trial && (!isTrialActive(trial) || !isTenantEnabled(trial.tenantId))) return null;
+    const account = typeof session.userId === "string" ? findDemoAccountById(session.userId) ?? trial : null;
     if (
       !account ||
       typeof session.email !== "string" ||

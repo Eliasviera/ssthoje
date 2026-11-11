@@ -2,6 +2,9 @@
 
 import { useActionState, useState } from "react";
 import { WORK_PERMIT_SOURCE_FIELD_MAPS } from "@/lib/work-permit-source-field-maps";
+import { optionsForField } from "@/lib/work-permit-field-options";
+import ChoiceSelect, { ChoiceAppend, vocabularyChoices } from "../choice-select";
+import type { VocabularyEntry } from "@/lib/field-vocabulary";
 import { saveWorkPermitDraftAction } from "@/app/safety-operations-actions";
 import type { SafetyOperationsFormState } from "@/app/safety-operations-actions";
 import type { WorkPermitDraft } from "@/lib/work-permit-draft-store";
@@ -26,12 +29,18 @@ type AprOption = {
   activityStage: string;
 };
 
-export default function WorkPermitSourceFormPreview({ mapId, draft, aprOptions }: { mapId: WorkPermitSourceMapId; draft?: WorkPermitDraft; aprOptions: AprOption[] }) {
+// Campos de PT/PTE que também recebem opções do acervo genérico de campo.
+const ACERVO_FIELD_KIND: Record<string, string> = {
+  "space-location": "location",
+};
+
+export default function WorkPermitSourceFormPreview({ mapId, draft, aprOptions, vocabulary }: { mapId: WorkPermitSourceMapId; draft?: WorkPermitDraft; aprOptions: AprOption[]; vocabulary: VocabularyEntry[] }) {
   const [values, setValues] = useState<Record<string, string>>(draft?.values ?? {});
   const [title, setTitle] = useState(draft?.title ?? "");
   const [aprId, setAprId] = useState(draft?.aprId ?? "");
   const [state, formAction, pending] = useActionState<SafetyOperationsFormState, FormData>(saveWorkPermitDraftAction, {});
   const source = WORK_PERMIT_SOURCE_FIELD_MAPS.find((item) => item.id === mapId);
+  const activityChoices = vocabularyChoices(vocabulary.filter((entry) => entry.kind === "activity"));
   if (!source) return null;
 
   function clearPreview() {
@@ -60,7 +69,7 @@ export default function WorkPermitSourceFormPreview({ mapId, draft, aprOptions }
   return (
     <details id={`permit-form-${source.id}`} className="pgr-card" open={Boolean(draft)}>
       <summary>{draft ? "Editando rascunho" : "Novo rascunho demonstrativo"} · {source.title}</summary>
-      <p className="document-warning"><strong>Somente dados fictícios.</strong> O salvamento guarda um rascunho demonstrativo no servidor, com histórico de revisões. Esta tela não é uma permissão, não contém checklist técnico e não libera atividade.</p>
+      <p className="document-warning"><strong>Somente dados fictícios.</strong> O salvamento guarda um rascunho demonstrativo no servidor, com histórico de revisões. Esta tela não é uma permissão, não contém checklist técnico e não libera atividade. Campos com lista oferecem opções do formulário de origem; você pode escolher uma ou escrever outro texto, e nada disso é tratado como critério.</p>
       <h3>{source.title}</h3>
       <p className="period-label">Revisão técnica pendente</p>
       <form action={formAction}>
@@ -77,14 +86,31 @@ export default function WorkPermitSourceFormPreview({ mapId, draft, aprOptions }
             const key = `${section.id}.${field.id}`;
             const value = values[key] ?? "";
             const update = (next: string) => setValues((current) => ({ ...current, [key]: next }));
-            return (
-              <label className="form-field pgr-wide" key={field.id}>
-                <span>{field.label}</span>
-                {MULTILINE_FIELD_IDS.has(field.id)
-                  ? <textarea name={`field.${key}`} rows={3} maxLength={3000} autoComplete="off" value={value} onChange={(event) => update(event.target.value)} />
-                  : <input name={`field.${key}`} maxLength={3000} autoComplete="off" value={value} onChange={(event) => update(event.target.value)} />}
-              </label>
-            );
+            const options = optionsForField(field.id);
+            const acervoKind = ACERVO_FIELD_KIND[field.id];
+            const acervoChoices = acervoKind ? vocabularyChoices(vocabulary.filter((entry) => entry.kind === acervoKind)) : [];
+            const choices = options.length ? options.map((option) => ({ value: option, label: option })) : acervoChoices;
+            return choices.length
+              ? <div className="pgr-wide" key={field.id}>
+                <ChoiceSelect
+                  name={`field.${key}`}
+                  label={field.label}
+                  choices={choices}
+                  value={value}
+                  onChange={update}
+                  customPlaceholder="Escreva outro texto"
+                  hint={options.length ? "Escolha uma opção do formulário ou escreva outro texto." : "Opções do acervo de campo; escolha uma ou escreva outro texto."}
+                />
+              </div>
+              : <div className="pgr-wide" key={field.id}>
+                <label className="form-field pgr-wide">
+                  <span>{field.label}</span>
+                  {MULTILINE_FIELD_IDS.has(field.id)
+                    ? <textarea name={`field.${key}`} rows={3} maxLength={3000} autoComplete="off" value={value} onChange={(event) => update(event.target.value)} />
+                    : <input name={`field.${key}`} maxLength={3000} autoComplete="off" value={value} onChange={(event) => update(event.target.value)} />}
+                </label>
+                {field.id === "work-description" && <ChoiceAppend label="Acrescentar atividade do acervo" choices={activityChoices} onAppend={(activity) => update(value.trim() ? `${value.trimEnd()}\n${activity}` : activity)}/>}
+              </div>;
           })}
         </fieldset>
       ))}

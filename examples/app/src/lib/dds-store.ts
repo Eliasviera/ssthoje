@@ -15,12 +15,16 @@ export type DdsSignature = {
 export type DdsAttendee = { id: string; workerId?: string; workerName: string; registered: boolean; signature?: DdsSignature };
 export type DdsHistoryEntry = { action: "created" | "photo_attached" | "theme_set" | "signed" | "responsible_signed" | "closed"; actorUserId: string; occurredAt: string; attendeeId?: string };
 export type DdsPhoto = { image: string; capturedAt: string; capturedByUserId: string };
+export type DdsConductorRole = "lideranca" | "sst" | "desconhecido";
+
 export type DdsRecord = {
   id: string;
   tenantId: string;
   companyId: string;
   unitId: string;
   theme: string;
+  /** Papel de quem conduziu o DDS: liderança operacional (praxe) ou SST (permitido). */
+  conductorRole?: DdsConductorRole;
   groupPhoto?: DdsPhoto;
   heldOn: string;
   location: string;
@@ -38,6 +42,7 @@ export type NewDds = {
   tenantId: string;
   companyId: string;
   unitId: string;
+  conductorRole?: DdsConductorRole;
   heldOn: string;
   location: string;
   responsible: string;
@@ -138,6 +143,7 @@ export function createDds(input: NewDds): DdsRecord {
     notes: typeof input.notes === "string" ? input.notes.trim().slice(0, 1000) : "",
     status: "draft",
     revision: 1,
+    conductorRole: input.conductorRole ?? "desconhecido",
     attendees,
     history: [{ action: "created", actorUserId: input.actorUserId, occurredAt: now }],
     createdAt: now,

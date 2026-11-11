@@ -244,6 +244,10 @@ h1 { color:#294638; font-size:clamp(25px,3vw,34px); font-weight:650; letter-spac
 @media (max-width:760px) { .company-detail-panel { padding:16px; } .company-detail-meta { grid-template-columns:1fr; } .client-card-footer { align-items:flex-start; flex-direction:column; } }
 .client-empty { align-items:center; background:#fff; border:1px dashed #dce7dd; border-radius:13px; display:flex; flex-direction:column; min-height:220px; justify-content:center; padding:25px; text-align:center; }
 .client-empty-icon { align-items:center; background:#edf4ed; border-radius:50%; color:#6b8e71; display:flex; font-size:22px; height:46px; justify-content:center; width:46px; }
+.icon-inline { color:inherit; display:inline-flex; margin-right:7px; vertical-align:-4px; }
+.aso-new > summary .icon-inline, .pgr-section h2 .icon-inline { color:#4d7a5b; }
+.ai-draft-head { align-items:center; display:flex; gap:9px; }
+.ai-draft-head .client-empty-icon { flex:0 0 auto; font-size:16px; height:32px; width:32px; }
 .client-empty h3 { color:#4d6453; font-size:12px; margin:15px 0 0; }
 .client-empty p { color:#89958d; font-size:10px; line-height:1.6; margin:7px 0 0; max-width:330px; }
 .permission-note { background:#f3f7f3; border:1px solid #e5ede5; border-radius:10px; color:#617567; display:grid; gap:5px; padding:13px 15px; }
@@ -782,6 +786,43 @@ h1 { color:#294638; font-size:clamp(25px,3vw,34px); font-weight:650; letter-spac
 .risk-analysis-history ol { display:grid; gap:6px; padding-left:22px; }
 .risk-analysis-card .operations-check { align-items:flex-start; display:flex; gap:9px; }
 .risk-analysis-card .operations-check input { flex:none; margin-top:3px; }
+.pgr-section .aso-new > .risk-form-toggle { width:fit-content; max-width:100%; padding:10px 14px; border:1px solid #48745a; border-radius:8px; background:#edf5ef; color:#214a32; font-weight:700; cursor:pointer; }
+.pgr-section .aso-new > .risk-form-toggle:focus-visible { outline:2px solid #3973a8; outline-offset:3px; }
+.risk-form-heading { margin:12px 0 0; padding:9px 12px; border-left:4px solid #48745a; background:#edf5ef; color:#214a32; font-size:15px; }
+.apr-wizard { max-width:820px; margin:16px 0; padding:clamp(12px, 3vw, 24px); border:1px solid #d8e2da; border-radius:12px; background:#fff; }
+.apr-wizard-steps { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:6px; }
+.apr-wizard-steps button { min-height:44px; padding:8px; border:1px solid #d8e2da; border-radius:8px; background:#fff; color:#30443a; font:inherit; font-weight:700; cursor:pointer; }
+.apr-wizard-steps [aria-current="step"] { border-color:#a9430b; background:#a9430b; color:#fff; }
+.apr-wizard-steps button:focus-visible { outline:2px solid #3973a8; outline-offset:2px; }
+.apr-wizard-step[hidden] { display:none; }
+.apr-wizard-step .form-field,.apr-wizard-step .form-field :is(input, textarea, select) { font-size:14px; }
+.apr-wizard-footer { flex-wrap:wrap; gap:8px; }
+.apr-wizard-footer span { color:#30443a; font-size:14px; }
+@media (max-width:580px) { .apr-wizard-steps { grid-template-columns:repeat(2, minmax(0, 1fr)); } }
+.risk-analysis-document-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.risk-analysis-preview { margin:auto; width:min(800px, calc(100% - 24px)); max-height:calc(100dvh - 24px); overflow:auto; border:1px solid #cbd5ce; border-radius:12px; padding:clamp(12px, 3vw, 28px); background:#fff; }
+.risk-analysis-preview::backdrop { background:#15251bb3; }
+.risk-analysis-preview > .risk-analysis-document-actions { margin-bottom:18px; }
+.risk-analysis-document { display:block; color:#111; }
+.risk-analysis-document > header { border-bottom:2px solid #315f42; display:block; margin-bottom:18pt; padding-bottom:10pt; }
+.risk-analysis-document > header h3 { color:#111; font-size:18pt; }
+.risk-analysis-document > header p,.risk-analysis-document > p { color:#222; font-size:11pt; line-height:1.6; margin:9pt 0; }
+.risk-analysis-document li { margin-bottom:6pt; }
+.risk-analysis-document h4 { break-after:avoid; }
+.apr-document-block { margin:10px 0; border:1px solid #a6b4aa; border-radius:6px; padding:0 12px; }
+.apr-document-block > summary { padding:10px 0; color:#214a32; font-weight:700; cursor:pointer; break-after:avoid; }
+.apr-document-block > summary:focus-visible { outline:2px solid #3973a8; }
+.apr-check-results { padding:0; list-style:none; }
+.apr-check-results li { display:flex; align-items:baseline; gap:8px; break-inside:avoid; }
+.apr-check-box { display:inline-grid; flex:0 0 1.1em; place-items:center; height:1.1em; border:1px solid currentColor; line-height:1; }
+.apr-disclosure { margin-top:18pt; border-top:1px solid #a6b4aa; break-inside:avoid; }
+.apr-disclosure-identification { display:flex; flex-wrap:wrap; gap:8px 24px; }
+.apr-disclosure-identification p { display:flex; align-items:baseline; flex:1 1 190px; gap:8px; }
+.apr-disclosure-identification span { flex:1; border-bottom:1px solid #75857a; }
+.apr-disclosure table { width:100%; table-layout:fixed; border-collapse:collapse; }
+.apr-disclosure th,.apr-disclosure td { border:1px solid #a6b4aa; padding:6px; text-align:left; }
+.apr-disclosure td { height:27pt; }
+.risk-analysis-document .risk-analysis-history { border-top:1px solid #aaa; margin-top:18pt; padding-top:10pt; }
 .risk-analysis-print-copy { display:none; }
 .esocial-catalog { display:grid; gap:14px; margin:20px 0 24px; }
 .esocial-catalog > p { margin:0; }
@@ -822,13 +863,90 @@ h1 { color:#294638; font-size:clamp(25px,3vw,34px); font-weight:650; letter-spac
 @media print {
   body:has(> .risk-analysis-print-copy) > :not(.risk-analysis-print-copy) { display:none !important; }
   .risk-analysis-print-copy { background:#fff; color:#111; display:block; }
-  .risk-analysis-print-copy .risk-analysis-card { border:0; border-radius:0; display:block; margin:0; padding:0; width:100%; }
-  .risk-analysis-print-copy .risk-analysis-card > header { border-bottom:2px solid #315f42; display:block; margin-bottom:18pt; padding-bottom:10pt; }
-  .risk-analysis-print-copy .risk-analysis-card > header h3 { color:#111; font-size:18pt; }
-  .risk-analysis-print-copy .risk-analysis-card > header p,.risk-analysis-print-copy .risk-analysis-card > p { color:#222; font-size:11pt; line-height:1.6; margin:9pt 0; }
-  .risk-analysis-print-copy .risk-analysis-history { border-top:1px solid #aaa; margin-top:18pt; padding-top:10pt; }
+  .risk-analysis-preview, .risk-analysis-preview::backdrop { display:none !important; }
 }
 @media (max-width:760px) { .risk-analysis-card > header { align-items:flex-start; flex-direction:column; } .risk-analysis-controls .primary-button,.risk-analysis-section > .aso-new .secondary-button { width:100%; } }
 .operations-deadline summary, .operations-section summary { cursor: pointer; font-weight: 700; }
 .operations-check { display: flex; align-items: center; gap: 12px; margin: 12px 0; }
 .operations-check input { width: 20px; height: 20px; }
+
+/* ---- CIPA (NR-05) --------------------------------------------------------- */
+.cipa-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .75rem; margin: 1rem 0 1.5rem; }
+.cipa-total { display: flex; flex-direction: column; gap: .25rem; padding: .75rem .9rem; border: 1px solid var(--border, #d8e3df); border-radius: .6rem; background: #fbfdfc; }
+.cipa-total strong { font-size: 1.5rem; line-height: 1.1; }
+.cipa-total span { font-size: .8rem; opacity: .75; }
+.cipa-total.is-critical { border-color: #c0392b; background: #fdf3f2; }
+.cipa-terms { display: grid; gap: 1rem; }
+.cipa-term { border: 1px solid var(--border, #d8e3df); border-radius: .75rem; padding: 1rem 1.1rem; background: #fff; }
+.cipa-term-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: .75rem; }
+.cipa-term-head h3 { margin: 0 0 .15rem; font-size: 1.05rem; }
+.cipa-term-head p { margin: 0; font-size: .85rem; opacity: .75; }
+.cipa-term-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .6rem 1.25rem; margin: 0; }
+.cipa-term-grid div { display: flex; flex-direction: column; gap: .1rem; }
+.cipa-term-grid dt { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; opacity: .6; }
+.cipa-term-grid dd { margin: 0; font-size: .9rem; }
+.cipa-term-grid .cipa-deadline dd { font-weight: 700; color: #b03a2e; }
+.cipa-alerts { list-style: none; padding: 0; margin: 0; display: grid; gap: .6rem; }
+.cipa-alert { display: flex; gap: .75rem; align-items: flex-start; padding: .75rem .9rem; border: 1px solid var(--border, #d8e3df); border-left-width: 4px; border-radius: .5rem; background: #fff; }
+.cipa-alert.is-critical { border-left-color: #c0392b; }
+.cipa-alert.is-warning { border-left-color: #d68910; }
+.cipa-alert.is-info { border-left-color: #2e86c1; }
+.cipa-alert-badge { flex: 0 0 auto; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: .18rem .45rem; border-radius: .3rem; background: #eef3f1; }
+.cipa-alert.is-critical .cipa-alert-badge { background: #fbe9e7; color: #a93226; }
+.cipa-alert.is-warning .cipa-alert-badge { background: #fdf3e2; color: #9c640c; }
+.cipa-alert.is-info .cipa-alert-badge { background: #eaf3fb; color: #1f618d; }
+.cipa-alert-body p { margin: 0 0 .2rem; font-size: .9rem; }
+.cipa-alert-body small { opacity: .7; }
+
+/* Abas reutilizando o visual de empresa precisam de espaçamento entre rótulos. */
+.cipa-empty-tabs-fix, .company-detail-tabs { gap: .5rem; flex-wrap: wrap; }
+
+/* ---- CIPA: formulários ---------------------------------------------------- */
+.cipa-form { display: grid; gap: 1rem; }
+.cipa-form fieldset { border: 1px solid var(--border, #d8e3df); border-radius: .6rem; padding: .9rem 1rem; margin: 0; }
+.cipa-form legend { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; opacity: .7; padding: 0 .35rem; }
+.cipa-form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .75rem; margin-bottom: .75rem; }
+.cipa-form label { display: flex; flex-direction: column; gap: .3rem; font-size: .85rem; font-weight: 600; }
+.cipa-form input, .cipa-form select, .cipa-form textarea { font: inherit; padding: .5rem .6rem; border: 1px solid var(--border, #cddad5); border-radius: .4rem; background: #fff; }
+.cipa-form-table { overflow-x: auto; }
+.cipa-form-table table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.cipa-form-table th, .cipa-form-table td { padding: .35rem .4rem; text-align: left; }
+.cipa-form-table tbody th { white-space: nowrap; font-weight: 700; }
+.cipa-form-table input { width: 100%; min-width: 4.5rem; }
+.cipa-form-footer { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.form-error { margin: 0; color: #a93226; font-size: .85rem; }
+.form-success { margin: 0; color: #1e7a4c; font-size: .85rem; }
+
+/* Listas suspensas do acervo de campo (AR, APR, PT e PTE) */
+.form-field select.choice-select { appearance:auto; background:#fbfcfb; border:1px solid #e1e9e2; border-radius:9px; color:#30443a; font:inherit; font-size:12px; height:43px; outline:none; padding:0 10px; width:100%; }
+.form-field select.choice-select:focus { background:#fff; border-color:#6e9a7b; box-shadow:0 0 0 3px rgba(89,143,103,.12); }
+.form-field select.choice-select:disabled { cursor:not-allowed; opacity:.65; }
+.form-field .choice-hint { color:#8b988f; display:block; font-size:10px; line-height:1.5; margin-top:4px; }
+.choice-append-row, .choice-stage-builder { align-items:flex-end; display:flex; flex-wrap:wrap; gap:8px; }
+.choice-append-row .form-field, .choice-stage-builder .form-field { flex:1 1 260px; }
+.choice-hazard-row { border-top:1px solid #eef3f1; display:grid; gap:8px; padding:10px 0; }
+.choice-stage-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+
+/* Checklist da APR: marcação por item e campo de análise condicional */
+.apr-result-options { display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
+.apr-result-option { align-items:flex-start; background:#fbfcfb; border:1px solid #e7eee8; border-radius:9px; cursor:pointer; display:flex; gap:8px; padding:10px; }
+.apr-result-option:has(input:checked), .apr-result-option.apr-result-selected { background:#f2f7f2; border-color:#b9d0bb; }
+.apr-result-option input { accent-color:#42744e; margin-top:3px; }
+.apr-result-option span { display:grid; gap:2px; }
+.apr-result-option strong { color:#3c5143; font-size:11px; }
+.apr-result-option small { color:#829087; font-size:9px; line-height:1.4; }
+.apr-result-fields { display:grid; gap:10px; margin-top:10px; }
+
+/* Assinaturas de ciência (AR e APR) */
+.document-signatures { border-top: 1px solid #e2ebe4; margin-top: 14px; padding-top: 12px; }
+.document-signatures h4 { color: #3c5143; font-size: 13px; margin: 0 0 6px; }
+.document-signatures > p { color: #55635a; font-size: 11px; line-height: 1.5; margin: 0 0 10px; }
+.signature-add-form { align-items: end; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+.signature-add-form .form-field { margin: 0; min-width: 200px; }
+.signature-list { display: grid; gap: 10px; list-style: none; margin: 0 0 10px; padding: 0; }
+.signature-list > li { background: #fbfcfb; border: 1px solid #e7eee8; border-radius: 9px; padding: 10px; }
+.signature-list > li > p { font-size: 11px; margin: 0 0 6px; }
+.signature-record { display: grid; gap: 4px; }
+.signature-record img { background: #fff; border: 1px solid #e2ebe4; border-radius: 6px; max-width: 200px; width: 100%; }
+.signature-record small { color: #829087; font-size: 9px; }
+.signature-pad-actions { align-items: center; display: flex; gap: 10px; }

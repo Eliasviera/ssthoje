@@ -15,6 +15,6 @@ export default function LoginForm() {
     <input id="password" name="password" type="password" autoComplete="current-password" placeholder="Digite sua senha" required maxLength={256}/>
     {state.error ? <p className="login-error" role="alert">{state.error}</p> : null}
     <button className="login-submit" type="submit" disabled={pending}>{pending ? "Entrando…" : "Entrar"}<span aria-hidden="true">→</span></button>
-    <p className="login-demo-label">Use as credenciais fictícias configuradas no ambiente local de demonstração.</p>
+    <p className="login-demo-label">Se ativou um convite, use o e-mail e a senha escolhidos no cadastro.</p>
   </form>;
 }

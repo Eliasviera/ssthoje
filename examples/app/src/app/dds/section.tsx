@@ -1,7 +1,9 @@
 "use client";
+import { classifyDdsConductor } from "@/lib/dds-conductor";
 import { useActionState, useEffect, useRef, useState } from "react";
 import type { ClientCompany } from "@/lib/client-store";
 import type { DdsRecord } from "@/lib/dds-store";
+import type { DdsTopic } from "@/lib/dds-topic-types";
 import { createDdsAction, signDdsAction, closeDdsAction, attachPhotoAction, setThemeAction, type DdsFormState } from "./actions";
 
 type WorkerOption = { id: string; name: string; jobTitle: string; companyId: string };
@@ -41,11 +43,17 @@ function PhotoStep({ record }: { record: DdsRecord }) {
     <div className="pgr-form-footer"><p>A foto libera o tema e as assinaturas e não pode ser trocada depois. <strong>Ambiente de teste: use uma foto sem pessoas, apenas para validar o funcionamento.</strong></p><button className="secondary-button" disabled={pending || !ready}>{pending ? "Enviando…" : "Registrar foto"}</button></div></form>;
 }
 
-function ThemeStep({ record }: { record: DdsRecord }) {
+function ThemeStep({ record, topics }: { record: DdsRecord; topics: DdsTopic[] }) {
   const [state, action, pending] = useActionState(setThemeAction, {});
+  const [selected, setSelected] = useState("");
+  const current = topics.find((topic) => topic.title === selected);
   return <form action={action} className="pgr-form"><input type="hidden" name="id" value={record.id}/><input type="hidden" name="revision" value={record.revision}/>
-    <label className="form-field pgr-wide">Etapa 2: tema do DDS<input name="theme" required maxLength={160}/></label><Feedback state={state}/>
-    <div className="pgr-form-footer"><p>O tema é livre. O sistema não sugere conteúdo normativo.</p><button className="secondary-button" disabled={pending}>Registrar tema</button></div></form>;
+    <label className="form-field pgr-wide">Etapa 2: tema do DDS{topics.length > 0
+      ? <select name="theme" required value={selected} onChange={(event) => setSelected(event.target.value)}><option value="" disabled>Selecione no acervo</option>{topics.map((topic) => <option key={topic.id} value={topic.title}>{topic.title}</option>)}</select>
+      : <input name="theme" required maxLength={160}/>}</label>
+    {current && <div className="panel" style={{ margin: "0.5rem 0" }}><p><strong>Orientação:</strong> {current.guidance}</p><p><small>{current.sourceItem}</small></p></div>}
+    <Feedback state={state}/>
+    <div className="pgr-form-footer"><p>{topics.length > 0 ? "Escolha no acervo ou registre outro tema." : "O tema é livre quando o acervo está vazio."}</p><button className="secondary-button" disabled={pending}>Registrar tema</button></div></form>;
 }
 
 function Feedback({ state }: { state: DdsFormState }) {
@@ -114,13 +122,15 @@ function ShareButtons({ record }: { record: DdsRecord }) {
   return <p><a className="secondary-button" href={url}>Baixar PDF</a> <button type="button" className="secondary-button" onClick={share}>Enviar (WhatsApp/e-mail)</button></p>;
 }
 
-function Card({ record, company, canManage }: { record: DdsRecord; company?: ClientCompany; canManage: boolean }) {
+function Card({ record, company, topics, canManage }: { record: DdsRecord; company?: ClientCompany; topics: DdsTopic[]; canManage: boolean }) {
   const open = record.status === "draft" && canManage;
   const released = Boolean(record.groupPhoto && record.theme);
+  const topic = topics.find((entry) => entry.title === record.theme);
   return <article className="pgr-card"><header><div><h3>{record.theme || "Tema a definir"}</h3><p>{company?.tradeName || company?.legalName || "Empresa indisponível"} · {record.heldOn.split("-").reverse().join("/")} · {record.location}</p></div><span className="period-label">{record.status === "closed" ? "Encerrado" : "Em coleta"}</span></header>
     {record.groupPhoto && <p><img src={record.groupPhoto.image} alt="Foto do grupo no local" style={{ maxWidth: "100%", maxHeight: 240 }}/><br/><small>Foto registrada em {new Date(record.groupPhoto.capturedAt).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })} (Brasília)</small></p>}
     {open && !record.groupPhoto && <PhotoStep record={record}/>}
-    {open && record.groupPhoto && !record.theme && <ThemeStep record={record}/>}
+    {open && record.groupPhoto && !record.theme && <ThemeStep record={record} topics={topics}/>}
+    {topic && <div className="panel" style={{ margin: "0.5rem 0", padding: "0.6rem 0.8rem", background: "#f4faf6", border: "1px solid #cde5d7", borderRadius: ".5rem" }}><p style={{ margin: 0 }}><strong>Orientação ({topic.sourceItem}):</strong> {topic.guidance}</p>{topic.verificationQuestion && <p style={{ margin: ".35rem 0 0", fontSize: ".85rem" }}><strong>Pergunta de verificação:</strong> {topic.verificationQuestion}</p>}</div>}
     <p><strong>Responsável:</strong> {record.responsible} · {record.responsibleSignature ? "assinou" : "aguardando assinatura"}</p>
     {record.notes && <p><strong>Observações:</strong> {record.notes}</p>}
     {open && released && !record.responsibleSignature && <details><summary>Assinar como responsável</summary><SignaturePad recordId={record.id} revision={record.revision} attendeeId="responsible" label={record.responsible}/></details>}
@@ -132,21 +142,25 @@ function Card({ record, company, canManage }: { record: DdsRecord; company?: Cli
   </article>;
 }
 
-export default function DdsSection({ companies, workers, records, canManage }: { companies: ClientCompany[]; workers: WorkerOption[]; records: DdsRecord[]; canManage: boolean }) {
+export default function DdsSection({ companies, workers, records, topics, canManage }: { companies: ClientCompany[]; workers: WorkerOption[]; records: DdsRecord[]; topics: DdsTopic[]; canManage: boolean }) {
   const [state, action, pending] = useActionState(createDdsAction, {});
   const [companyId, setCompanyId] = useState("");
   const visible = workers.filter((worker) => !companyId || worker.companyId === companyId);
+  const conductors = [...visible]
+    .map((worker) => ({ ...worker, conductorRole: classifyDdsConductor(worker.jobTitle) }))
+    .sort((a, b) => (a.conductorRole === "lideranca" ? -1 : 1) - (b.conductorRole === "lideranca" ? -1 : 1) || a.name.localeCompare(b.name));
   return <section className="panel pgr-section" aria-label="DDS">
     <div className="document-warning">Use somente dados fictícios. O DDS é um registro declarado pela equipe; não atesta conformidade. Armazenamento local de demonstração, sem criptografia. Biometria não está habilitada.</div>
     {canManage && <details className="aso-new"><summary>Registrar DDS</summary><form action={action} className="pgr-form">
       <label className="form-field pgr-wide">Empresa e unidade<select name="scope" required defaultValue="" onChange={(event) => setCompanyId(event.target.value.split("|")[0])}><option value="">Selecione</option>{companies.filter((item) => item.status === "active").flatMap((item) => item.units.map((unit) => <option key={`${item.id}|${unit.id}`} value={`${item.id}|${unit.id}`}>{item.tradeName || item.legalName} · {unit.name}</option>))}</select></label>
       <label className="form-field">Data<input type="date" name="heldOn" required/></label>
-      <label className="form-field">Local<input name="location" required maxLength={200}/></label><label className="form-field">Responsável (líder ou encarregado)<input name="responsible" required maxLength={120}/></label>
+      <label className="form-field">Local<input name="location" required maxLength={200}/></label>
+      <label className="form-field">Responsável pela condução (praxe: liderança operacional; SST também pode conduzir)<select name="responsible" required defaultValue="">{conductors.map((worker) => <option key={worker.id} value={`${worker.name} (${worker.jobTitle})`}>{worker.name} · {worker.jobTitle} {worker.conductorRole === "lideranca" ? "· praxe" : worker.conductorRole === "sst" ? "· SST (permitido)" : ""}</option>)}<option value="" disabled>Selecione o responsável</option></select></label>
       <fieldset className="form-field pgr-wide"><legend>Participantes cadastrados</legend>{visible.length ? visible.map((worker) => <label key={worker.id} style={{ display: "block" }}><input type="checkbox" name="workerIds" value={worker.id}/> {worker.name} · {worker.jobTitle}</label>) : <p>Nenhum trabalhador ativo para a empresa selecionada.</p>}</fieldset>
       <label className="form-field pgr-wide">Outros participantes, não cadastrados (um nome por linha)<textarea name="manualNames" rows={3} maxLength={2000}/></label>
       <label className="form-field pgr-wide">Observações<textarea name="notes" rows={2} maxLength={1000}/></label><Feedback state={state}/>
       <div className="pgr-form-footer"><p>Depois de registrar, tire a foto do grupo no local; ela libera o tema e as assinaturas.</p></div>
     </form></details>}
-    {records.length ? records.map((record) => <Card key={record.id} record={record} company={companies.find((item) => item.id === record.companyId)} canManage={canManage}/>) : <p>Nenhum DDS registrado.</p>}
+    {records.length ? records.map((record) => <Card key={record.id} record={record} topics={topics} company={companies.find((item) => item.id === record.companyId)} canManage={canManage}/>) : <p>Nenhum DDS registrado.</p>}
   </section>;
 }

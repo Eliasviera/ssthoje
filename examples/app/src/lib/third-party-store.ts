@@ -8,7 +8,7 @@ import { assertStorageCapacity } from "./storage-quota.ts";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { DEMO_MEMBERSHIPS, hasTenantPermission, requireTenantAccess } from "./tenant-access.ts";
+import { listRuntimeMemberships, hasTenantPermission, requireTenantAccess } from "./tenant-access.ts";
 import { appendAuditEvent } from "./audit-log.ts";
 import type { ClientCompany } from "./client-store";
 import { THIRD_PARTY_DOCUMENT_KINDS, type ThirdPartyDocumentKind } from "./third-party-policy";
@@ -166,7 +166,7 @@ function reviewer(userId: string, throttle = true) {
   if (throttle) rate(`review:${userId}`); return access.context;
 }
 function assignee(tenantId: string, userId: string) {
-  if (!DEMO_MEMBERSHIPS.some(m => m.tenantId === tenantId && m.userId === userId && m.status === "active" && hasTenantPermission(m.role, "documents.review") && hasTenantPermission(m.role, "thirdparty.read"))) throw new Error("Escolha um responsável autorizado desta consultoria.");
+  if (!listRuntimeMemberships().some(m => m.tenantId === tenantId && m.userId === userId && m.status === "active" && hasTenantPermission(m.role, "documents.review") && hasTenantPermission(m.role, "thirdparty.read"))) throw new Error("Escolha um responsável autorizado desta consultoria.");
   return userId;
 }
 function event(type: ThirdPartyIssueEvent["type"], actorUserId: string, receiptId: string, notes: string, evidence = ""): ThirdPartyIssueEvent {

@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { requirePlatformMaster, throttle } from "./platform-store.ts";
-import { DEMO_TENANTS } from "./tenant-access.ts";
+import { listRuntimeTenants } from "./tenant-access.ts";
 import { getTenantSettings } from "./tenant-state.ts";
 import { MOCK_ADAPTERS } from "./integration-adapters.ts";
 import { appendAuditEvent } from "./audit-log.ts";
@@ -17,7 +17,7 @@ function audit(userId:string,id?:string){appendAuditEvent({tenantId:"platform",a
 export function getJobSandbox(userId:string){requirePlatformMaster(userId);appendAuditEvent({tenantId:"platform",actorUserId:userId,actorRole:"saas_master",action:"platform.jobs_read"});return structuredClone(read());}
 export function enqueueSandboxJob(userId:string,tenantId:string,scenario:JobScenario,key:string,reason:string){
   requirePlatformMaster(userId);throttle(userId);
-  if(!DEMO_TENANTS.some(t=>t.id===tenantId)||getTenantSettings(tenantId).status!=="active"||!["success","transient","permanent"].includes(scenario)||!/^[-a-zA-Z0-9]{8,80}$/.test(key)||typeof reason!=="string"||!reason.trim()||reason.length>600)throw new Error("Confira consultoria ativa, cenário e justificativa fictícia.");
+  if(!listRuntimeTenants().some(t=>t.id===tenantId)||getTenantSettings(tenantId).status!=="active"||!["success","transient","permanent"].includes(scenario)||!/^[-a-zA-Z0-9]{8,80}$/.test(key)||typeof reason!=="string"||!reason.trim()||reason.length>600)throw new Error("Confira consultoria ativa, cenário e justificativa fictícia.");
   const db=read(),old=db.jobs.find(j=>j.tenantId===tenantId&&j.key===key);
   if(old){if(old.scenario!==scenario||old.reason!==reason.trim())throw new Error("Chave já usada para outra tarefa. Atualize a página.");return old.id;}
   const now=Date.now(),job:Job={id:randomUUID(),tenantId,key,scenario,reason:reason.trim(),createdAt:now,nextAt:now,attempts:0,status:"queued",history:[{at:now,message:"Tarefa fictícia enfileirada."}]};

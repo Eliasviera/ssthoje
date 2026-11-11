@@ -2,7 +2,7 @@ import { readLocalDataText, type LocalDataFile } from "./local-data-read.ts";
 import { randomUUID } from "node:crypto";
 
 
-import { DEMO_TENANTS, DEMO_MEMBERSHIPS } from "./tenant-access.ts";
+import { listRuntimeTenants, listRuntimeMemberships } from "./tenant-access.ts";
 import { isPlatformMaster } from "./platform-identity.ts";
 import { getTenantSettings, readPlatformState, writePlatformState, type TenantSettings } from "./tenant-state.ts";
 import { appendAuditEvent, listAuditEventsForTenant } from "./audit-log.ts";
@@ -12,7 +12,7 @@ import { tenantStorageBytes, MB } from "./storage-quota.ts";
 const attempts = new Map<string, { at: number; count: number }>();
 export function requirePlatformMaster(userId: string) {
   if (!isPlatformMaster(userId)) {
-    appendAuditEvent({ tenantId: "platform", actorUserId: userId || "anonymous", actorRole: DEMO_MEMBERSHIPS.find(m => m.userId === userId)?.role ?? "terceiro", action: "platform.access_denied" });
+    appendAuditEvent({ tenantId: "platform", actorUserId: userId || "anonymous", actorRole: listRuntimeMemberships().find(m => m.userId === userId)?.role ?? "terceiro", action: "platform.access_denied" });
     throw new Error("Acesso exclusivo ao SaaS Master.");
   }
 }
@@ -21,7 +21,7 @@ export function throttle(userId: string) {
   const next = old && now - old.at < 60000 ? { ...old, count: old.count + 1 } : { at: now, count: 1 };
   attempts.set(key, next); if (next.count > 20) throw new Error("Muitas ações administrativas. Aguarde um minuto.");
 }
-function target(id: string) { const tenant = DEMO_TENANTS.find(t => t.id === id); if (!tenant) throw new Error("Consultoria indisponível."); return tenant; }
+function target(id: string) { const tenant = listRuntimeTenants().find(t => t.id === id); if (!tenant) throw new Error("Consultoria indisponível."); return tenant; }
 function reason(value: string) { if (typeof value !== "string" || !value.trim() || value.length > 600) throw new Error("Informe uma justificativa de até 600 caracteres, sem dados pessoais."); return value.trim(); }
 function audit(userId: string, action: "platform.overview_read" | "platform.settings_changed" | "platform.support_diagnosed", targetId?: string) {
   appendAuditEvent({ tenantId: "platform", actorUserId: userId, actorRole: "saas_master", action, targetId });
@@ -32,12 +32,12 @@ function records(name: LocalDataFile): { tenantId: string; status: string }[] {
   catch (error) { if ((error as NodeJS.ErrnoException).code === "ENOENT") return []; throw error; }
 }
 function usage(tenantId: string): Usage {
-  return { companies: records("clients.json").filter(r => r.tenantId === tenantId && r.status === "active").length, workers: records("workers.json").filter(r => r.tenantId === tenantId && r.status === "active").length, members: DEMO_MEMBERSHIPS.filter(m => m.tenantId === tenantId && m.status === "active").length };
+  return { companies: records("clients.json").filter(r => r.tenantId === tenantId && r.status === "active").length, workers: records("workers.json").filter(r => r.tenantId === tenantId && r.status === "active").length, members: listRuntimeMemberships().filter(m => m.tenantId === tenantId && m.status === "active").length };
 }
 export function getPlatformOverview(userId: string) {
   requirePlatformMaster(userId); audit(userId, "platform.overview_read");
   const db = readPlatformState();
-  return { tenants: DEMO_TENANTS.map(t => ({ id: t.id, name: t.name, ...getTenantSettings(t.id), usage: usage(t.id), storageBytes: tenantStorageBytes(t.id), planAccount: db.plans?.[t.id] ?? structuredClone(DEFAULT_PLAN) })), planEvents: (db.planEvents ?? []).slice(-100).reverse(), changes: db.changes.slice(-100).reverse(), supportChecks: (db.supportChecks ?? []).slice(-100).reverse(), events: listAuditEventsForTenant("platform") };
+  return { tenants: listRuntimeTenants().map(t => ({ id: t.id, name: t.name, ...getTenantSettings(t.id), usage: usage(t.id), storageBytes: tenantStorageBytes(t.id), planAccount: db.plans?.[t.id] ?? structuredClone(DEFAULT_PLAN) })), planEvents: (db.planEvents ?? []).slice(-100).reverse(), changes: db.changes.slice(-100).reverse(), supportChecks: (db.supportChecks ?? []).slice(-100).reverse(), events: listAuditEventsForTenant("platform") };
 }
 export function managePlan(userId: string, tenantId: string, input: { operation: "configure"; config: PlanConfig } | { operation: "consume"; storageMB: number; credits: number }, justification: string, revision: number) {
   requirePlatformMaster(userId); throttle(userId); target(tenantId); const why = reason(justification);
