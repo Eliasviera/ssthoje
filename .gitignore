@@ -18,3 +18,16 @@ empresas teste/
 examples/backup-*/
 **/data/
 *.jsonl
+
+# pacote de deploy gerado (build artifact)
+examples/sst-hoje-eb.zip
+
+# CLI da Magalu usada no deploy (baixada localmente)
+.tools/
+
+# Arquivo com dados reais (anonimizados) da empresa-modelo — nunca versionar
+SST_HOJE_ARQUIVO_EMA_REAL_*/
+
+# Artefatos locais de build/deploy e credenciais do app
+examples/app/tmp/
+*.pid
