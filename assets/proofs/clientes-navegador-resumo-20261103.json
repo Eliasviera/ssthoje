@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-03",
+  "environment": "isolated HTTP harness with disposable PostgreSQL 17",
+  "syntheticDataOnly": true,
+  "activeDatabaseTouched": false,
+  "productPagesChanged": false,
+  "observedInBrowser": {
+    "accountAOwnCompanyOnly": true,
+    "accountACannotReadCompanyBDds": true,
+    "accountACannotReadCompanyBChecklist": true,
+    "revokedAccountABlockedWithExistingSession": true,
+    "accountBOwnCompanyOnly": true,
+    "accountBCannotReadCompanyADds": true
+  },
+  "repeatedHttpAssertionsAfterLabelFix": {
+    "twoPasswordLoginsAndSignedSessions": true,
+    "ownDdsAndChecklist200": true,
+    "otherCompanyDdsAndChecklist404": true,
+    "tamperedSessionRedirectedToLogin": true,
+    "foreignFormOrigin403": true,
+    "checklistTitleCorrect": true
+  },
+  "limitations": [
+    "Browser proof used an isolated harness, not the existing Next product pages.",
+    "Tenant was supplied by the trusted single-tenant test fixture, not a production identity directory.",
+    "Consultancy service relationship has no authoritative source integrated yet.",
+    "No production release or client provisioning is authorized by this proof."
+  ]
+}

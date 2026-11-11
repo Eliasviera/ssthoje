@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-02",
+  "syntheticOnly": true,
+  "accounts": 2,
+  "distinctTenants": 2,
+  "companies": 1,
+  "companyScopedToFirstTenant": true,
+  "firstAccountExtensions": 1,
+  "secondAccountExtensions": 0,
+  "activationAndExtensionHistoryVerified": true
+}

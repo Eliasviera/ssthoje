@@ -378,3 +378,41 @@ A conferência inicial encontrou botões client-side sem transição observável
 - Perigos, circunstâncias, agravos e medidas encontrados são relatados como sugestões. A probabilidade/severidade/classificação do documento não viram avaliação automática no SST Hoje; os demais 73 registros devem ser conferidos/completados a partir do PGR original.
 - Inspeção visual somente das páginas 14–16 confirmou o arranjo das tabelas usado para ajustar a extração; não representa revisão técnica do conteúdo nem inspeção visual integral das 240 páginas.
 - TypeScript `--noEmit` e ESLint focado nos arquivos do importador/inventário concluíram com código 0. Nenhum PDF foi carregado pelo painel nesta etapa.
+
+## Opções de preenchimento em AR, APR, PT e PTE — 2026-11-07
+
+- Objetivo do usuário: poder escolher opções em vez de digitar tudo nos formulários de AR, APR, PT e PTE. A entrega é de preenchimento assistido, não de critério técnico.
+- AR: mantém as listas de vocabulário para título, atividade, local e condições e agora oferece o acervo de medidas de controle para acrescentar linhas ao texto de medidas. A análise profissional de riscos continua texto livre.
+- APR: título, etapa/atividade e local/condições passam a usar as listas do vocabulário de campo (escolher ou escrever), gravadas nos mesmos campos `title`, `activityStage` e `workArea`. Riscos adicionais já usavam as listas de perigo e dano; agora também oferecem o acervo de medidas para compor o texto de controles.
+- PT/PTE: campos curtos e enumeráveis do mapa dos Word recebem sugestões de digitação (lista nativa), por exemplo papel na equipe, controle de chaves, fontes de energia, origem da mão de obra, isolamento/bloqueio elétrico, proteção de borda, isolamento de içamento, comunicação e inspeção de acessórios. A pessoa pode escolher uma opção ou escrever outro texto.
+- Campos narrativos (descrição da atividade, observações, medições, encerramento, auditoria) permanecem texto livre, e o mesmo campo pode continuar multilinha.
+- As listas são apenas sugestões derivadas da estrutura dos formulários de origem. Não são respostas obrigatórias, limites, critérios normativos, gates, assinaturas ou liberação; nenhuma validação nova foi criada e `canIssue` continua false.
+- Arquivos: `examples/app/src/lib/work-permit-field-options.ts` (novo), `examples/app/src/app/vocabulary-picker.tsx`, `examples/app/src/app/risk-analysis-section.tsx`, `examples/app/src/app/safety-operations-section.tsx`, `examples/app/src/app/permissoes-trabalho/work-permit-source-form-preview.tsx`.
+- Verificação: `npx tsc --noEmit` código 0; ESLint focado nos cinco arquivos com 0 erros (1 aviso pré-existente de variável não usada em `risk-analysis-section.tsx`). Não houve conferência visual no navegador nesta etapa.
+
+## Ajuste de UX: listas suspensas nativas e etapas manuais — 2026-11-07
+
+- Feedback do usuário: na nova AR os campos não pareciam lista suspensa (o seletor anterior só abria ao focar o texto) e o bloco "Acervo de etapas e perigos" não era dinâmico.
+- Novo componente `src/app/choice-select.tsx`: lista suspensa nativa com seta, opções agrupadas (ex.: Físico, EPI, Medida administrativa) e opção "Outro (escrever)", que revela campo de texto. Substituiu o seletor anterior em AR, APR, PT e PTE. O componente antigo `vocabulary-picker.tsx` foi removido por não ter mais uso.
+- AR: título, atividade, local e condições agora são `<select>`; medidas de controle têm lista + botão "Acrescentar linha". O bloco de etapas permite, sem modelo de acervo, adicionar etapa (lista de etapas) e, dentro dela, perigo (lista de perigos), risco/dano (lista de consequências), controles (texto + acervo), EPI, aplicabilidade e justificativa. Etapas do modelo continuam somente com aplicabilidade/justificativa editáveis.
+- `getRiskAnalysisFields` passou a aceitar `stagesPayload` mesmo sem modelo do acervo; etapas sem nome e perigos sem descrição são descartados no servidor. Nenhuma regra normativa, trava ou avaliação automática foi criada.
+- Campos que permanecem texto livre: nomes de pessoas, descrições narrativas (análise profissional, observações, medições, encerramento, auditoria) e justificativas.
+- Verificação: `npx tsc --noEmit` código 0; ESLint focado com 0 erros; `/analise-risco`, `/apr` e `/permissoes-trabalho` compilaram no servidor de desenvolvimento (200, log sem erro). Conferência visual pendente: exige sessão autenticada, que não estava disponível nesta etapa.
+
+## Acervo ampliado e compartilhado — 2026-11-07
+
+- Pedido do usuário: manter a APR partindo do PGR, mas ter um acervo com nomes usados em campo e mais opções nas bibliotecas de AR, APR, PT e PTE.
+- `scripts/expand-field-vocabulary.mjs` (idempotente) acrescentou 169 termos ao acervo de campo; 5 já existiam e foram preservados. Total passou de 230 para 399 termos.
+- Totais por eixo: perigos 90, consequências 111, medidas 80, atividades 43, etapas 28, locais 25, condições 22. Inclui grupo novo "Biológico" em perigos e grupos de atividade "Elétrica", "Civil", "Altura", "Espaço confinado", "Movimentação" e "Geral" (com "Atividade atípica fora da rotina").
+- Todos entraram com origem "manual" e `uses: 0`; nenhum termo tem CA, limite, obrigatoriedade ou texto normativo novo. Backup: `data/field-vocabulary.before-expand-2026-11-07.json`.
+- AR e APR passam a exibir automaticamente as novas opções (já liam o acervo). PT/PTE agora também leem o acervo: "Identificação e localização do espaço" usa a lista de locais e "Atividade a realizar" ganhou o botão "Acrescentar atividade do acervo".
+- A APR continua exigindo PGR aprovado e checklist ativo; o acervo é apoio de preenchimento, não substitui a origem PGR nem cria vínculo automático.
+- Verificação: script com 169 inclusões e 5 duplicados ignorados; `npx tsc --noEmit` código 0; ESLint focado código 0; `/analise-risco`, `/apr` e `/permissoes-trabalho` responderam 200 no servidor de desenvolvimento. Conferência visual pendente (exige sessão).
+
+## Aceite do usuário e validação visual — 2026-11-11
+
+- Usuário respondeu **“PT/PTE aprovado”** após a apresentação do estado atual da frente.
+- Validação feita nesta data em sessão autenticada de demonstração (Consultoria A, perfil administrador): `/permissoes-trabalho` abriu com o aviso **“Emissão indisponível”**, a lista de PTE (01 · espaço confinado) e das seis PT previstas (altura, trabalho a quente, içamento, escavação, mergulho profissional, elétrica), a nota de que a aplicabilidade da NORMAM-222 depende do cenário, os dois rascunhos demonstrativos salvos (PT a quente e PTE, ambos revisão 2), o bloco de registro de ciência, o histórico de versões, o ensaio de checklist e o card de vínculo APR → PGR com suas pendências explícitas.
+- Correção encontrada na validação: `tests/work-permit-draft-action.test.mjs` mantinha um dublê desatualizado do store e falhava por export ausente (`addSafetyAprSigner`, `signSafetyApr`), não por defeito da action. O dublê foi atualizado para falhar fechado também em `getWorkPermitDraft`. Nenhuma regra, permissão ou comportamento de produção foi alterado.
+- Verificações após a correção: suíte PT/PTE **52/52 aprovados**; `tsc --noEmit` código 0. Nenhum rascunho, modelo, assinatura, permissão ou liberação foi criado nesta etapa.
+- Escopo do aceite: comportamento estrutural e visual demonstrados. Não valida conteúdo técnico, referências normativas, aplicabilidade por modalidade, autoridade de assinatura, identidade dos participantes, exportação Word nem liberação operacional, que seguem pendentes conforme as seções anteriores.
