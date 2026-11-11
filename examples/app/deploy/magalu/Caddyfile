@@ -1,0 +1,13 @@
+# TLS automático via Let's Encrypt. O domínio vem de SST_DOMAIN (.env).
+# O cookie de sessão do app é Secure em produção: sem HTTPS o login não persiste.
+{$SST_DOMAIN} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+
+	# Server Actions aceitam até 8 MB (next.config.ts). Caddy não limita por padrão.
+	reverse_proxy app:3000
+}

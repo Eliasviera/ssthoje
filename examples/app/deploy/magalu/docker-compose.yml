@@ -1,0 +1,92 @@
+# SST Hoje em uma VM única (Magalu Cloud ou qualquer VPS com Docker).
+# Copie este arquivo, o Caddyfile e o .env para /opt/sst-hoje na VM e rode:
+#   docker compose up -d
+#
+# Serviços:
+#   volumes-init  prepara data/ e uploads/ para o usuário 1001 da imagem
+#   db            PostgreSQL 17, sem porta publicada (só rede interna)
+#   app           imagem do SST Hoje (Next.js standalone, porta 3000 interna)
+#   caddy         TLS automático (Let's Encrypt) e proxy para app:3000
+name: sst-hoje
+
+services:
+  volumes-init:
+    image: alpine:3.20
+    command: ["sh", "-c", "chown -R 1001:1001 /app/data /app/uploads"]
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    restart: "no"
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: sst_hoje_dev
+      POSTGRES_USER: sst_hoje_dev
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sst_hoje_dev -d sst_hoje_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+    networks: [interna]
+
+  app:
+    image: ${SST_IMAGE:-sst-hoje:latest}
+    depends_on:
+      volumes-init:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+      PGHOST: db
+      PGPORT: "5432"
+      PGDATABASE: sst_hoje_dev
+      PGUSER: sst_hoje_dev
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env}
+      PGSSL: disable
+    volumes:
+      # Estado que hoje vive em arquivo (JSON, uploads, assinaturas).
+      # Não remova: sem estes volumes o histórico some a cada deploy.
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks: [interna]
+
+  caddy:
+    image: caddy:2-alpine
+    depends_on: [app]
+    environment:
+      SST_DOMAIN: ${SST_DOMAIN:?Defina SST_DOMAIN no .env}
+      ACME_EMAIL: ${ACME_EMAIL:-}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    networks: [interna]
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:
+
+networks:
+  interna:
