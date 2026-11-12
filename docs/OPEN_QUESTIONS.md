@@ -25,3 +25,5 @@ Registre resposta, responsável, data e impacto em `DECISION_LOG.md` antes de co
 **Em 2026-11-12:** fluxo proposto e fontes registrados em `CAT_CHECKPOINT.md`. Seguem sem resposta: canal de transmissão (sistema x cliente), quem declara/assina, quem acessa CID/atestado, se o registro de acidente é módulo próprio e a retenção dos dados. Nenhuma implementação foi feita.
 
 **Respondido em 2026-11-12 (parcial):** canal (só montar, transmissão pelo cliente), quem declara (representante legal da empresa cliente), acesso ao CID (médico do trabalho, TST responsável e admin) e local do registro (módulo próprio de acidentes) foram definidos em `DECISION_LOG.md` e `CAT_CHECKPOINT.md`. Seguem abertos: retenção de CAT, CID e atestado; formato do documento gerado; e eventual transmissão pelo sistema no futuro.
+
+**Em 2026-11-12 (caminho de transmissão):** o caminho futuro está definido em `CAT_CHECKPOINT.md` seção 5 — certificado do cliente ou procuração eletrônica, sem custódia de chave pelo SST Hoje. Seguem sem resposta: qual dos três modos será o padrão comercial, se a consultoria vai buscar procuração dos clientes, e a retenção de CAT/CID/atestado.

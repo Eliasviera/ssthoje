@@ -64,3 +64,36 @@ As quatro recomendações abaixo foram aceitas pelo usuário nesta data e estão
 ### Efeito no estado do registro
 
 Sem transmissão pelo sistema, o evento de acidente guarda o canal usado e o número informado (recibo do eSocial ou número do CATWeb). Enquanto o número não for informado, fica com estado **"transmitida fora do sistema — número pendente"** e aparece na lista de pendências. O custo de acidente funciona normalmente nesse estado.
+
+## 5. Caminho para transmissão futura (certificado do cliente)
+
+O usuário informou em 2026-11-12 que terá assinatura digital própria no futuro e que **as empresas clientes já possuem certificado**, pedindo que o caminho fique definido desde já. Regra de ouro: **o SST Hoje nunca armazena arquivo `.pfx`, senha ou PIN de certificado de cliente.**
+
+### O que o eSocial exige (MOS, item 8.2.1.1)
+
+- Transmissão por webservice exige certificado **ICP-Brasil série A, tipo A1 ou A3**, do tipo **e-CPF** ou **e-CNPJ**.
+- São dois usos distintos: o certificado do **transmissor** (tráfego) e o certificado que **assina o evento** (declarante ou procurador).
+- **Procuração eletrônica no e-CAC** permite que um procurador (por exemplo, a contabilidade ou a consultoria) transmita e assine em nome do CNPJ do cliente usando o **próprio** certificado — é assim que escritórios contábeis operam hoje.
+- Acesso aos módulos web usa conta gov.br; o CATWeb é o canal de quem não transmite pelo eSocial. Nada disso exige que o sistema guarde chave privada.
+
+### Três modos previstos (o sistema suporta os três, um por empresa)
+
+| Modo | Como funciona | Custódia da chave | Quando usar |
+| --- | --- | --- | --- |
+| **A — Agente local do cliente** | O SST Hoje gera o evento; um agente instalado na máquina do cliente assina (A1 ou token A3) e transmite. O sistema recebe de volta o recibo. | Nenhuma (chave fica no cliente) | Cliente quer controlar a chave; certificado A3/token |
+| **B — Consultoria como procuradora** | A empresa outorga procuração eletrônica no e-CAC à consultoria; a consultoria transmite com o certificado dela. | Nenhuma (chave é da consultoria) | Consultoria que já faz folha/eSocial do cliente |
+| **C — Certificado em nuvem da AC** | O sistema chama a API de assinatura do provedor de certificado; a chave nunca sai do provedor. | Nenhuma (chave é da AC) | Cliente usa certificado em nuvem; exige contrato e avaliação de fornecedor |
+
+### Cadastro necessário por empresa (quando implementar)
+
+- **Perfil de transmissão**: modo (A/B/C), titular (CNPJ do estabelecimento ou CPF do procurador), tipo de certificado, validade, status.
+- **Procuração**: número/identificador, escopo (eSocial), vigência, quem outorgou e documento de comprovação — com alerta de vencimento.
+- **Auditoria por envio**: quem transmitiu, quando, qual evento, número do recibo e hash do conteúdo enviado.
+- **Estabelecimento correto**: a CAT é do estabelecimento (CNPJ) onde o trabalhador está vinculado — casa com o cadastro de unidades que já existe.
+
+### Observação sobre fornecedor
+
+Não há provedor de assinatura ICP-Brasil no catálogo de integrações consultado; quando o modo C for avaliado, a escolha deve ser feita diretamente com uma Autoridade Certificadora brasileira, comparando custódia, SLA e responsabilidade. Nada foi contratado.
+## 6. Ligação com custo de acidente
+
+A CAT não carrega valor monetário. O custo se pendura no **evento de acidente**: dias de afastamento × custo-dia (salário + encargos, ver decisão de 2026-11-12), despesas médicas, substituição, treinamento, danos. Enquanto a CAT for emitida fora do sistema, o evento existe do mesmo jeito, com o número marcado como pendente — **o custo não fica bloqueado**.
