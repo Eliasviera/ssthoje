@@ -7,6 +7,7 @@ import { listDeviationsForAccess } from "@/lib/company-scoped-reads";
 import { scopeClientCompanies } from "@/lib/client-company-scope";
 import DeviationSection from "./section";
 import TopbarActions from "../field-nav";
+import { Icon } from "@/components/sst-icon";
 
 export default function Page() {
   return <Suspense fallback={<main className="auth-loading">Abrindo desvios…</main>}><Content/></Suspense>;
@@ -28,7 +29,7 @@ async function Content() {
   };
   const items = records.map((item) => ({ ...item, scopeLabel: nameOf(item.companyId, item.unitId) }));
   return <main className="main-area" style={{marginLeft:0}}>
-    <header className="topbar"><div className="breadcrumbs">{tenant.name} / Desvios de SST</div><div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>{canManage && <a className="secondary-button" href="/relatorios/desvios">Relatório de desvios</a>}<TopbarActions role={membership.role} current="/desvios"/></div></header>
+    <header className="topbar"><div className="breadcrumbs">{tenant.name} / Desvios de SST</div><div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>{canManage && <a className="secondary-button" href="/relatorios/desvios"><span className="icon-inline" aria-hidden="true"><Icon name="clipboard" size={18}/></span>Relatório de desvios</a>}<TopbarActions role={membership.role} current="/desvios"/></div></header>
     <div className="content-wrap"><section className="welcome-row"><div><p className="eyebrow">AMBIENTE DE DEMONSTRAÇÃO</p><h1>Desvios de SST</h1><p className="page-description">Qualquer pessoa pode relatar um desvio ou um quase incidente.</p></div></section>
       <DeviationSection companies={companies} items={items} canManage={canManage}/>
     </div>

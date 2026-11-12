@@ -6,6 +6,7 @@ import ClientSection from "../client-section";
 import { listClientCompanies } from "@/lib/client-service";
 import { getCurrentTenantAccess } from "@/lib/tenant-context";
 import { hasTenantPermission } from "@/lib/tenant-access";
+import { Icon } from "@/components/sst-icon";
 
 export default function CompaniesPage() {
   return <Suspense fallback={<main className="auth-loading">Abrindo empresas…</main>}><CompaniesContent /></Suspense>;
@@ -32,7 +33,7 @@ async function CompaniesContent() {
         <Link className="secondary-button" href="/equipamentos">Equipamentos</Link>
         <Link className="secondary-button" href="/dds">DDS</Link>
         <Link className="secondary-button" href="/desvios">Desvios</Link>
-        <Link className="secondary-button" href="/relatorios/desvios">Relatório de desvios</Link>
+        <Link className="secondary-button" href="/relatorios/desvios"><span className="icon-inline" aria-hidden="true"><Icon name="clipboard" size={16}/></span>Relatório de desvios</Link>
         <Link className="secondary-button" href="/permissoes-trabalho">PT e PTE</Link>
         <Link className="secondary-button" href="/empresas">Voltar às empresas</Link>
       </div>
