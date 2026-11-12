@@ -20,7 +20,7 @@ Consequência do descumprimento citada nas fontes: multa administrativa (art. 22
 - **É** quem registra o acidente, organiza as informações, monta a CAT completa, controla prazo, versões e pendências, e guarda o histórico.
 - **Não é** o empregador: a obrigação legal é da empresa cliente. O sistema não substitui o eSocial nem o CATWeb.
 - **Não** valida nexo causal, incapacidade, CID correto ou concessão de benefício — isso é INSS.
-- **Não** transmite ao eSocial nesta etapa (ver item 4, decisão pendente).
+- **Não** transmite ao eSocial: a decisão de 2026-11-12 é apenas **montar** a CAT; a transmissão é feita pelo cliente no canal oficial.
 
 ## 3. Fluxo proposto
 
@@ -46,14 +46,21 @@ Consequência do descumprimento citada nas fontes: multa administrativa (art. 22
 
 **CID é dado pessoal sensível de saúde (LGPD, art. 5º, II)** — acesso restrito e auditado, nunca em listagens abertas nem em relatório de leitura ampla.
 
-## 4. Decisões pendentes do usuário
+## 4. Decisões aceitas em 2026-11-12
 
-1. **Canal**: o sistema apenas monta a CAT e o cliente transmite (eSocial/CATWeb), ou haverá transmissão pelo sistema? Transmitir exige certificado digital/procuração do empregador e assume responsabilidade técnica pela informação — custo e risco altos. **Recomendação: começar pelo caminho "monta + checklist + registro do número", sem transmissão.**
-2. **Quem assina/declara**: representante legal da empresa cliente (recomendado, é quem tem a obrigação) ou a consultoria com procuração formal? O sistema deve registrar identidade autenticada de quem declarou.
-3. **Quem vê CID e dados do atestado**: restrito a médico do trabalho/TST responsável + admin (recomendado), ou mais amplo?
-4. **Registro do acidente**: módulo próprio (recomendado) ou extensão do módulo de desvios?
-5. **Retenção**: por quanto tempo guardar CAT, CID e atestado, e quem aprova a regra? (depende de `OPEN_QUESTIONS` 14 e 17)
+As quatro recomendações abaixo foram aceitas pelo usuário nesta data e estão registradas em `DECISION_LOG.md`.
 
-## 5. Ligação com custo de acidente
+1. **Canal — só montar.** O sistema monta a CAT completa, gera o documento para transmissão e o checklist do canal oficial (eSocial ou CATWeb). **Quem transmite é o cliente.** Sem certificado digital, sem procuração e sem responsabilidade de transmissão nesta etapa.
+2. **Quem declara — representante legal da empresa cliente**, com identidade autenticada registrada (usuário, data e hora) e auditoria. A consultoria não declara em nome do cliente nesta etapa.
+3. **Acesso ao CID e ao atestado — restrito** a médico do trabalho, TST responsável e admin, com auditoria de leitura. Nada de CID em listagem aberta, relatório amplo ou exportação irrestrita.
+4. **Registro do acidente — módulo próprio de acidentes**, com vínculo opcional ao desvio de origem. Acidente com CAT não se mistura com quase incidente.
 
-A CAT não carrega valor monetário. O custo se pendura no **evento de acidente**: dias de afastamento × custo-dia (salário + encargos, ver decisão de 2026-11-12), despesas médicas, substituição, treinamento, danos. Enquanto a CAT for emitida fora do sistema, o evento existe do mesmo jeito, com o número marcado como pendente — **o custo não fica bloqueado**.
+### Ainda pendente
+
+- **Retenção**: prazo de guarda de CAT, CID e atestado, e quem aprova a regra (depende de `OPEN_QUESTIONS` 14 e 17).
+- **Transmissão pelo sistema**: não é escopo agora; se um dia for, exige certificado/procuração do empregador e responsabilidade técnica explícita.
+- **Formato do documento gerado** (impresso/PDF pelo navegador, no padrão dos demais relatórios do app) — a definir na implementação.
+
+### Efeito no estado do registro
+
+Sem transmissão pelo sistema, o evento de acidente guarda o canal usado e o número informado (recibo do eSocial ou número do CATWeb). Enquanto o número não for informado, fica com estado **"transmitida fora do sistema — número pendente"** e aparece na lista de pendências. O custo de acidente funciona normalmente nesse estado.
