@@ -6,7 +6,7 @@ import { workingDocumentItems, workingFieldLabels } from "@/lib/pgr-working-docu
 import type { ContractorAnnex } from "@/lib/pgr-contractor-annex";
 import PgrContractorAnnexDocument from "./pgr-contractor-annex-document";
 import DocumentPrintTemplate from "./document-print-template";
-export default function PgrWorkingDocument({ profile, history, annexes = [], initialReviewerName = "", hidden = false }: { profile: ImportedPgrProfile; history: WorkingEntry[]; annexes?: ContractorAnnex[]; initialReviewerName?: string; hidden?: boolean }) {
+export default function PgrWorkingDocument({ profile, history, annexes = [], companyLogo, initialReviewerName = "", hidden = false }: { profile: ImportedPgrProfile; history: WorkingEntry[]; annexes?: ContractorAnnex[]; initialReviewerName?: string; hidden?: boolean; companyLogo?: string }) {
   const documentRef = useRef<HTMLElement>(null);
   const [printing, setPrinting] = useState(false);
   const [reviewerName, setReviewerName] = useState(initialReviewerName);
@@ -14,7 +14,6 @@ export default function PgrWorkingDocument({ profile, history, annexes = [], ini
   const [consultancyPhone, setConsultancyPhone] = useState("64 99906-9494");
   const [consultancyEmail, setConsultancyEmail] = useState("eliasvieiraeng@gmail.com");
   const [signatureDate, setSignatureDate] = useState(() => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()));
-  const [companyLogo, setCompanyLogo] = useState("");
   const companyName = Object.entries(profile.companyFields).find(([label]) => label.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR").includes("razao social"))?.[1].map(value => value.value).filter(Boolean).join(" / ") || "Empresa não identificada";
   const normalizedCompanyField = (label: string) => label.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
   const companyDetails = Object.entries(profile.companyFields).filter(([label]) => !normalizedCompanyField(label).includes("responsavel tecnico") && !normalizedCompanyField(label).includes("responsavel legal") && !normalizedCompanyField(label).includes("razao social")).map(([label, values]) => ({ label, value: values.map(value => value.value).join(" / ") }));
@@ -55,7 +54,6 @@ export default function PgrWorkingDocument({ profile, history, annexes = [], ini
       <label className="form-field">Data das assinaturas<input type="date" value={signatureDate} onChange={event => setSignatureDate(event.target.value)}/></label>
       <label className="form-field">Telefone da consultoria<input value={consultancyPhone} onChange={event => setConsultancyPhone(event.target.value)} maxLength={40}/></label>
       <label className="form-field">E-mail da consultoria<input type="email" value={consultancyEmail} onChange={event => setConsultancyEmail(event.target.value)} maxLength={160}/></label>
-      <label className="form-field">Logo da EMA (opcional)<input type="file" accept="image/png,image/jpeg,image/webp" onChange={event => { const file = event.target.files?.[0]; if (!file) { setCompanyLogo(""); return; } if (file.size > 2_000_000) { event.currentTarget.value = ""; return; } const reader = new FileReader(); reader.onload = () => setCompanyLogo(typeof reader.result === "string" ? reader.result : ""); reader.readAsDataURL(file); }}/></label>
       <button id="pgr-print-updated-button" type="button" className="secondary-button" disabled={printing || !reviewerName.trim()} onClick={printDocument}>{printing ? "Preparando impressão…" : "Imprimir PGR atualizado"}</button>
       <small>Depois de salvar em PDF, aguarde o Windows concluir a gravação antes de abrir o arquivo.</small>
       <small>No Edge, em Mais configurações, desmarque “Cabeçalhos e rodapés” para retirar data, título da aba, endereço e numeração automáticos.</small>

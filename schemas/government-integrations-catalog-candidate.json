@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sst-hoje.local/schemas/government-integrations-catalog-candidate.json",
+  "title": "Catálogo candidato de integrações governamentais",
+  "description": "Inventário documental versionado. Não está conectado ao runtime e não habilita chamadas externas.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "jurisdiction", "catalogStatus", "services"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "jurisdiction": { "const": "BR" },
+    "catalogStatus": { "const": "candidate_not_runtime_enabled" },
+    "services": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "agency", "service", "scope", "currentCapability", "integrationStatus", "authorization", "transmissionEnabled", "requiresHumanApproval", "notes"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "agency": { "type": "string", "minLength": 1 },
+          "service": { "type": "string", "minLength": 1 },
+          "scope": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "officialEvent": { "type": ["string", "null"] },
+          "currentCapability": { "enum": ["reference_only", "prepare_document", "manual_external", "manual_lookup", "none"] },
+          "integrationStatus": { "enum": ["not_started", "documented_only", "contract_candidate", "mock_only", "homologation_pending", "homologation_approved", "production_authorized", "suspended"] },
+          "authorization": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["requiredPerClient", "requiredScope", "revocable", "approvalBoundToPayload"],
+            "properties": {
+              "requiredPerClient": { "const": true },
+              "requiredScope": { "type": "array", "items": { "enum": ["tenantId", "companyId", "unitId", "agency", "service", "eventVersion", "environment", "validity"] }, "uniqueItems": true },
+              "revocable": { "const": true },
+              "approvalBoundToPayload": { "const": true },
+              "credentialModesToEvaluate": { "type": "array", "items": { "enum": ["client_certificate", "electronic_power_of_attorney", "official_delegation", "not_applicable", "to_be_verified"] }, "uniqueItems": true }
+            }
+          },
+          "transmissionEnabled": { "const": false },
+          "requiresHumanApproval": { "const": true },
+          "runtimeAdapter": { "enum": ["none", "mock_only", "official_adapter"] },
+          "officialSource": { "type": ["string", "null"], "format": "uri" },
+          "notes": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

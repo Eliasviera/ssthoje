@@ -41,3 +41,7 @@ Cada milestone deve terminar com QA, revisão visual quando houver UI e checkpoi
 - Não considerar concluída apenas por compilar: executar testes, verificar fluxo e corrigir falhas.
 - Checkpoint de usuário obrigatório para mudança visual/fluxo principal e antes de integrações com efeitos externos.
 - Não declarar pronto para produção sem revisão profissional das regras SST/médicas/legais.
+
+## Frente futura — LMS integrado ao SST
+
+O caminho e as dependências para biblioteca didática, Projeto Pedagógico, AVA, avaliações, certificados e integração ao Passaporte estão em `docs/LMS_SST_IMPLANTACAO_CHECKPOINT.md`. Não está implementado. Primeiro gate: matriz por curso/NR e curso piloto fictício; modo offline com avaliação/certificação é etapa posterior, condicionada a ensaio de identidade, integridade e rastreabilidade.

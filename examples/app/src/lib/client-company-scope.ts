@@ -43,7 +43,7 @@ export function resolveClientCompanyScope(userId: string, tenantId: string, now 
 
 // Só permite caminhos que já aplicam o filtro por empresa/unidade.
 export function clientCompanyPermissionReady(permission: string): boolean {
-  return ["dds.read", "checklist.read", "deviation.report"].includes(permission);
+  return ["dds.read", "checklist.read", "deviation.report", "client.logo.manage"].includes(permission);
 }
 
 export function canAccessCompanyResource(access: CompanyScopedAccess, row: { tenantId: string; companyId: string; unitId: string }): boolean {

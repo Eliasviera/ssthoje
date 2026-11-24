@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sst-hoje.local/schemas/government-transmission-authorization-candidate.json",
+  "title": "Autorização candidata para transmissão governamental",
+  "description": "Contrato documental; não representa autorização real, assinatura eletrônica, validação de poderes nem permissão de transmissão no runtime.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "recordType", "tenantId", "companyId", "agency", "serviceId", "environment", "authorizedRepresentative", "authorityEvidence", "scope", "validity", "status", "auditReference"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "recordType": { "enum": ["standing_delegation", "submission_approval", "revocation"] },
+    "tenantId": { "type": "string", "minLength": 1, "maxLength": 140 },
+    "companyId": { "type": "string", "minLength": 1, "maxLength": 140 },
+    "unitIds": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "agency": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "serviceId": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "officialEvent": { "type": ["string", "null"], "maxLength": 80 },
+    "eventVersion": { "type": ["string", "null"], "maxLength": 80 },
+    "environment": { "enum": ["homologation", "production", "manual_external"] },
+    "authorizedRepresentative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["userId", "identitySource", "designationReference"],
+      "properties": {
+        "userId": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "identitySource": { "enum": ["tenant_identity_candidate", "verified_external_identity", "pending_verification"] },
+        "designationReference": { "type": "string", "minLength": 1, "maxLength": 240 }
+      }
+    },
+    "authorityEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference", "sha256", "reviewStatus", "reviewedBy", "reviewedAt"],
+      "properties": {
+        "reference": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "reviewStatus": { "enum": ["pending", "accepted", "rejected", "expired"] },
+        "reviewedBy": { "type": ["string", "null"], "maxLength": 140 },
+        "reviewedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actions", "payloadHashRequired"],
+      "properties": {
+        "actions": { "type": "array", "items": { "enum": ["prepare", "technical_review", "approve_submission", "transmit", "read_receipt"] }, "uniqueItems": true },
+        "payloadHashRequired": { "const": true }
+      }
+    },
+    "payload": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["sha256", "schemaVersion", "approvedAt"],
+      "properties": {
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "schemaVersion": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "approvedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "validity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["validFrom", "validUntil"],
+      "properties": {
+        "validFrom": { "type": "string", "format": "date-time" },
+        "validUntil": { "type": "string", "format": "date-time" }
+      }
+    },
+    "status": { "enum": ["pending_review", "active", "revoked", "expired", "rejected"] },
+    "revocation": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["revokedBy", "revokedAt", "reason"],
+      "properties": {
+        "revokedBy": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "revokedAt": { "type": "string", "format": "date-time" },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 1000 }
+      }
+    },
+    "auditReference": { "type": "string", "minLength": 1, "maxLength": 180 },
+    "receiptReference": { "type": ["string", "null"], "maxLength": 500 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "recordType": { "const": "submission_approval" } }, "required": ["recordType"] },
+      "then": { "required": ["payload"], "properties": { "payload": { "type": "object" }, "scope": { "properties": { "actions": { "contains": { "const": "approve_submission" } } } } } }
+    },
+    {
+      "if": { "properties": { "recordType": { "const": "revocation" } }, "required": ["recordType"] },
+      "then": { "required": ["revocation"], "properties": { "revocation": { "type": "object" }, "status": { "const": "revoked" } } }
+    }
+  ]
+}

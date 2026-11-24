@@ -1,13 +1,46 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { changeClientCompanyStatus, registerClientCompany } from "@/lib/client-service";
+import { changeClientCompanyStatus, listClientCompanies, registerClientCompany } from "@/lib/client-service";
+import { appendAuditEvent } from "@/lib/audit-log";
+import { MAX_CLIENT_LOGO_BYTES, saveClientLogo } from "@/lib/client-logo";
+import { scopeClientCompanies } from "@/lib/client-company-scope";
 import { getCurrentTenantAccess } from "@/lib/tenant-context";
 import { TenantCapacityError } from "@/lib/tenant-state";
 import { getClientStorageMode } from "@/lib/client-storage-mode";
 import { CLIENT_THIRD_PARTY_REQUIREMENTS } from "@/lib/third-party-policy";
 
 export type ClientFormState = { error?: string; success?: string };
+const logoUpdates = new Map<string, number>();
+
+export async function saveClientLogoAction(_previous: ClientFormState, formData: FormData): Promise<ClientFormState> {
+  const access = await getCurrentTenantAccess("client.logo.manage");
+  if (!access.context) return { error: "Sua conta não tem permissão para alterar o logo." };
+  const { tenant, membership } = access.context;
+  const companyId = access.context.companyScope?.companyId;
+  if (!companyId) return { error: "Seu vínculo com a empresa está indisponível." };
+  const file = formData.get("logo");
+  if (!(file instanceof File) || !file.size || file.size > MAX_CLIENT_LOGO_BYTES) {
+    return { error: "Selecione um logo PNG ou JPEG de até 512 KB." };
+  }
+  const now = Date.now();
+  for (const [userId, expiresAt] of logoUpdates) if (expiresAt <= now) logoUpdates.delete(userId);
+  if (logoUpdates.has(access.session.userId)) return { error: "Aguarde alguns segundos antes de tentar novamente." };
+  logoUpdates.set(access.session.userId, now + 3000);
+
+  try {
+    if (!scopeClientCompanies(access.context, await listClientCompanies(tenant.id)).some(company => company.status === "active")) {
+      return { error: "Empresa ativa indisponível." };
+    }
+    await saveClientLogo(tenant.id, companyId, Buffer.from(await file.arrayBuffer()));
+    appendAuditEvent({ tenantId: tenant.id, actorUserId: access.session.userId, actorRole: membership.role, action: "client.updated", targetId: companyId });
+    revalidatePath(`/empresas/${companyId}`);
+    revalidatePath("/minha-empresa/logo");
+    return { success: "Logo salvo para os documentos desta empresa." };
+  } catch {
+    return { error: "Não foi possível salvar. Confira se o arquivo é PNG ou JPEG e tente novamente." };
+  }
+}
 
 function getText(formData: FormData, name: string, maxLength: number) {
   const value = formData.get(name);

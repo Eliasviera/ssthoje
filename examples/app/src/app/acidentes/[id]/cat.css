@@ -1,0 +1,18 @@
+.cat-document { max-width: 900px; margin: 32px auto; padding: 24px; color: #172e24; background: white; line-height: 1.6; overflow-wrap: anywhere; }
+.cat-document h1 { font-size: 26px; margin-bottom: 4px; }
+.cat-document h2 { font-size: 17px; margin: 0 0 6px; }
+.cat-document section { border-top: 2px solid #a1b5a8; margin-top: 24px; padding-top: 14px; }
+.cat-document dl { display: grid; grid-template-columns: minmax(180px, 240px) 1fr; gap: 6px 16px; margin: 10px 0; }
+.cat-document dt { color: #42564a; }
+.cat-document dd { margin: 0; font-weight: 500; }
+.cat-document .cat-meta { color: #42564a; margin: 2px 0 10px; }
+.cat-document .cat-note { background: #f5f8f6; border-left: 4px solid #a1b5a8; padding: 10px 14px; margin: 12px 0; }
+.cat-document .cat-pending { background: #fff8e6; border-left: 4px solid #b8860b; padding: 10px 14px; margin: 12px 0; }
+.cat-document ul { list-style: disc; padding-left: 22px; margin: 8px 0; }
+.cat-document a { color: #245b40; text-decoration: underline; }
+.cat-document a:focus-visible { outline: 3px solid #245b40; outline-offset: 4px; }
+@media print {
+  .cat-document { margin: 0; padding: 0; max-width: none; color: black; }
+  .cat-document > a, .cat-document .cat-control { display: none; }
+  .cat-document section { break-inside: avoid; }
+}

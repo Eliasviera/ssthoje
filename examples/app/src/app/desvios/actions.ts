@@ -73,6 +73,7 @@ export async function reportDeviationAction(_previous: DeviationFormState, data:
     let unitId = "";
     const scope = field(data, "scope", 281);
     if (membership.role === "cliente" && !scope) throw new DeviationError("Selecione uma unidade da empresa vinculada ao seu acesso.");
+    if (scope && membership.role === "trabalhador") throw new DeviationError("Registre o local do desvio no campo Local.");
     if (scope) {
       const parts = scope.split("|");
       if (parts.length !== 2 || !parts[0] || !parts[1]) throw new DeviationError("Selecione empresa e unidade.");

@@ -2,7 +2,7 @@ import { isTenantEnabled, isModuleEnabled } from "./tenant-state.ts";
 import { findRegisteredTrialAccount as findTrialAccountById, isTrialActive, listRegisteredTrialAccounts as listTrialAccounts } from "./trial-registry.ts";
 import { clientCompanyPermissionReady, resolveClientCompanyScope, type ClientCompanyScope } from "./client-company-scope.ts";
 
-export type TenantRole = "consultoria_admin" | "sst_tst" | "cliente" | "terceiro" | "profissional_habilitado" | "medico_coordenador" | "saas_master" | "campo";
+export type TenantRole = "consultoria_admin" | "sst_tst" | "cliente" | "terceiro" | "profissional_habilitado" | "medico_coordenador" | "saas_master" | "campo" | "trabalhador";
 export type Tenant = { id: string; name: string; status: "active" | "suspended" };
 export type TenantMembership = { userId: string; tenantId: string; role: TenantRole; status: "active" | "suspended"; displayName: string };
 export type TenantPermission =
@@ -10,6 +10,7 @@ export type TenantPermission =
   | "tenant.members.manage"
   | "tenant.clients.read"
   | "tenant.clients.manage"
+  | "client.logo.manage"
   | "tenant.audit.read"
   | "documents.read"
   | "documents.review"
@@ -27,6 +28,9 @@ export type TenantPermission =
   | "checklist.manage"
   | "deviation.report"
   | "deviation.manage"
+  | "accident.report"
+  | "accident.manage"
+  | "accident.sensitive.read"
   | "workers.read"
   | "workers.manage"
   | "medical.review"
@@ -54,17 +58,19 @@ export const DEMO_MEMBERSHIPS: readonly TenantMembership[] = Object.freeze([
   Object.freeze({ userId: "sst-demo-user", tenantId: "tenant-horizonte", role: "consultoria_admin", status: "active", displayName: "Conta administradora de demonstração" }),
   Object.freeze({ userId: "sst-demo-sst", tenantId: "tenant-horizonte", role: "sst_tst", status: "active", displayName: "Profissional SST de demonstração" }),
   Object.freeze({ userId: "sst-demo-user-b", tenantId: "tenant-aurora", role: "consultoria_admin", status: "active", displayName: "Administradora da segunda consultoria" }),
+  Object.freeze({ userId: "sst-demo-trabalhador", tenantId: "tenant-horizonte", role: "trabalhador", status: "active", displayName: "Trabalhador de demonstração" }),
   Object.freeze({ userId: "sst-demo-campo", tenantId: "tenant-horizonte", role: "campo", status: "active", displayName: "Líder de campo de demonstração" }),
 ]);
 
 const permissionsByRole: Readonly<Record<TenantRole, readonly TenantPermission[]>> = Object.freeze({
-  consultoria_admin: ["operations.read", "operations.manage", "safety.risk_analysis.manage", "epi.read", "epi.manage", "thirdparty.read", "thirdparty.manage", "aso.status.read", "pcmso.status.read", "pcmso.assign", "tenant.dashboard.read", "tenant.members.manage", "tenant.clients.read", "tenant.clients.manage", "tenant.audit.read", "documents.read", "documents.review", "documents.submit", "documents.manage", "pgr.manage", "workers.read", "workers.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage", "deviation.report", "deviation.manage"],
+  consultoria_admin: ["operations.read", "operations.manage", "safety.risk_analysis.manage", "epi.read", "epi.manage", "thirdparty.read", "thirdparty.manage", "aso.status.read", "pcmso.status.read", "pcmso.assign", "tenant.dashboard.read", "tenant.members.manage", "tenant.clients.read", "tenant.clients.manage", "tenant.audit.read", "documents.read", "documents.review", "documents.submit", "documents.manage", "pgr.manage", "workers.read", "workers.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage", "deviation.report", "deviation.manage", "accident.report", "accident.manage", "accident.sensitive.read"],
   sst_tst: ["operations.read", "epi.read", "thirdparty.read", "aso.status.read", "pcmso.status.read", "tenant.dashboard.read", "tenant.clients.read", "documents.read", "documents.review", "pgr.manage", "workers.read", "safety.risk_analysis.manage", "dds.read", "dds.manage", "checklist.read", "checklist.apply", "checklist.manage", "deviation.report", "deviation.manage", "esocial.table24.manage"],
-  cliente: ["tenant.dashboard.read", "documents.read", "dds.read", "checklist.read", "deviation.report"],
+  cliente: ["tenant.dashboard.read", "documents.read", "dds.read", "checklist.read", "deviation.report", "client.logo.manage"],
   terceiro: ["documents.submit", "deviation.report"],
   profissional_habilitado: ["tenant.dashboard.read", "documents.read", "medical.review", "deviation.report"],
   medico_coordenador: ["aso.manage", "tenant.dashboard.read", "pcmso.manage", "esocial.table27.manage", "deviation.report"],
   saas_master: ["saas.tenants.manage"],
+  trabalhador: ["deviation.report"],
   campo: ["dds.read", "dds.manage", "checklist.read", "checklist.apply", "deviation.report"],
 });
 
@@ -81,6 +87,7 @@ export const SECTION_PERMISSIONS = Object.freeze({
   pendencias: ["documents.review"],
   auditoria: ["tenant.audit.read"],
   trabalhadores: ["workers.read"],
+  treinamentos: ["dds.read"],
   "analise-risco": ["safety.risk_analysis.manage"],
   dds: ["dds.read"],
   checklists: ["checklist.read"],

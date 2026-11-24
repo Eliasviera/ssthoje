@@ -48,7 +48,16 @@ export async function clearSession() {
 }
 
 export async function getSession(): Promise<DemoSession | null> {
-  const token = (await cookies()).get(COOKIE_NAME)?.value;
+  // O Next 16 pode lançar InvariantError ao reler cookies no mesmo request em que
+  // uma Server Action acabou de gravar o cookie de sessão (o store mutável e o
+  // store de leitura deixam de casar). Sem sessão legível, o correto é tratar
+  // como visitante — nunca derrubar a página.
+  let token: string | undefined;
+  try {
+    token = (await cookies()).get(COOKIE_NAME)?.value;
+  } catch {
+    return null;
+  }
   if (!token) return null;
 
   const [payload, providedSignature, extra] = token.split(".");

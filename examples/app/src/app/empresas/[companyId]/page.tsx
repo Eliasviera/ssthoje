@@ -27,6 +27,8 @@ import { readWorkingHistory } from "@/lib/pgr-working-store";
 import { readContractorAnnexHistory, currentContractorAnnexes } from "@/lib/pgr-contractor-annex-store";
 import PgrContractorAnnexSection from "@/app/pgr-contractor-annex-section";
 import CompanyPgrImported from "@/app/company-pgr-imported";
+import { readClientLogo } from "@/lib/client-logo";
+import PanelShell from "../../panel-shell";
 
 const pgrStatus: Record<string, string> = { draft: "Rascunho", in_review: "Em revisão", approved: "Revisão interna registrada" };
 
@@ -44,6 +46,7 @@ async function CompanyDetail({ params, searchParams }: { params: Promise<{ compa
   const { tenant, membership } = access.context;
   const company = (await listClientCompanies(tenant.id)).find((entry) => entry.id === companyId);
   if (!company) notFound();
+  const companyLogo = await readClientLogo(tenant.id, company.id);
 
   const canReadWorkers = hasTenantPermission(membership.role, "workers.read");
   const canReadOperations = hasTenantPermission(membership.role, "operations.read");
@@ -82,11 +85,12 @@ async function CompanyDetail({ params, searchParams }: { params: Promise<{ compa
   ].filter((tab) => tab.visible);
   const selectedTab = tabs.some((tab) => tab.id === query.tab) ? query.tab! : "resumo";
 
-  return <main className="main-area" style={{ marginLeft: 0 }}>
-    <header className="topbar">
-      <div className="breadcrumbs"><span>{tenant.name}</span><span className="crumb-separator">/</span><Link href="/empresas">Empresas</Link><span className="crumb-separator">/</span><strong>Ficha</strong></div>
-      <Link className="secondary-button" href="/empresas">Voltar às empresas</Link>
-    </header>
+    return <PanelShell
+    tenantName={tenant.name}
+    current="/empresas"
+    title="Ficha da empresa"
+    actions={<Link className="secondary-button" href="/empresas">Voltar às empresas</Link>}
+  >
     <div className="content-wrap">
       <section className="welcome-row" aria-labelledby="page-title">
         <div><p className="eyebrow">{tenant.name.toUpperCase()} · AMBIENTE DE DEMONSTRAÇÃO</p><h1 id="page-title">{company.tradeName || company.legalName}</h1><p className="page-description">Cliente da consultoria · PGR, cadastro e análise documental das suas empresas terceiras.</p></div>
@@ -131,13 +135,13 @@ async function CompanyDetail({ params, searchParams }: { params: Promise<{ compa
 
       </div>}
 
-      {selectedTab === "pgr" && digitalization && <PgrWorkingEditor profile={digitalization} history={pgrWorkingHistory} annexes={currentContractorAnnexes(contractorAnnexHistory)} canManage={hasTenantPermission(membership.role, "pgr.manage")} reviewerName="Elias Alves Vieira"/>}
+      {selectedTab === "pgr" && digitalization && <PgrWorkingEditor companyLogo={companyLogo} profile={digitalization} history={pgrWorkingHistory} annexes={currentContractorAnnexes(contractorAnnexHistory)} canManage={hasTenantPermission(membership.role, "pgr.manage")} reviewerName="Elias Alves Vieira"/>}
       {selectedTab === "pgr" && digitalization && <PgrContractorAnnexSection profile={digitalization} history={contractorAnnexHistory} canManage={hasTenantPermission(membership.role, "pgr.manage")}/>}
       {selectedTab === "pgr" && digitalization && <CompanyPgrImported profile={digitalization} reviews={readPgrItemReviews(tenant.id, company.id, digitalization.sha256)} canReview={canReviewDocuments}/>}
-      {selectedTab === "pgr" && digitalization && <PgrPprDraft profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}
-      {selectedTab === "pgr" && digitalization && <PgrPcaDraft profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}
-      {selectedTab === "pgr" && digitalization && <PgrErgonomiaDraft profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}
-      {selectedTab === "pgr" && digitalization && <PgrLtcatDraft profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}
+      {selectedTab === "pgr" && digitalization && <PgrPprDraft companyLogo={companyLogo} profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}
+      {selectedTab === "pgr" && digitalization && <PgrPcaDraft companyLogo={companyLogo} profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}
+      {selectedTab === "pgr" && digitalization && <PgrErgonomiaDraft companyLogo={companyLogo} profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}
+      {selectedTab === "pgr" && digitalization && <PgrLtcatDraft companyLogo={companyLogo} profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}
       {selectedTab === "pgr" && canReadPgr && <section className="panel company-detail-panel company-tab-panel" aria-labelledby="company-pgr-title">
           <h2 id="company-pgr-title">PGR e inventário de riscos · {pgrStorageMode === "postgres" ? inventories.length : drafts.length}</h2>
           <h3>Documentos originais da empresa</h3>
@@ -150,9 +154,9 @@ async function CompanyDetail({ params, searchParams }: { params: Promise<{ compa
 
       {selectedTab === "epi" && canReadEpi && <section className="panel company-detail-panel company-tab-panel" aria-labelledby="company-epi-title"><h2 id="company-epi-title">Gestão de EPI · {company.tradeName||company.legalName}</h2><p>Controle de estoque, CA e validade por lote, entrega em ficha, devolução e custos atribuídos à área/setor dos colaboradores desta empresa.</p><p className="company-detail-note"><strong>Escopo desta tela:</strong> os registros e as movimentações são filtrados para {company.tradeName||company.legalName}. Neste ambiente demonstrativo, o acesso ainda é feito pela equipe da consultoria; o acesso independente da conta da empresa depende de configurar o vínculo autenticado da EMA.</p><div className="client-card-actions"><Link className="primary-button" href={`/epi/entregas?companyId=${encodeURIComponent(company.id)}`}>Abrir entregas e fichas</Link><Link className="secondary-button" href={`/epi/estoque?companyId=${encodeURIComponent(company.id)}`}>{canManageEpi?"Abrir estoque e custos":"Consultar estoque e custos"}</Link></div></section>}
 
-      {selectedTab === "pcmso" && canReadPcmso && <><section className="panel company-detail-panel company-tab-panel" aria-labelledby="company-pcmso-title"><h2 id="company-pcmso-title">PCMSO desta empresa</h2>{companyPcmsoSummaries.length ? <ul className="company-detail-list">{companyPcmsoSummaries.map((record) => <li key={record.id}><strong>{record.unitName} · versão {record.version}</strong><p>{record.status === "reviewed" ? "Revisão interna registrada" : record.status === "in_review" ? "Em revisão" : "Rascunho"}</p><small>Atualizado em {new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" }).format(new Date(record.updatedAt))}</small></li>)}</ul> : <p className="page-description">Nenhum PCMSO vinculado a esta empresa.</p>}</section>{digitalization && <PgrPcmsoDraft profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}</>}
+      {selectedTab === "pcmso" && canReadPcmso && <><section className="panel company-detail-panel company-tab-panel" aria-labelledby="company-pcmso-title"><h2 id="company-pcmso-title">PCMSO desta empresa</h2>{companyPcmsoSummaries.length ? <ul className="company-detail-list">{companyPcmsoSummaries.map((record) => <li key={record.id}><strong>{record.unitName} · versão {record.version}</strong><p>{record.status === "reviewed" ? "Revisão interna registrada" : record.status === "in_review" ? "Em revisão" : "Rascunho"}</p><small>Atualizado em {new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" }).format(new Date(record.updatedAt))}</small></li>)}</ul> : <p className="page-description">Nenhum PCMSO vinculado a esta empresa.</p>}</section>{digitalization && <PgrPcmsoDraft companyLogo={companyLogo} profile={digitalization} history={pgrWorkingHistory} unitName={company.units.find(unit => unit.id === digitalization.unitId)?.name ?? "Unidade identificada no PGR"}/>}</>}
 
       {selectedTab === "terceiros" && canReadThirdParty && <div className="company-thirdparty-tab"><p className="company-detail-note"><strong>Terceiros de {company.tradeName || company.legalName}:</strong> analise os documentos das contratadas para as atividades solicitadas. Consulte o PGR do cliente na aba PGR da empresa. O relatório consolidado será formado após as avaliações profissionais; recebimento não significa aprovação.</p><ThirdPartySection invitations={thirdPartyInvitations} companies={[company]} canManage={canManageThirdParty} canReview={canReviewDocuments}/>{canReviewDocuments && <ComplianceSection rules={complianceRules} evaluations={companyEvaluations} documents={companyDocuments} thirdPartyDocuments={thirdPartyDocuments} canManage={false} canReview currentDate={new Date().toISOString().slice(0, 10)}/>}</div>}
     </div>
-  </main>;
+  </PanelShell>;
 }

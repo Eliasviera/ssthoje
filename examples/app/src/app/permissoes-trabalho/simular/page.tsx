@@ -12,6 +12,7 @@ import {
   decodeSimulation, GENERIC_ITEM_PROMPT, isDemoActivityCompatible, isDemoAprCompatible, isDemoWorkerInScope, PARTICIPANT_IDS, STATUS_LABELS,
 } from "@/lib/work-permit-simulation-state";
 import { simulatePermitAction } from "./actions";
+import PanelShell from "../../panel-shell";
 
 export default function Page({ searchParams }: { searchParams: Promise<{ s?: string; erro?: string; apr?: string }> }) {
   return <Suspense fallback={<main className="auth-loading">Abrindo simulação…</main>}><Content searchParams={searchParams}/></Suspense>;
@@ -94,11 +95,7 @@ async function Content({ searchParams }: { searchParams: Promise<{ s?: string; e
     ? workers.filter(worker => isDemoWorkerInScope(worker, { tenantId: tenant.id, companyId: selectedCompany.id, unitId: selectedUnit.id }))
     : [];
   const openNc = checklist ? openPermitNc(checklist).length : 0;
-  return <main className="main-area" style={{ marginLeft: 0 }}>
-    <header className="topbar">
-      <Link className="secondary-button" href="/permissoes-trabalho">Voltar à preparação</Link>
-      <form action={simulatePermitAction}><input type="hidden" name="intent" value="reset"/><button className="secondary-button">Reiniciar simulação</button></form>
-    </header>
+  return <PanelShell tenantName={tenant.name} current="/permissoes-trabalho/simular">
     <div className="content-wrap">
       <section className="welcome-row"><div>
         <p className="eyebrow">{tenant.name} · DEMONSTRAÇÃO</p>
@@ -285,5 +282,5 @@ async function Content({ searchParams }: { searchParams: Promise<{ s?: string; e
         </>}
       </section>
     </div>
-  </main>;
+  </PanelShell>;
 }

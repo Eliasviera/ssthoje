@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { createDeviation, DeviationError, listDeviations, transitionDeviation } from "../src/lib/deviation-store.ts";
-import { hasTenantPermission, type TenantRole } from "../src/lib/tenant-access.ts";
+import { getVisibleSections, hasTenantPermission, requireTenantAccess, type TenantRole } from "../src/lib/tenant-access.ts";
 
 function withTempData(run: () => void) {
   const original = process.cwd();
@@ -33,10 +33,20 @@ test("desvio: valida, isola tenant e limita visão de quem só relata", () => wi
 }));
 
 test("todos os papéis de consultoria podem relatar; só admin e TST tratam", () => {
-  for (const role of ["consultoria_admin", "sst_tst", "cliente", "terceiro", "profissional_habilitado", "medico_coordenador", "campo"] as TenantRole[]) {
+  for (const role of ["consultoria_admin", "sst_tst", "cliente", "terceiro", "profissional_habilitado", "medico_coordenador", "campo", "trabalhador"] as TenantRole[]) {
     assert.equal(hasTenantPermission(role, "deviation.report"), true, role);
   }
   assert.equal(hasTenantPermission("campo", "deviation.manage"), false);
   assert.equal(hasTenantPermission("cliente", "deviation.manage"), false);
   assert.equal(hasTenantPermission("sst_tst", "deviation.manage"), true);
+});
+
+test("trabalhador de demonstração só acessa Desvios na própria consultoria", () => {
+  const id = "sst-demo-trabalhador";
+  assert.deepEqual(getVisibleSections("trabalhador"), ["desvios"]);
+  assert.equal(requireTenantAccess(id, "deviation.report", "tenant-horizonte").ok, true);
+  assert.equal(requireTenantAccess(id, "deviation.report", "tenant-aurora").ok, false);
+  for (const permission of ["deviation.manage", "dds.read", "pgr.manage", "operations.read", "accident.report"]) {
+    assert.equal(requireTenantAccess(id, permission).ok, false, permission);
+  }
 });

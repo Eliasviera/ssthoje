@@ -25,7 +25,10 @@ export function isTenantEnabled(tenantId: string) {
   const account = readRegisteredTrialAccounts().find((entry) => entry.tenantId === tenantId);
   return Boolean(account && isTrialActive(account));
 }
-export function isModuleEnabled(tenantId: string, module: OptionalModule) { return !(readPlatformState().plans?.[tenantId]?.config.disabledModules ?? []).includes(module); }
+export function isModuleEnabled(tenantId: string, module: OptionalModule) {
+  const config = readPlatformState().plans?.[tenantId]?.config;
+  return !(config?.disabledModules ?? []).includes(module);
+}
 export function assertModuleEnabled(tenantId: string, module: OptionalModule) {
   if (!isModuleEnabled(tenantId, module)) throw new Error("Novas operações deste módulo estão desativadas. Procure a administradora da consultoria. Os registros anteriores continuam disponíveis.");
 }

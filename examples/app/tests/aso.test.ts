@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test, { before, after } from "node:test";
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { listAsoWorkers, listMedicalAsos, listAsoSummaries, saveAso, transitionAso, type AsoContent } from "../src/lib/aso-store.ts";
+import { listAsoAuditSignals, listAsoWorkers, listMedicalAsos, listAsoSummaries, saveAso, transitionAso, type AsoContent } from "../src/lib/aso-store.ts";
 import { assignPcmso } from "../src/lib/pcmso-store.ts";
 import { hasTenantPermission, getVisibleSections } from "../src/lib/tenant-access.ts";
 import { listAuditEventsForTenant } from "../src/lib/audit-log.ts";
@@ -119,7 +119,35 @@ test("ASO: escopos assíncronos prevalecem sobre JSON e falha não grava", async
   assert.equal(readFileSync(file("aso.json"), "utf8"), before);
 });
 
-test("ASO: limite de alterações por usuário é aplicado no serviço", async () => {
+test("Auditoria de ASO: prazo, revisão de renovação e isolamento", async (t) => {
+  const rateWindow = Date.now() + 60_000;
+  t.mock.method(Date, "now", () => rateWindow);
+  const now = new Date("2026-11-12T15:00:00Z");
+  const signals = () => listAsoAuditSignals(admin, now);
+  assert.equal(signals()[0].status, "missing_due_date");
+  const scopes = async () => [scope];
+  const overdue = { ...content, appointmentDate: "2026-10-10", nextExamDueOn: "2026-11-11", fitness: "fit" as const };
+  await assert.rejects(() => saveAso(medico, worker.id, 0, { ...overdue, nextExamDueOn: "2026-10-09" }, undefined, scopes), /prazo válido/);
+  const expiredId = await saveAso(medico, worker.id, 0, overdue, undefined, scopes);
+  await transitionAso(medico, expiredId, 1, "submit", scopes);
+  await transitionAso(medico, expiredId, 1, "review", scopes);
+  assert.equal(signals()[0].status, "overdue");
+  assert.deepEqual(listAsoAuditSignals(admin, new Date("2026-11-12T02:59:00Z")), []);
+  assert.deepEqual(listAsoAuditSignals("sst-demo-user-b", now), []);
+  assert.throws(() => listAsoAuditSignals(medico, now), /não autorizado/);
+  assert.doesNotMatch(JSON.stringify(signals()), /fitness|exams|reference|RESTRITA/);
+
+  const renewal = await saveAso(medico, worker.id, 0, { ...overdue, appointmentDate: "2026-11-12", nextExamDueOn: "2027-11-12" }, undefined, scopes);
+  assert.equal(signals()[0].status, "overdue");
+  await transitionAso(medico, renewal, 1, "submit", scopes);
+  assert.equal(signals()[0].status, "renewal_in_review");
+  await transitionAso(medico, renewal, 1, "review", scopes);
+  assert.deepEqual(signals(), []);
+});
+
+test("ASO: limite de alterações por usuário é aplicado no serviço", async (t) => {
+  const rateWindow = Date.now() + 120_000;
+  t.mock.method(Date, "now", () => rateWindow);
   let limited = false;
   for (let i = 0; i < 31; i++) {
     try { await transitionAso(medico, "inexistente", 0, "review"); }

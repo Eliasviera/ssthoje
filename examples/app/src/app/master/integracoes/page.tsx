@@ -11,9 +11,11 @@ import InboxPanel from "./inbox-panel";
 import { asaasConfig, asaasReady, listAsaasInbox } from "@/lib/asaas-inbox";
 import { listSandboxOtps } from "@/lib/otp-sandbox";
 import OtpPanel from "./otp-panel";
+import StoragePanel from "./storage-panel";
+import { getObjectStorageProbe } from "@/lib/object-storage-probe";
 export default function SandboxPage() { return <Suspense fallback={<main>Carregando bancada…</main>}><SandboxContent/></Suspense>; }
 async function SandboxContent() {
   await connection(); const session = await getSession(); if (!session) redirect("/login");
   try { requirePlatformMaster(session.userId); } catch { redirect("/sem-acesso"); }
-  return <><SandboxPanel runs={getIntegrationSandbox(session.userId)} tenants={listRuntimeTenants().map(t => ({id:t.id,name:t.name}))} requestKey={randomUUID()}/><InboxPanel events={listAsaasInbox(session.userId)} ready={asaasReady(asaasConfig())}/><OtpPanel rows={listSandboxOtps(session.userId)}/></>;
+  return <><SandboxPanel runs={getIntegrationSandbox(session.userId)} tenants={listRuntimeTenants().map(t => ({id:t.id,name:t.name}))} requestKey={randomUUID()}/><StoragePanel status={getObjectStorageProbe(session.userId)}/><InboxPanel events={listAsaasInbox(session.userId)} ready={asaasReady(asaasConfig())}/><OtpPanel rows={listSandboxOtps(session.userId)}/></>;
 }

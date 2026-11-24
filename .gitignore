@@ -31,3 +31,10 @@ SST_HOJE_ARQUIVO_EMA_REAL_*/
 # Artefatos locais de build/deploy e credenciais do app
 examples/app/tmp/
 *.pid
+
+# Backup local do painel e log de execução local (manter fora do GitHub)
+backup-painel-2026-11-18.zip
+backup-painel-2026-11-18/
+assets/sst-hoje-erro.txt
+assets/magalu-plan-prices-20261122.Dockerfile
+assets/magalu-update-plan-prices-20261122.cjs

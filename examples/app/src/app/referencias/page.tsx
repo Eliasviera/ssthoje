@@ -37,6 +37,10 @@ async function Content() {
         <h1>Consulta eSocial.</h1>
         <p>Tabelas oficiais versionadas para consulta manual.</p>
       </section>
+      <section className="government-integrations-shortcut" aria-labelledby="government-integrations-shortcut-title">
+        <div><h2 id="government-integrations-shortcut-title">Integrações governamentais</h2><p>Veja serviços mapeados, o que já existe e o que ainda precisa ser preparado. Nenhum envio está conectado.</p></div>
+        <Link className="secondary-button" href="/integracoes-governamentais">Abrir catálogo</Link>
+      </section>
       <EsocialCatalogSection canOpenMappings={canOpenMappings} />
     </main>
     {canReviewReferences && <ReferencePanel data={getReferenceGovernance(session.userId)} />}

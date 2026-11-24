@@ -11,6 +11,7 @@ import type { PgrInventoryRecord } from "@/lib/pgr-postgres-operations";
 import SafetyOperationsSection from "../safety-operations-section";
 import { loadVocabulary } from "@/lib/field-vocabulary";
 import { listWorkersForTenant } from "@/lib/worker-store";
+import PanelShell from "../panel-shell";
 
 export const metadata = { title: "APR e checklists — SST Hoje" };
 
@@ -45,16 +46,7 @@ async function AprContent() {
     }
   }
 
-  return <main className="main-area" style={{ marginLeft: 0 }}>
-    <header className="topbar">
-      <div className="breadcrumbs"><span>{tenant.name}</span><span className="crumb-separator">/</span><strong>APR e checklists</strong></div>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <Link className="secondary-button" href="/analise-risco">AR</Link>
-        <Link className="secondary-button" href="/permissoes-trabalho">PT e PTE</Link>
-        <Link className="secondary-button" href="/nao-conformidades">Não conformidades</Link>
-        <Link className="secondary-button" href="/empresas">Voltar ao painel</Link>
-      </div>
-    </header>
+  return <PanelShell tenantName={tenant.name} current="/apr">
     <div className="content-wrap">
       <section className="welcome-row" aria-labelledby="page-title">
         <div>
@@ -78,5 +70,5 @@ async function AprContent() {
         workers={workers}
       />
     </div>
-  </main>;
+  </PanelShell>;
 }

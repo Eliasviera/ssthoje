@@ -32,6 +32,7 @@ export async function changeAsoAction(_state: AsoFormState, data: FormData): Pro
       }).filter(e => e.name || e.date);
       await saveAso(access.session.userId, field(data, "workerId", 64), version, {
         appointmentDate: field(data, "appointmentDate", 10), reference: field(data, "reference", 100),
+        nextExamDueOn: field(data, "nextExamDueOn", 10, true) || undefined,
         fitness: field(data, "fitness", 12) as AsoFitness, exams,
       }, id || undefined);
     } else if (operation === "submit" || operation === "review") {
@@ -39,6 +40,8 @@ export async function changeAsoAction(_state: AsoFormState, data: FormData): Pro
       await transitionAso(access.session.userId, id, version, operation);
     } else return { error: "Ação inválida." };
     revalidatePath("/");
+    revalidatePath("/aso");
+    revalidatePath("/auditoria-nrs");
     return { success: operation === "save" ? "Versão fictícia salva e preservada." : operation === "submit" ? "ASO enviado para revisão interna." : "Revisão interna registrada, sem assinatura ou liberação do trabalhador." };
   } catch (error) { return { error: error instanceof Error ? error.message : "Não foi possível concluir. Tente novamente." }; }
 }

@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "jurisdiction": "BR",
+  "catalogStatus": "candidate_not_runtime_enabled",
+  "services": [
+    {
+      "id": "esocial-s2210-cat",
+      "agency": "eSocial",
+      "service": "Comunicação de Acidente de Trabalho",
+      "scope": ["tenantId", "companyId", "unitId"],
+      "officialEvent": "S-2210",
+      "currentCapability": "prepare_document",
+      "integrationStatus": "documented_only",
+      "authorization": {
+        "requiredPerClient": true,
+        "requiredScope": ["tenantId", "companyId", "agency", "service", "eventVersion", "environment", "validity"],
+        "revocable": true,
+        "approvalBoundToPayload": true,
+        "credentialModesToEvaluate": ["client_certificate", "electronic_power_of_attorney", "official_delegation"]
+      },
+      "transmissionEnabled": false,
+      "requiresHumanApproval": true,
+      "runtimeAdapter": "none",
+      "officialSource": "https://www.gov.br/esocial/pt-br/empresas/manual-web-geral",
+      "notes": ["O app atual monta CAT para transmissão pelo cliente; este registro não altera esse fluxo.", "Validar leiaute e canal vigente antes de desenvolver adapter."]
+    },
+    {
+      "id": "esocial-s2220-health-monitoring",
+      "agency": "eSocial",
+      "service": "Monitoramento da Saúde do Trabalhador",
+      "scope": ["tenantId", "companyId", "unitId"],
+      "officialEvent": "S-2220",
+      "currentCapability": "reference_only",
+      "integrationStatus": "documented_only",
+      "authorization": {
+        "requiredPerClient": true,
+        "requiredScope": ["tenantId", "companyId", "unitId", "agency", "service", "eventVersion", "environment", "validity"],
+        "revocable": true,
+        "approvalBoundToPayload": true,
+        "credentialModesToEvaluate": ["client_certificate", "electronic_power_of_attorney", "official_delegation"]
+      },
+      "transmissionEnabled": false,
+      "requiresHumanApproval": true,
+      "runtimeAdapter": "none",
+      "officialSource": "https://www.gov.br/esocial/pt-br/empresas/manual-web-geral",
+      "notes": ["Há consulta local à Tabela 27 e associações manuais; o app não gera nem transmite S-2220.", "Exige revisão de privacidade e acesso restrito aos dados de saúde antes de qualquer integração."]
+    },
+    {
+      "id": "esocial-s2240-work-environment",
+      "agency": "eSocial",
+      "service": "Condições Ambientais do Trabalho — Agentes Nocivos",
+      "scope": ["tenantId", "companyId", "unitId"],
+      "officialEvent": "S-2240",
+      "currentCapability": "reference_only",
+      "integrationStatus": "documented_only",
+      "authorization": {
+        "requiredPerClient": true,
+        "requiredScope": ["tenantId", "companyId", "unitId", "agency", "service", "eventVersion", "environment", "validity"],
+        "revocable": true,
+        "approvalBoundToPayload": true,
+        "credentialModesToEvaluate": ["client_certificate", "electronic_power_of_attorney", "official_delegation"]
+      },
+      "transmissionEnabled": false,
+      "requiresHumanApproval": true,
+      "runtimeAdapter": "none",
+      "officialSource": "https://www.gov.br/esocial/pt-br/empresas/manual-web-geral",
+      "notes": ["Há consulta local à Tabela 24 e associações manuais a riscos; isso não gera evento nem comprova exposição previdenciária.", "Requer vínculos e períodos confirmados e coerência com LTCAT revisado."]
+    },
+    {
+      "id": "inss-ppp-electronic",
+      "agency": "INSS / Meu INSS",
+      "service": "Perfil Profissiográfico Previdenciário eletrônico",
+      "scope": ["tenantId", "companyId", "unitId"],
+      "officialEvent": null,
+      "currentCapability": "reference_only",
+      "integrationStatus": "documented_only",
+      "authorization": {
+        "requiredPerClient": true,
+        "requiredScope": ["tenantId", "companyId", "agency", "service", "environment", "validity"],
+        "revocable": true,
+        "approvalBoundToPayload": true,
+        "credentialModesToEvaluate": ["not_applicable", "to_be_verified"]
+      },
+      "transmissionEnabled": false,
+      "requiresHumanApproval": true,
+      "runtimeAdapter": "none",
+      "officialSource": "https://www.gov.br/pt-br/servicos/emitir-ppp-eletronico-perfil-profissiografico-previdenciario",
+      "notes": ["O PPP eletrônico é formado a partir de informações SST declaradas no eSocial; não presumir endpoint de transmissão do PPP pelo SST Hoje.", "Qualquer documento interno deve permanecer rotulado como cópia de conferência, não como PPP oficial."]
+    },
+    {
+      "id": "previdencia-catweb",
+      "agency": "Previdência Social",
+      "service": "CATWeb — comunicação eletrônica de acidente",
+      "scope": ["tenantId", "companyId", "unitId"],
+      "officialEvent": null,
+      "currentCapability": "manual_external",
+      "integrationStatus": "not_started",
+      "authorization": {
+        "requiredPerClient": true,
+        "requiredScope": ["tenantId", "companyId", "agency", "service", "environment", "validity"],
+        "revocable": true,
+        "approvalBoundToPayload": true,
+        "credentialModesToEvaluate": ["official_delegation", "to_be_verified"]
+      },
+      "transmissionEnabled": false,
+      "requiresHumanApproval": true,
+      "runtimeAdapter": "none",
+      "officialSource": "https://www.gov.br/pt-br/servicos/emitir-comunicacao-de-acidente-de-trabalho-cat",
+      "notes": ["O módulo atual não transmite ao CATWeb; o usuário transmite pelo canal oficial e informa o protocolo no sistema.", "Pesquisar contrato oficial e permissões antes de considerar adapter."]
+    },
+    {
+      "id": "mte-caepi-lookup",
+      "agency": "Ministério do Trabalho e Emprego",
+      "service": "Consulta de Certificado de Aprovação de EPI",
+      "scope": ["tenantId"],
+      "officialEvent": null,
+      "currentCapability": "manual_lookup",
+      "integrationStatus": "not_started",
+      "authorization": {
+        "requiredPerClient": true,
+        "requiredScope": ["tenantId", "agency", "service", "environment", "validity"],
+        "revocable": true,
+        "approvalBoundToPayload": true,
+        "credentialModesToEvaluate": ["not_applicable", "to_be_verified"]
+      },
+      "transmissionEnabled": false,
+      "requiresHumanApproval": true,
+      "runtimeAdapter": "none",
+      "officialSource": "https://caepi.mte.gov.br/",
+      "notes": ["A consulta permanece manual; integração automática depende de API/documentação e permissão oficial.", "Não automatizar scraping nem tratar resultado manual como confirmação automática."]
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sst-hoje.local/schemas/esocial-worker-link-candidate.json",
+  "title": "Vínculo de trabalhador para preparação eSocial — candidato",
+  "description": "Registro de conferência entre cadastro interno, documento do RH e vínculo de origem eSocial. Não autentica vínculo nem transmite eventos.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "recordType", "status", "scope", "workerIdentity", "employment", "employer", "establishment", "sources", "review", "transmission"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "recordType": { "const": "esocial_worker_link_candidate" },
+    "status": { "const": "draft_pending_verification" },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tenantId", "companyId", "unitId", "workerId"],
+      "properties": {
+        "tenantId": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "companyId": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "unitId": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "workerId": { "type": "string", "minLength": 1, "maxLength": 140 }
+      }
+    },
+    "workerIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cpf", "nameMatch", "sourceRefs"],
+      "properties": {
+        "cpf": { "$ref": "#/$defs/sourcedValue" },
+        "nameMatch": { "enum": ["not_checked", "matches_source", "mismatch"] },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+      }
+    },
+    "employment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["originEvent", "originReceiptReference", "matricula", "codCateg", "admissionDate", "terminationDate", "linkStatus", "sourceRefs"],
+      "properties": {
+        "originEvent": { "enum": ["S-2190", "S-2200", "S-2300", "other", "not_verified"] },
+        "originReceiptReference": { "type": ["string", "null"], "maxLength": 500 },
+        "matricula": { "$ref": "#/$defs/sourcedValue" },
+        "codCateg": { "$ref": "#/$defs/sourcedValue" },
+        "admissionDate": { "$ref": "#/$defs/sourcedValue" },
+        "terminationDate": { "$ref": "#/$defs/sourcedValue" },
+        "linkStatus": { "enum": ["unknown", "reported_active", "verified_active", "reported_ended", "verified_ended", "conflict"] },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+      }
+    },
+    "employer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registrationType", "registrationNumber", "sourceRefs"],
+      "properties": {
+        "registrationType": { "$ref": "#/$defs/sourcedValue" },
+        "registrationNumber": { "$ref": "#/$defs/sourcedValue" },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+      }
+    },
+    "establishment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registrationType", "registrationNumber", "environmentKind", "sourceRefs"],
+      "properties": {
+        "registrationType": { "$ref": "#/$defs/sourcedValue" },
+        "registrationNumber": { "$ref": "#/$defs/sourcedValue" },
+        "environmentKind": { "enum": ["employer_establishment", "third_party_establishment", "not_verified"] },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["reference", "kind", "revision", "capturedAt", "trustState"],
+        "properties": {
+          "reference": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "kind": { "enum": ["hr_spreadsheet", "eSocial_origin_event", "employer_document", "company_registration", "other"] },
+          "revision": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "capturedAt": { "type": "string", "format": "date-time" },
+          "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+          "trustState": { "enum": ["reported_unverified", "reviewed_against_source", "rejected", "superseded"] }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewState", "reviewerRef", "reviewedAt", "conflicts"],
+      "properties": {
+        "reviewState": { "enum": ["pending", "verified", "rejected"] },
+        "reviewerRef": { "type": ["string", "null"], "maxLength": 140 },
+        "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+        "conflicts": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 300 }, "uniqueItems": true }
+      }
+    },
+    "transmission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "adapter"],
+      "properties": {
+        "enabled": { "const": false },
+        "adapter": { "const": "none" }
+      }
+    }
+  },
+  "$defs": {
+    "sourceRefs": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 300 }, "uniqueItems": true },
+    "sourcedValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "state", "sourceRefs"],
+      "properties": {
+        "value": { "type": ["string", "null"], "maxLength": 300 },
+        "state": { "enum": ["missing", "reported_unverified", "verified_from_source", "not_applicable_pending_review", "conflict"] },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+      }
+    }
+  }
+}

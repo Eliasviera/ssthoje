@@ -38,14 +38,14 @@ test("billing: repetição idêntica não duplica; mesma chave adulterada e form
 });
 test("billing: falha, reabertura, pagamento e estorno integral preservam estados e centavos", () => {
   run("start"); const invoiceId = account().invoices[0].id;
-  assert.equal(account().invoices[0].amountCents, 9900);
+  assert.equal(account().invoices[0].amountCents, 19900);
   assert.throws(() => run("refund", { invoiceId })); assert.throws(() => run("issue"));
   run("failed", { invoiceId }); assert.equal(account().invoices[0].status, "failed");
   run("retry", { invoiceId }); run("paid", { invoiceId }); run("refund", { invoiceId });
   assert.equal(account().invoices[0].status, "refunded");
   assert.throws(() => run("paid", { invoiceId }));
   assert.deepEqual(account().events.map(e => e.after), ["pending", "failed", "pending", "paid", "refunded"]);
-  assert.equal(account().events.at(-1)?.amountCents, 9900);
+  assert.equal(account().events.at(-1)?.amountCents, 19900);
 });
 test("billing: disputas, cancelamento e nova assinatura mantêm cobranças anteriores e acessos", () => {
   run("start"); const invoiceId = account().invoices[0].id;
@@ -58,9 +58,9 @@ test("billing: disputas, cancelamento e nova assinatura mantêm cobranças anter
 });
 test("billing: reconciliação registra igualdade/divergência sem mudar cobrança; valores inválidos falham", () => {
   run("start"); const invoiceId = account().invoices[0].id;
-  assert.equal(run("reconcile", { invoiceId, referenceStatus: "pending", referenceAmountCents: 9900 }).matched, true);
-  assert.equal(run("reconcile", { invoiceId, referenceStatus: "paid", referenceAmountCents: 9900 }).matched, false);
-  assert.equal(run("reconcile", { invoiceId, referenceStatus: "pending", referenceAmountCents: 9901 }).matched, false);
+  assert.equal(run("reconcile", { invoiceId, referenceStatus: "pending", referenceAmountCents: 19900 }).matched, true);
+  assert.equal(run("reconcile", { invoiceId, referenceStatus: "paid", referenceAmountCents: 19900 }).matched, false);
+  assert.equal(run("reconcile", { invoiceId, referenceStatus: "pending", referenceAmountCents: 19901 }).matched, false);
   const before = readFileSync("data/billing.json", "utf8");
   for (const referenceAmountCents of [-1, 0.5, NaN, 100000001]) assert.throws(() => run("reconcile", { invoiceId, referenceStatus: "paid", referenceAmountCents }));
   assert.equal(account().invoices[0].status, "pending"); assert.equal(readFileSync("data/billing.json", "utf8"), before);
@@ -71,7 +71,7 @@ test("billing: snapshot preserva cobrança antiga e rejeita plano desatualizado;
   const old = command("issue");
   managePlan(master, tenant, { operation: "configure", config: { ...DEFAULT_PLAN.config, plan: "profissional", cycle: "annual" } }, "Plano fictício anual", 0);
   assert.throws(() => manageBilling(master, tenant, old), /plano mudou/);
-  run("issue"); assert.equal(account().invoices[0].amountCents, 9900); assert.equal(account().invoices[1].amountCents, 199000);
+  run("issue"); assert.equal(account().invoices[0].amountCents, 19900); assert.equal(account().invoices[1].amountCents, 299000);
   run("cancel"); run("paid", { invoiceId: account().invoices[1].id });
   const settings = getTenantSettings(tenant); changeTenantSettings(master, tenant, { ...settings, status: "suspended" }, "Suspensão fictícia", JSON.stringify(settings));
   assert.throws(() => run("start"), /Reative/);

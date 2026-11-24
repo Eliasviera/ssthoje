@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sst-hoje.local/schemas/esocial-s2240-preparation-candidate.json",
+  "title": "Preparação interna candidata do S-2240",
+  "description": "Registro interno para reunir fontes e pendências antes de uma futura conversão revisada ao leiaute oficial. Não é payload eSocial, não calcula exposição e não transmite.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "recordType", "status", "sourceLayout", "scope", "worker", "condition", "sourceEvidence", "review", "transmission"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "recordType": { "const": "s2240_preparation_candidate" },
+    "status": { "const": "draft_not_for_transmission" },
+    "sourceLayout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "officialUrl", "verifiedAt"],
+      "properties": {
+        "version": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "officialUrl": { "type": "string", "format": "uri" },
+        "verifiedAt": { "type": "string", "format": "date" }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tenantId", "companyId", "unitId", "workerId"],
+      "properties": {
+        "tenantId": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "companyId": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "unitId": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "workerId": { "type": "string", "minLength": 1, "maxLength": 140 }
+      }
+    },
+    "worker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cpf", "matricula", "codCateg", "admissionDate", "sourceRefs"],
+      "properties": {
+        "cpf": { "$ref": "#/$defs/sourceValue" },
+        "matricula": { "$ref": "#/$defs/sourceValue" },
+        "codCateg": { "$ref": "#/$defs/sourceValue" },
+        "admissionDate": { "$ref": "#/$defs/sourceValue" },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+      }
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["startDate", "endDate", "workplaceDescription", "activityDescription", "environment", "agents", "responsibleForEnvironmentalRecords"],
+      "properties": {
+        "startDate": { "$ref": "#/$defs/sourceValue" },
+        "endDate": { "$ref": "#/$defs/sourceValue" },
+        "workplaceDescription": { "$ref": "#/$defs/sourceValue" },
+        "activityDescription": { "$ref": "#/$defs/sourceValue" },
+        "environment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["establishmentType", "registrationType", "registrationNumber", "sectorDescription", "sourceRefs"],
+          "properties": {
+            "establishmentType": { "$ref": "#/$defs/sourceValue" },
+            "registrationType": { "$ref": "#/$defs/sourceValue" },
+            "registrationNumber": { "$ref": "#/$defs/sourceValue" },
+            "sectorDescription": { "$ref": "#/$defs/sourceValue" },
+            "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+          }
+        },
+        "agents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["table24Code", "description", "reviewStatus", "sourceRefs"],
+            "properties": {
+              "table24Code": { "$ref": "#/$defs/sourceValue" },
+              "description": { "$ref": "#/$defs/sourceValue" },
+              "reviewStatus": { "enum": ["pending_human_review", "reviewed_source_only", "rejected"] },
+              "sourceRefs": { "$ref": "#/$defs/sourceRefs" },
+              "protectionMeasuresRefs": { "$ref": "#/$defs/sourceRefs" }
+            }
+          }
+        },
+        "responsibleForEnvironmentalRecords": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["personReference", "professionalBody", "registrationReference", "sourceRefs", "reviewStatus"],
+            "properties": {
+              "personReference": { "$ref": "#/$defs/sourceValue" },
+              "professionalBody": { "$ref": "#/$defs/sourceValue" },
+              "registrationReference": { "$ref": "#/$defs/sourceValue" },
+              "sourceRefs": { "$ref": "#/$defs/sourceRefs" },
+              "reviewStatus": { "enum": ["pending_human_review", "reviewed_source_only", "rejected"] }
+            }
+          }
+        },
+        "notes": { "type": "array", "items": { "type": "string", "maxLength": 1000 } }
+      }
+    },
+    "sourceEvidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["reference", "kind", "revision", "status"],
+        "properties": {
+          "reference": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "kind": { "enum": ["LTCAT", "PGR", "measurement_report", "worker_record", "employment_record", "eSocial_receipt", "other"] },
+          "revision": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "status": { "enum": ["reported", "pending_review", "reviewed", "superseded"] },
+          "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["technicalStatus", "clientApprovalStatus", "payloadHash", "pendingItems"],
+      "properties": {
+        "technicalStatus": { "enum": ["not_started", "pending", "reviewed", "rejected"] },
+        "technicalReviewerRef": { "type": ["string", "null"], "maxLength": 140 },
+        "clientApprovalStatus": { "enum": ["not_requested", "pending", "approved", "rejected", "invalidated"] },
+        "clientApproverRef": { "type": ["string", "null"], "maxLength": 140 },
+        "payloadHash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "pendingItems": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 300 }, "uniqueItems": true }
+      }
+    },
+    "transmission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "adapter", "receiptReference"],
+      "properties": {
+        "enabled": { "const": false },
+        "adapter": { "const": "none" },
+        "receiptReference": { "const": null }
+      }
+    }
+  },
+  "$defs": {
+    "sourceRefs": { "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 300 }, "uniqueItems": true },
+    "sourceValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "state", "sourceRefs"],
+      "properties": {
+        "value": { "type": ["string", "null"], "maxLength": 2000 },
+        "state": { "enum": ["missing", "reported_unverified", "verified_from_source", "not_applicable_pending_review"] },
+        "sourceRefs": { "$ref": "#/$defs/sourceRefs" }
+      }
+    }
+  }
+}

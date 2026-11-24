@@ -360,3 +360,15 @@ Credenciais iniciais geradas ficam em `examples/app/tmp/magalu-credenciais.txt`
 - Reiniciado apenas Caddy para antecipar nova tentativa de emissão após erros anteriores de DNS; app e banco preservados.
 - HTTPS validado por curl sem ignorar certificado: `/login` acessível e `/api/health` público retornou `{"status":"ok"}` a partir da VM.
 - Login autenticado e permissões de usuário ainda não foram testados nesta etapa.
+
+## Atualização dos preços — 22/11/2026 (America/Sao_Paulo)
+
+- Solicitada pelo usuário e publicada na VM existente. Imagem anterior: `sst-hoje:magalu-20261121-about`; nova: `sst-hoje:magalu-20261122-prices`.
+- Essencial: R$ 199/mês e R$ 1.990/ano. Profissional: R$ 299/mês e R$ 2.990/ano. Mantida a proporção anual existente de dez mensalidades.
+- Para preservar os ajustes específicos já publicados, a imagem foi derivada da versão ativa, com substituição restrita dos dois pares mensal/anual nos seis catálogos JavaScript compilados. Todos os seis arquivos passaram em `node --check`; o build da imagem passou, sem rede.
+- Artefatos reproduzíveis: `assets/magalu-update-plan-prices-20261122.cjs` e `assets/magalu-plan-prices-20261122.Dockerfile`; cópia remota em `/home/ubuntu/sst-hoje-prices-20261122/`.
+- Apenas o serviço app foi recriado (`docker compose up -d --no-deps app`). Sem migrações, sem alteração dos volumes de dados ou do banco. A configuração privada anterior foi preservada no servidor em `.env.before-prices-20261122`, com acesso restrito.
+- Verificação real por HTTPS: `/site` HTTP 200 com ambos os preços mensais e anuais corretos; `/api/health` HTTP 200 com status ok; `/login` HTTP 200. Não foi realizado login autenticado.
+- A página atual formata reais sem centavos. As duas primeiras asserções de conferência falharam por pressupostos do verificador sobre formatação/HTML; o verificador ajustado ao texto renderizado passou.
+- Reversão: em `/home/ubuntu/sst-hoje`, restaurar somente `SST_IMAGE=sst-hoje:magalu-20261121-about` no `.env` e executar `docker compose up -d --no-deps app`.
+- Limite: atualização pontual de artefatos compilados, sem novo build completo do código-fonte. Os preços também estão corrigidos no catálogo-fonte local; manter essa correção no próximo build completo. O JavaScript estático conserva o nome anterior: sessões antigas podem exigir atualização forçada da página.

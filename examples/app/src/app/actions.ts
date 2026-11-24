@@ -47,7 +47,9 @@ export async function loginAction(_previousState: LoginState, formData: FormData
     : trial ? isTrialActive(trial) && verifyTrialPassword(password, trial.passwordHash)
     : passwordsMatch(password, "senha-ficticia-invalida") && false;
   const clientAccount = account && resolveTenantMembership(account.userId)?.membership.role === "cliente";
-  const tenantAccess = account ? requireTenantAccess(account.userId, clientAccount ? "dds.read" : "tenant.dashboard.read") : null;
+  const demoWorker = demo?.userId === "sst-demo-trabalhador";
+  const loginPermission = demoWorker ? "deviation.report" : clientAccount ? "dds.read" : "tenant.dashboard.read";
+  const tenantAccess = account ? requireTenantAccess(account.userId, loginPermission) : null;
   if (clientAccount && validPassword && !tenantAccess?.ok) return { error: "Sua conta precisa de um vínculo ativo com a empresa e as unidades autorizadas. Procure o responsável pelo seu acesso." };
   const master = Boolean(account && isPlatformMaster(account.userId));
   const valid = Boolean(account && validPassword && (master || tenantAccess?.ok));
@@ -70,7 +72,8 @@ export async function loginAction(_previousState: LoginState, formData: FormData
     action: "auth.login_succeeded",
   });
   await createSession(account.userId, account.email);
-  redirect(master ? "/master" : "/");
+  if (master) redirect("/master");
+  redirect(demoWorker ? "/passaporte-demo" : "/");
 }
 
 export async function logoutAction() {

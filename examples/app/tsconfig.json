@@ -137,7 +137,9 @@
     ".next-verify-aprcat-ui/types/**/*.ts",
     ".next-verify-aprcat-ui/dev/types/**/*.ts",
     ".next-verify-aws/types/**/*.ts",
-    ".next-verify-aws/dev/types/**/*.ts"
+    ".next-verify-aws/dev/types/**/*.ts",
+    ".next-verify-training-pilot/types/**/*.ts",
+    ".next-verify-training-pilot/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

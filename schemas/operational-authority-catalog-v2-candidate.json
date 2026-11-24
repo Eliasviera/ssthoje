@@ -1,0 +1,900 @@
+{
+  "catalogVersion": 2,
+  "status": "candidate",
+  "commercialLimitsIncluded": false,
+  "scopeDimensions": [
+    "platform",
+    "tenantId",
+    "companyId",
+    "unitId",
+    "thirdPartyId",
+    "workflowId",
+    "workerId",
+    "evidenceId",
+    "documentId",
+    "ddsId",
+    "activityId",
+    "aprId",
+    "workPermitId",
+    "serviceId",
+    "eventType",
+    "environment"
+  ],
+  "roles": {
+    "saas_master": {
+      "track": "platform",
+      "actions": [
+        "platform.tenant.manage"
+      ],
+      "mayDecideClientMobilization": false
+    },
+    "tenant_admin": {
+      "track": "administrative",
+      "actions": [
+        "tenant.membership.manage",
+        "tenant.authorization.grant",
+        "tenant.application.manage"
+      ],
+      "mayDecideClientMobilization": false,
+      "ceiling": "own_tenant_and_delegated_scope",
+      "mayGrantOnlyWithinOwnDelegationAndRoleCeiling": true
+    },
+    "tenant_owner": {
+      "track": "tenant_administration",
+      "actions": [
+        "tenant.membership.manage",
+        "tenant.authorization.grant",
+        "tenant.application.manage"
+      ],
+      "mayDecideClientMobilization": false,
+      "ceiling": "own_tenant",
+      "grantableThroughRuntime": false,
+      "mayGrantOnlyWithinOwnDelegationAndRoleCeiling": true
+    },
+    "hierarchy_admin": {
+      "track": "administrative_delegation",
+      "actions": [
+        "tenant.membership.manage"
+      ],
+      "mayGrantAdministrativeRole": false,
+      "mayDecideClientMobilization": false,
+      "ceiling": "own_tenant_and_delegated_scope"
+    },
+    "consultancy_sst": {
+      "track": "technical_recommendation",
+      "actions": [
+        "thirdparty.analysis.recommend"
+      ],
+      "mayDecideClientMobilization": false,
+      "requiredAssignment": [
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ]
+    },
+    "client_sst": {
+      "track": "technical_authority",
+      "actions": [
+        "thirdparty.analysis.recommend",
+        "thirdparty.requirement.set",
+        "thirdparty.technical.block",
+        "thirdparty.technical.release",
+        "thirdparty.analysis.return_to_sst"
+      ],
+      "mayDecideClientMobilization": false,
+      "requiredAssignment": [
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "policyRequired": true
+    },
+    "client_policy_admin": {
+      "track": "policy_administration",
+      "actions": [
+        "thirdparty.policy.manage"
+      ],
+      "mayDecideClientMobilization": false,
+      "requiredGrantScope": [
+        "companyId",
+        "unitId"
+      ],
+      "policyChangesAreVersioned": true
+    },
+    "client_manager": {
+      "track": "managerial_decision",
+      "actions": [
+        "thirdparty.mobilization.require_pre_entry_correction",
+        "thirdparty.mobilization.authorize_conditional_entry",
+        "thirdparty.analysis.return_to_sst"
+      ],
+      "mayEditTechnicalAssessment": false,
+      "mayCloseMandatoryBlock": false,
+      "requiredAssignment": [
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ]
+    },
+    "third_party": {
+      "track": "evidence_submission",
+      "actions": [
+        "thirdparty.evidence.submit_own",
+        "thirdparty.status.read_own"
+      ],
+      "scopeRestriction": "own_third_party_only"
+    },
+    "application": {
+      "track": "machine_principal",
+      "defaultActions": [],
+      "allowedActions": [
+        "thirdparty.evidence.submit_own",
+        "thirdparty.status.read_own",
+        "documents.read_scoped"
+      ],
+      "humanDecisionActionsForbidden": true,
+      "scopeRequired": true
+    },
+    "employee": {
+      "track": "worker_self_service",
+      "actions": [
+        "worker.passport.read_own",
+        "documents.assignment.read_own",
+        "documents.sign_assigned",
+        "deviation.report"
+      ],
+      "scopeRestriction": "own_verified_worker_link_only",
+      "mayDecideOperationalRelease": false,
+      "mayTransmitGovernmentEvents": false
+    },
+    "field_leader": {
+      "track": "field_operations",
+      "actions": [
+        "worker.passport.read_assigned",
+        "dds.create",
+        "dds.attendance.scan",
+        "dds.attendance.review_offline",
+        "safety.apr.draft.create",
+        "safety.apr.draft.update",
+        "safety.apr.submit_review",
+        "workpermit.draft.create",
+        "workpermit.draft.update",
+        "deviation.report"
+      ],
+      "requiredAssignment": [
+        "companyId",
+        "unitId",
+        "activityId"
+      ],
+      "eligibleAdditionalActions": [
+        "workpermit.release"
+      ],
+      "mayOverrideMandatoryBlock": false,
+      "mayTransmitGovernmentEvents": false
+    },
+    "sst_engineer": {
+      "track": "technical_review",
+      "actions": [
+        "worker.passport.read_assigned",
+        "worker.evidence.read_status_assigned",
+        "worker.evidence.review",
+        "safety.apr.technical_review",
+        "safety.apr.sign",
+        "workpermit.technical_review"
+      ],
+      "requiredAssignment": [
+        "companyId",
+        "unitId",
+        "activityId"
+      ],
+      "mayManageTenantMembership": false,
+      "mayTransmitGovernmentEvents": false
+    },
+    "medical_professional": {
+      "track": "medical_restricted",
+      "actions": [
+        "medical.aso.status.read_assigned",
+        "medical.aso.record_scoped"
+      ],
+      "requiredAssignment": [
+        "companyId",
+        "unitId",
+        "workerId"
+      ],
+      "clinicalAccessSeparateFromTenantAdministration": true
+    },
+    "client_representative": {
+      "track": "client_approval",
+      "actions": [
+        "government.event.client_approve"
+      ],
+      "requiredDesignation": true,
+      "requiredGrantScope": [
+        "companyId",
+        "unitId"
+      ],
+      "approvalBoundToPayloadHash": true,
+      "mayTransmitGovernmentEvents": false
+    },
+    "government_operator": {
+      "track": "government_transmission",
+      "actions": [
+        "government.event.prepare",
+        "government.event.review",
+        "government.event.transmit",
+        "government.event.receipt.read"
+      ],
+      "requiredGrantScope": [
+        "companyId",
+        "unitId",
+        "serviceId",
+        "eventType",
+        "environment"
+      ],
+      "requiresCurrentClientAuthorization": true,
+      "requiresPerPayloadClientApproval": true,
+      "runtimeEnabled": false
+    }
+  },
+  "actions": {
+    "platform.tenant.manage": {
+      "track": "platform",
+      "machineAllowed": false,
+      "scope": [
+        "platform"
+      ],
+      "audit": true
+    },
+    "tenant.membership.manage": {
+      "track": "administrative",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId"
+      ],
+      "audit": true
+    },
+    "tenant.authorization.grant": {
+      "track": "administrative",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId"
+      ],
+      "delegation": "strictly_below_actor_ceiling",
+      "audit": true
+    },
+    "tenant.application.manage": {
+      "track": "administrative",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId"
+      ],
+      "audit": true
+    },
+    "thirdparty.evidence.submit_own": {
+      "track": "evidence_submission",
+      "machineAllowed": true,
+      "scope": [
+        "tenantId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "audit": true
+    },
+    "thirdparty.status.read_own": {
+      "track": "read_only",
+      "machineAllowed": true,
+      "scope": [
+        "tenantId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "audit": true
+    },
+    "documents.read_scoped": {
+      "track": "read_only",
+      "machineAllowed": true,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "thirdPartyId"
+      ],
+      "audit": true
+    },
+    "thirdparty.analysis.recommend": {
+      "track": "technical_recommendation",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "recordsBasis": true,
+      "audit": true
+    },
+    "thirdparty.policy.manage": {
+      "track": "policy_administration",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId"
+      ],
+      "reasonRequired": true,
+      "versioned": true,
+      "audit": true
+    },
+    "thirdparty.requirement.set": {
+      "track": "technical_authority",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "policyRequired": true,
+      "recordsBasis": true,
+      "audit": true
+    },
+    "thirdparty.technical.block": {
+      "track": "technical_authority",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "policyRequired": true,
+      "recordsBasis": true,
+      "audit": true
+    },
+    "thirdparty.technical.release": {
+      "track": "technical_authority",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "policyRequired": true,
+      "denyWhenUnresolvedMandatoryBlock": true,
+      "requiresCurrentFavorableReassessmentToResolveBlock": true,
+      "recordsBasis": true,
+      "audit": true
+    },
+    "thirdparty.mobilization.require_pre_entry_correction": {
+      "track": "managerial_decision",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "decisionSnapshot": true,
+      "audit": true
+    },
+    "thirdparty.mobilization.authorize_conditional_entry": {
+      "track": "managerial_decision",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "decisionSnapshot": true,
+      "policyRequired": true,
+      "requiredPolicyEffect": "conditional_allowed",
+      "pendingRemainsOpen": true,
+      "audit": true
+    },
+    "thirdparty.analysis.return_to_sst": {
+      "track": "workflow_routing",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "thirdPartyId",
+        "workflowId"
+      ],
+      "reasonRequired": true,
+      "audit": true
+    },
+    "worker.passport.read_own": {
+      "track": "worker_self_service",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "workerId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "ownIdentityOnly": true,
+      "minimizedProjection": true
+    },
+    "worker.passport.read_assigned": {
+      "track": "field_operations",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "workerId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "assignmentRequired": true,
+      "minimizedProjection": true
+    },
+    "worker.evidence.read_status_assigned": {
+      "track": "technical_review",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "workerId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "assignmentRequired": true,
+      "excludesClinicalDetails": true
+    },
+    "worker.evidence.review": {
+      "track": "technical_review",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "workerId",
+        "evidenceId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "sourceAndValidityReviewRequired": true
+    },
+    "documents.assignment.read_own": {
+      "track": "read_only",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "workerId",
+        "documentId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "ownIdentityOnly": true
+    },
+    "documents.sign_assigned": {
+      "track": "document_acknowledgment",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "workerId",
+        "documentId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "exactRevisionRequired": true,
+      "signatureMethodRequiresSeparateReview": true
+    },
+    "deviation.report": {
+      "track": "evidence_submission",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "reporterDerivedFromSession": true
+    },
+    "dds.create": {
+      "track": "field_operations",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "responsibleIdentityRequired": true
+    },
+    "dds.attendance.scan": {
+      "track": "field_operations",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "ddsId",
+        "workerId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "duplicateDetectionRequired": true,
+      "offlineFreshnessShown": true
+    },
+    "dds.attendance.review_offline": {
+      "track": "field_operations",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "ddsId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "humanReviewRequired": true,
+      "idempotentSyncRequired": true
+    },
+    "safety.apr.draft.create": {
+      "track": "field_operations",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "activityId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false
+    },
+    "safety.apr.draft.update": {
+      "track": "field_operations",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "activityId",
+        "aprId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "expectedRevisionRequired": true
+    },
+    "safety.apr.submit_review": {
+      "track": "workflow_routing",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "activityId",
+        "aprId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false
+    },
+    "safety.apr.technical_review": {
+      "track": "technical_review",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "activityId",
+        "aprId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "technicalAssignmentRequired": true
+    },
+    "safety.apr.sign": {
+      "track": "document_acknowledgment",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "activityId",
+        "aprId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "exactRevisionRequired": true
+    },
+    "workpermit.draft.create": {
+      "track": "field_operations",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "activityId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false
+    },
+    "workpermit.draft.update": {
+      "track": "field_operations",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "activityId",
+        "workPermitId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "expectedRevisionRequired": true
+    },
+    "workpermit.technical_review": {
+      "track": "technical_review",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "activityId",
+        "workPermitId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "currentEvidenceRequired": true
+    },
+    "workpermit.release": {
+      "track": "operational_release",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "activityId",
+        "workPermitId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "currentChecklistRequired": true,
+      "technicalReviewRequired": true,
+      "denyWhenUnresolvedMandatoryBlock": true,
+      "humanDecisionSnapshotRequired": true,
+      "offlineReleaseByDefault": false
+    },
+    "medical.aso.status.read_assigned": {
+      "track": "medical_restricted",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "workerId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "minimalStatusOnly": true,
+      "purposeAndDisclosurePolicyPending": true
+    },
+    "medical.aso.record_scoped": {
+      "track": "medical_restricted",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "workerId"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "qualifiedProfessionalRequired": true,
+      "clinicalDetailsExcludedFromOperationalAudit": true
+    },
+    "government.event.prepare": {
+      "track": "government_transmission",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "serviceId",
+        "eventType",
+        "environment"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "officialLayoutVersionRequired": true
+    },
+    "government.event.review": {
+      "track": "government_transmission",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "serviceId",
+        "eventType",
+        "environment"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "technicalReviewRequired": true,
+      "exactPayloadRevisionRequired": true
+    },
+    "government.event.client_approve": {
+      "track": "client_approval",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "serviceId",
+        "eventType",
+        "environment"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "designatedClientRepresentativeRequired": true,
+      "approvalBoundToPayloadHash": true
+    },
+    "government.event.transmit": {
+      "track": "government_transmission",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "serviceId",
+        "eventType",
+        "environment"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "officialAdapterRequired": true,
+      "currentClientAuthorizationRequired": true,
+      "exactPayloadApprovalRequired": true,
+      "idempotencyRequired": true
+    },
+    "government.event.receipt.read": {
+      "track": "government_transmission",
+      "machineAllowed": false,
+      "scope": [
+        "tenantId",
+        "companyId",
+        "unitId",
+        "serviceId",
+        "eventType",
+        "environment"
+      ],
+      "audit": true,
+      "candidateOnly": true,
+      "runtimeEnabled": false,
+      "authorizedScopeOnly": true
+    }
+  },
+  "policyEffects": [
+    "recommendation",
+    "requirement",
+    "block",
+    "conditional_allowed"
+  ],
+  "policyReferenceRequiredFields": [
+    "jurisdiction",
+    "sourceId",
+    "version",
+    "item",
+    "effectiveFrom",
+    "scope",
+    "reviewerUserId",
+    "reviewedAt"
+  ],
+  "policyReferenceOptionalFields": [
+    "effectiveTo",
+    "urlOrDocumentReference"
+  ],
+  "grantRules": {
+    "denyByDefault": true,
+    "noSelfGrant": true,
+    "noElevationAboveActorCeiling": true,
+    "saas_masterDelegable": false,
+    "tenant_ownerDelegableThroughRuntime": false,
+    "administrativeRoleDoesNotImplyTechnicalOrManagerialActions": true
+  },
+  "authorizationOrder": [
+    "principal_active",
+    "tenant_active_and_mode",
+    "grant_active",
+    "transition_allowed",
+    "policy_current_and_allows",
+    "module_enabled",
+    "technical_limits_available",
+    "atomic_audit_commit",
+    "scope_covers_target",
+    "own_identity_or_assignment_verified",
+    "action_allowed",
+    "policy_current_and_evidence_fresh",
+    "client_authorization_and_payload_approval",
+    "idempotency_and_duplicate_check"
+  ],
+  "denyByDefault": true,
+  "previousCatalogVersion": 1,
+  "runtimeConnected": false,
+  "allNewActionsRuntimeEnabled": false,
+  "schemaCompatibility": {
+    "status": "pending",
+    "reason": "O DDL M22 atual cobre principalmente terceiros e fluxo de caso; os novos escopos e trilhas abaixo ainda não têm representação relacional compatível.",
+    "requiredDdlWork": [
+      "Expandir authority_track CHECK com as novas trilhas ou normalizar trilhas em tabela versionada.",
+      "Modelar escopos para trabalhador, evidência, documento, DDS, atividade, APR, PT, serviço, evento e ambiente.",
+      "Ligar cada alvo às fontes persistentes autoritativas; trabalhador e vários módulos ainda não têm essa raiz relacional no runtime.",
+      "Definir aprovação por payload como decisão/registro versionado separado do grant de elegibilidade."
+    ]
+  },
+  "newActions": [
+    "worker.passport.read_own",
+    "worker.passport.read_assigned",
+    "worker.evidence.read_status_assigned",
+    "worker.evidence.review",
+    "documents.assignment.read_own",
+    "documents.sign_assigned",
+    "deviation.report",
+    "dds.create",
+    "dds.attendance.scan",
+    "dds.attendance.review_offline",
+    "safety.apr.draft.create",
+    "safety.apr.draft.update",
+    "safety.apr.submit_review",
+    "safety.apr.technical_review",
+    "safety.apr.sign",
+    "workpermit.draft.create",
+    "workpermit.draft.update",
+    "workpermit.technical_review",
+    "workpermit.release",
+    "medical.aso.status.read_assigned",
+    "medical.aso.record_scoped",
+    "government.event.prepare",
+    "government.event.review",
+    "government.event.client_approve",
+    "government.event.transmit",
+    "government.event.receipt.read"
+  ]
+}

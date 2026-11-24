@@ -11,6 +11,10 @@ export default function HomePage() {
 async function Redirector(): Promise<never> {
   await connection();
   const session = await getSession();
-  const membership = session ? resolveTenantMembership(session.userId) : null;
+  if (!session) redirect("/site");
+
+  const membership = resolveTenantMembership(session.userId);
+  if (membership?.membership.role === "trabalhador") redirect("/desvios");
+  if (membership?.membership.role === "medico_coordenador") redirect("/aso");
   redirect(["campo", "cliente"].includes(membership?.membership.role ?? "") ? "/dds" : "/empresas");
 }

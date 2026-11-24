@@ -11,9 +11,10 @@ import type { WorkerRecord } from "./worker-store";
 
 export type AsoFitness = "unrecorded" | "fit" | "unfit";
 export type AsoStatus = "draft" | "in_review" | "reviewed";
-export type AsoContent = { appointmentDate: string; reference: string; exams: { name: string; date: string }[]; fitness: AsoFitness };
+export type AsoContent = { appointmentDate: string; nextExamDueOn?: string; reference: string; exams: { name: string; date: string }[]; fitness: AsoFitness };
 export type AsoWorker = { workerId: string; companyId: string; unitId: string; workerName: string; jobTitle: string; companyName: string; unitName: string };
 export type AsoSummary = AsoWorker & { id: string; status: AsoStatus; version: number; updatedAt: string };
+type AsoAuditSignal = AsoWorker & { dueOn: string | null; status: "missing_due_date" | "renewal_in_review" | "overdue" };
 export type AsoRecord = AsoSummary & {
   tenantId: string; content: AsoContent; createdAt: string;
   revisions: { version: number; content: AsoContent; actorUserId: string; savedAt: string }[];
@@ -96,6 +97,38 @@ export function listAsoSummaries(userId: string): AsoSummary[] {
 function validDate(value: unknown): value is string {
   return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T12:00:00Z`)) && new Date(`${value}T12:00:00Z`).toISOString().slice(0, 10) === value;
 }
+export function listAsoAuditSignals(userId: string, now = new Date()) {
+  const { tenant } = context(userId, "aso.status.read");
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(now);
+  const byWorker = new Map<string, AsoRecord[]>();
+  for (const record of read<Database>("aso.json", { records: [] }).records) {
+    if (record.tenantId !== tenant.id) continue;
+    const records = byWorker.get(record.workerId) ?? [];
+    records.push(record);
+    byWorker.set(record.workerId, records);
+  }
+  return Array.from(byWorker).flatMap<AsoAuditSignal>(([workerId, records]) => {
+    const worker = workerScope(tenant.id, workerId, true);
+    if (!worker) return [];
+    const scoped = records.filter(record => sameScope(worker, record) && record.status !== "draft");
+    scoped.sort((a, b) => b.content.appointmentDate.localeCompare(a.content.appointmentDate) || b.createdAt.localeCompare(a.createdAt));
+    const latest = scoped[0];
+    if (!latest) return [];
+    const reviewed = scoped.find(record => record.status === "reviewed");
+    const current = reviewed ?? latest;
+    const dueOn = current.content.nextExamDueOn;
+    if (!validDate(dueOn)) {
+      audit(userId, current.id, "aso.status_read", false);
+      return [{ ...worker, dueOn: null, status: "missing_due_date" as const }];
+    }
+    if (dueOn >= today) return [];
+    audit(userId, current.id, "aso.status_read", false);
+    const status = latest.status === "in_review" && latest.id !== current.id
+      && validDate(latest.content.nextExamDueOn) && latest.content.nextExamDueOn >= today
+      ? "renewal_in_review" as const : "overdue" as const;
+    return [{ ...worker, dueOn, status }];
+  });
+}
 function validate(input: AsoContent): AsoContent {
   if (!input || !validDate(input.appointmentDate) || typeof input.reference !== "string" || !input.reference.trim() || input.reference.length > 100) throw new Error("Preencha a data válida do atendimento e uma referência fictícia de até 100 caracteres.");
   if (!["unrecorded", "fit", "unfit"].includes(input.fitness)) throw new Error("Selecione uma opção de aptidão válida.");
@@ -104,7 +137,11 @@ function validate(input: AsoContent): AsoContent {
     if (!e || typeof e.name !== "string" || !e.name.trim() || e.name.length > 120 || !validDate(e.date)) throw new Error("Cada exame informado precisa de nome e data válidos; não inclua resultados clínicos.");
     return { name: e.name.trim(), date: e.date };
   });
-  return { appointmentDate: input.appointmentDate, reference: input.reference.trim(), fitness: input.fitness, exams };
+  const dueOn = input.nextExamDueOn;
+  if (dueOn !== undefined && (!validDate(dueOn) || dueOn < input.appointmentDate)) {
+    throw new Error("Informe um prazo válido para o próximo exame, na data do atendimento ou depois.");
+  }
+  return { appointmentDate: input.appointmentDate, ...(dueOn ? { nextExamDueOn: dueOn } : {}), reference: input.reference.trim(), fitness: input.fitness, exams };
 }
 export async function saveAso(userId: string, workerId: string, expectedVersion: number, input: AsoContent, id?: string, scopesFor: MedicalScopeReader = listMedicalUnitScopes): Promise<string> {
   const access = context(userId, "aso.manage"); checkRate(userId);

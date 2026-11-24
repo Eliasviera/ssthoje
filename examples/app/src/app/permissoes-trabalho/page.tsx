@@ -18,6 +18,7 @@ import DocumentSignatures from "../document-signatures";
 import { getWorkPermitSignatureState, type WorkPermitSignatureState } from "@/lib/work-permit-signature-store";
 import { listWorkersForTenant } from "@/lib/worker-store";
 import { pendingDocumentSigners } from "@/lib/document-signatures";
+import PanelShell from "../panel-shell";
 
 export default function Page({ searchParams }: { searchParams: Promise<{ draft?: string }> }) {
   return <Suspense fallback={<main className="auth-loading">Conferindo vínculos de PT/PTE…</main>}><Content searchParams={searchParams}/></Suspense>;
@@ -47,8 +48,7 @@ async function Content({ searchParams }: { searchParams: Promise<{ draft?: strin
   if (aprs.length && getPgrStorageMode() === "postgres") {
     try { inventories = await listPgrInventoriesPostgres(tenant.id); } catch { inventories = null; }
   }
-  return <main className="main-area" style={{ marginLeft: 0 }}>
-    <header className="topbar"><Link className="secondary-button" href="/#safety-apr">Voltar à APR</Link><Link className="secondary-button" href="/?section=pgr">Consultar PGR</Link></header>
+  return <PanelShell tenantName={tenant.name} current="/permissoes-trabalho">
     <div className="content-wrap"><section className="welcome-row"><div><p className="eyebrow">{tenant.name} · DEMONSTRAÇÃO</p><h1>Preparação de PT e PTE</h1><p className="page-description">Confira a origem dos riscos na APR e no PGR e o fluxo solicitado pela equipe.</p></div></section>
       <section className="panel pgr-section" aria-label="Preparação de permissões de trabalho">
         <div className="document-warning"><strong>Emissão indisponível.</strong> Esta tela consulta vínculos e oferece um ensaio demonstrativo. Não cria permissão operacional, não aprova APR e não autoriza trabalho. O mapa estrutural dos Word está disponível para revisão; os critérios e checklists técnicos ainda aguardam validação. Liberação operacional e assinatura qualificada (ICP-Brasil) não estão disponíveis; a ciência dos participantes no rascunho é registro simples, sem liberar trabalho.</div>
@@ -93,5 +93,5 @@ async function Content({ searchParams }: { searchParams: Promise<{ draft?: strin
         })}
       </section>
     </div>
-  </main>;
+  </PanelShell>;
 }

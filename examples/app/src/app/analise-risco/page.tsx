@@ -11,6 +11,7 @@ import { loadVocabulary } from "@/lib/field-vocabulary";
 import { listWorkersForTenant } from "@/lib/worker-store";
 import { logoutAction } from "../actions";
 import RiskAnalysisSection from "../risk-analysis-section";
+import PanelShell from "../panel-shell";
 
 export const metadata = { title: "AR · Análise de Risco — SST Hoje" };
 
@@ -31,11 +32,7 @@ async function RiskAnalysisContent() {
     .map((worker) => ({ id: worker.id, name: worker.displayName, jobTitle: worker.jobTitle, companyId: worker.companyId, unitId: worker.unitId }));
   const canManage = hasTenantPermission(membership.role, "safety.risk_analysis.manage");
 
-  return <main className="main-area" style={{ marginLeft: 0 }}>
-    <header className="topbar">
-      <div className="breadcrumbs"><span>{tenant.name}</span><span className="crumb-separator">/</span><strong>AR · Análise de Risco</strong></div>
-      <Link className="secondary-button" href="/empresas">Voltar ao painel</Link>
-    </header>
+  return <PanelShell tenantName={tenant.name} current="/analise-risco">
     <div className="content-wrap">
       <section className="welcome-row" aria-labelledby="page-title">
         <div>
@@ -57,5 +54,5 @@ async function RiskAnalysisContent() {
       </section>}
       <RiskAnalysisSection records={records} companies={companies} canManage={canManage} catalogModels={listAprModels()} vocabulary={loadVocabulary().entries} workers={workers} />
     </div>
-  </main>;
+  </PanelShell>;
 }

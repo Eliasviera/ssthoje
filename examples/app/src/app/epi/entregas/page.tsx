@@ -9,6 +9,7 @@ import {getEpiDeliveryStockReconciliation,listEpiDeliveries,listEpiWorkers,listO
 import {listClientCompanies} from "@/lib/client-service";
 import EpiSection from "../../epi-section";
 import EpiOfflineCapture from "./offline-capture";
+import PanelShell from "../../panel-shell";
 
 export default function Page({searchParams}:{searchParams:Promise<{companyId?:string}>}){return <Suspense fallback={<main className="auth-loading">Abrindo entregas de EPI…</main>}><Content searchParams={searchParams}/></Suspense>;}
 async function Content({searchParams}:{searchParams:Promise<{companyId?:string}>}){
@@ -28,5 +29,6 @@ async function Content({searchParams}:{searchParams:Promise<{companyId?:string}>
   const workers=canManage?listEpiWorkers(access.session.userId).filter(worker=>!scopedCompany||worker.companyId===scopedCompany.id):[];
   const currentDate=new Intl.DateTimeFormat("en-CA",{timeZone:"America/Sao_Paulo"}).format(new Date());
   const offlineScopeKey=createHash("sha256").update(`${tenant.id}:${access.session.userId}`).digest("hex");
-  return <main className="main-area" style={{marginLeft:0}}><header className="topbar"><Link className="secondary-button" href={scopedCompany?`/empresas/${scopedCompany.id}?tab=epi`:"/empresas"}>{scopedCompany?"Voltar à empresa":"Voltar às empresas"}</Link><Link className="secondary-button" href={scopedCompany?`/epi/estoque?companyId=${encodeURIComponent(scopedCompany.id)}`:"/epi/estoque"}>Estoque de EPI</Link><Link className="secondary-button" href="/epi/fichas">Fichas por trabalhador</Link></header><div className="content-wrap"><section className="welcome-row"><div><p className="eyebrow">{tenant.name} · DEMONSTRAÇÃO</p><h1>Entregas de EPI{scopedCompany?` · ${scopedCompany.tradeName||scopedCompany.legalName}`:""}</h1><p className="page-description">Registre a entrega, consulte a ficha e concilie a baixa pelo estoque do CA e tamanho correspondente.</p></div></section><EpiOfflineCapture workers={workers} submissions={offlineSubmissions} canManage={canManage} scopeKey={offlineScopeKey} currentDate={currentDate}/><EpiSection deliveries={deliveries} workers={workers} canManage={canManage} currentDate={currentDate} companyScopeId={scopedCompany?.id}/></div></main>;
+  return <PanelShell tenantName={tenant.name} current="/epi/entregas">
+    <div className="content-wrap"><section className="welcome-row"><div><p className="eyebrow">{tenant.name} · DEMONSTRAÇÃO</p><h1>Entregas de EPI{scopedCompany?` · ${scopedCompany.tradeName||scopedCompany.legalName}`:""}</h1><p className="page-description">Registre a entrega, consulte a ficha e concilie a baixa pelo estoque do CA e tamanho correspondente.</p></div></section><EpiOfflineCapture workers={workers} submissions={offlineSubmissions} canManage={canManage} scopeKey={offlineScopeKey} currentDate={currentDate}/><EpiSection deliveries={deliveries} workers={workers} canManage={canManage} currentDate={currentDate} companyScopeId={scopedCompany?.id}/></div></PanelShell>;
 }

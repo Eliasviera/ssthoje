@@ -55,6 +55,7 @@ const navigation = [
   { id: "pendencias", label: "Pendências", icon: "check" },
   { id: "auditoria", label: "Auditoria", icon: "history" },
   { id: "trabalhadores", label: "Trabalhadores", icon: "people" },
+  { id: "treinamentos", label: "Treinamentos", icon: "file" },
   { id: "dds", label: "DDS", icon: "clipboard" },
   { id: "checklists", label: "Checklists", icon: "check" },
   { id: "desvios", label: "Desvios de SST", icon: "warning" },
@@ -75,6 +76,7 @@ const sectionCopy: Record<SectionId, { title: string; description: string; empty
   pendencias: { title: "Pendências", description: "Veja o que precisa de atenção e qual é o próximo passo.", empty: "Nenhuma pendência por enquanto. As regras e os prazos serão configurados nas próximas etapas." },
   auditoria: { title: "Auditoria", description: "Consulte os acessos registrados para esta consultoria.", empty: "Ainda não há atividades registradas." },
   trabalhadores: { title: "Trabalhadores", description: "Organize funções e informações de exposição em cada unidade.", empty: "Cadastre os vínculos de demonstração com as empresas atendidas." },
+  treinamentos: { title: "Treinamentos", description: "Consulte o módulo de capacitação e o status comercial da sua conta.", empty: "O módulo de treinamentos está em preparação." },
   dds: { title: "DDS", description: "Registre o diálogo diário de segurança com foto, tema e assinaturas.", empty: "Abra a área de DDS pelo menu." },
   desvios: { title: "Desvios de SST", description: "Relate desvios e quase incidentes. Qualquer pessoa da equipe pode registrar.", empty: "Abra a área de desvios pelo menu." },
   checklists: { title: "Checklists", description: "Aplique checklists de áreas e equipamentos criados pela equipe SST.", empty: "Abra a área de checklists pelo menu." },
@@ -98,7 +100,7 @@ function Icon({ name, size = 20 }: { name: string; size?: number }) {
 }
 
 function NavButton({ id, label, icon, active }: { id: SectionId; label: string; icon: string; active: boolean }) {
-  const href = id === "empresas" ? "/empresas" : id === "trabalhadores" ? "/trabalhadores" : id === "documentos" ? "/documentos" : id === "dds" ? "/dds" : id === "checklists" ? "/checklists" : id === "desvios" ? "/desvios" : `/?section=${id}`;
+  const href = id === "empresas" ? "/empresas" : id === "trabalhadores" ? "/trabalhadores" : id === "documentos" ? "/documentos" : id === "dds" ? "/dds" : id === "checklists" ? "/checklists" : id === "desvios" ? "/desvios" : id === "treinamentos" ? "/treinamentos" : `/?section=${id}`;
   // A navegação deve funcionar mesmo antes de o JavaScript do painel carregar.
   return <a className={`nav-link${active ? " nav-link-active" : ""}`} href={href} aria-current={active ? "page" : undefined}><Icon name={icon}/><span>{label}</span></a>;
 }

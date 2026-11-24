@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { getCurrentTenantAccess } from "@/lib/tenant-context";
@@ -8,6 +7,7 @@ import { listClientCompanies } from "@/lib/client-service";
 import { listEquipment } from "@/lib/equipment-inventory-store";
 import { listTemplates, listInspections } from "@/lib/checklist-store";
 import EquipmentPanel from "./equipment-panel";
+import PanelShell from "../panel-shell";
 
 export const metadata = { title: "Equipamentos — SST Hoje" };
 
@@ -28,14 +28,7 @@ async function EquipmentContent() {
   const inspections = listInspections(tenant.id);
   const canManage = hasTenantPermission(membership.role, "operations.manage");
 
-  return <main className="main-area" style={{ marginLeft: 0 }}>
-    <header className="topbar">
-      <div className="breadcrumbs"><span>{tenant.name}</span><span className="crumb-separator">/</span><strong>Equipamentos</strong></div>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <Link className="secondary-button" href="/checklists">Checklists</Link>
-        <Link className="secondary-button" href="/">Voltar ao painel</Link>
-      </div>
-    </header>
+  return <PanelShell tenantName={tenant.name} current="/equipamentos">
     <div className="content-wrap">
       <section className="welcome-row" aria-labelledby="page-title">
         <div>
@@ -46,5 +39,5 @@ async function EquipmentContent() {
       </section>
       <EquipmentPanel equipment={equipment} companies={companies} templates={templates} inspections={inspections} canManage={canManage}/>
     </div>
-  </main>;
+  </PanelShell>;
 }

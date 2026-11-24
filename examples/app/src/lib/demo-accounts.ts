@@ -8,6 +8,7 @@ const demoAccounts: DemoAccount[] = [
   { userId: "sst-demo-client-authority", email: process.env.SST_DEMO_CLIENT_EMAIL ?? "", password: process.env.SST_DEMO_CLIENT_PASSWORD ?? "" },
   { userId: "sst-demo-user", email: process.env.SST_DEMO_EMAIL ?? "", password: process.env.SST_DEMO_PASSWORD ?? "" },
   { userId: "sst-demo-sst", email: process.env.SST_DEMO_SST_EMAIL ?? "", password: process.env.SST_DEMO_SST_PASSWORD ?? "" },
+  { userId: "sst-demo-trabalhador", email: process.env.SST_DEMO_TRABALHADOR_EMAIL ?? "", password: process.env.SST_DEMO_TRABALHADOR_PASSWORD ?? "" },
   { userId: "sst-demo-campo", email: process.env.SST_DEMO_CAMPO_EMAIL ?? "", password: process.env.SST_DEMO_CAMPO_PASSWORD ?? "" },
   { userId: "sst-demo-user-b", email: process.env.SST_DEMO_TENANT_B_EMAIL ?? "", password: process.env.SST_DEMO_TENANT_B_PASSWORD ?? "" },
 ].filter((account) => account.email.length > 0 && account.password.length > 0)
