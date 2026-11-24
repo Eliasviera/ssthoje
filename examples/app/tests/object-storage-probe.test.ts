@@ -21,10 +21,10 @@ function fixture(publicAccess = false) {
   const store = { async put(resourceId: string, mime: "application/pdf", input: Uint8Array) {
     puts++; bytes = Buffer.from(input); receipt = { id: randomUUID(), tenantId: "platform-storage-test", resourceId, versionId: "versao-ficticia", size: bytes.length, sha256: createHash("sha256").update(bytes).digest("hex"), mime }; return receipt;
   }, async get() { return bytes; }, async temporaryDownload() { return "https://br-se1.magaluobjects.com/bucket-ficticio/ficticio?signature=ficticia"; } };
-  return { deps: { createStore: () => store, fetch: async (url: URL | RequestInfo) => new URL(String(url)).search ? new Response(bytes) : new Response(null, { status: publicAccess ? 200 : 403 }) }, puts: () => puts };
+  return { deps: { createStore: () => store, fetch: async (url: URL | RequestInfo) => new URL(String(url)).search ? new Response(bytes as unknown as BodyInit) : new Response(null, { status: publicAccess ? 200 : 403 }) }, puts: () => puts };
 }
 test("probe: somente Master, sem rede ou estado de execução para outros perfis", async () => {
-  const f = fixture();
+  const f = fixture() as unknown as { deps: NonNullable<Parameters<typeof runObjectStorageProbe>[1]>; puts: () => number };
   for (const user of ["sst-demo-user", "sst-demo-user-b", "", "forjado"]) {
     assert.throws(() => getObjectStorageProbe(user), /exclusivo/);
     await assert.rejects(runObjectStorageProbe(user, f.deps), /exclusivo/);
@@ -33,13 +33,13 @@ test("probe: somente Master, sem rede ou estado de execução para outros perfis
 });
 test("probe: desativado por padrão mesmo com credenciais e não chama provedor", async () => {
   delete process.env.SST_OBJECT_PROBE_ENABLED;
-  const f = fixture();
+  const f = fixture() as unknown as { deps: NonNullable<Parameters<typeof runObjectStorageProbe>[1]>; puts: () => number };
   assert.equal(getObjectStorageProbe("sst-demo-master").state, "disabled");
   await assert.rejects(runObjectStorageProbe("sst-demo-master", f.deps), /desativado/);
   assert.equal(f.puts(), 0);
 });
 test("probe: PDF completo, resultado persistido, auditoria e repetição sem novo envio", async () => {
-  const f = fixture();
+  const f = fixture() as unknown as { deps: NonNullable<Parameters<typeof runObjectStorageProbe>[1]>; puts: () => number };
   assert.equal((await runObjectStorageProbe("sst-demo-master", f.deps)).state, "verified");
   assert.equal((await runObjectStorageProbe("sst-demo-master", f.deps)).state, "verified");
   assert.equal(f.puts(), 1);
@@ -48,7 +48,7 @@ test("probe: PDF completo, resultado persistido, auditoria e repetição sem nov
   assert.match(readFileSync("data/audit-log.jsonl", "utf8"), /object-storage-probe-verified/);
 });
 test("probe: acesso público reprova, mantém recibo e bloqueia repetição imediata", async () => {
-  const f = fixture(true);
+  const f = fixture(true) as unknown as { deps: NonNullable<Parameters<typeof runObjectStorageProbe>[1]>; puts: () => number };
   await assert.rejects(runObjectStorageProbe("sst-demo-master", f.deps), /não foi concluída/);
   assert.equal(getObjectStorageProbe("sst-demo-master").state, "pending");
   await assert.rejects(runObjectStorageProbe("sst-demo-master", f.deps), /um minuto/);
@@ -59,10 +59,10 @@ test("probe: acesso público reprova, mantém recibo e bloqueia repetição imed
   assert.equal(existsSync("data/object-storage-probe/probe.lock"), false);
 });
 test("probe: trava exclusiva impede execução concorrente sem novo envio", async () => {
-  const f = fixture(); let release!: () => void;
+  const f = fixture() as unknown as { deps: NonNullable<Parameters<typeof runObjectStorageProbe>[1]>; puts: () => number }; let release!: () => void;
   const gate = new Promise<void>(resolve => { release = resolve; });
-  const base = f.deps.createStore;
-  const first = runObjectStorageProbe("sst-demo-master", { ...f.deps, createStore: () => { const store = base(); return { ...store, async get() { await gate; return store.get(); } }; } });
+  const base = f.deps.createStore!;
+  const first = runObjectStorageProbe("sst-demo-master", { ...f.deps, createStore: () => { const store = base("sst-demo-master"); return { ...store, async get(receipt: Parameters<typeof store.get>[0]) { await gate; return store.get(receipt); } }; } });
   await assert.rejects(runObjectStorageProbe("sst-demo-master", f.deps), /andamento/);
   release(); await first;
   assert.equal(f.puts(), 1);
